@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 00:19:14 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 10:31:38 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/28 11:22:48 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ int main(int ac, char const *av[])
     (void)av;
     webSocket Server;
     Server.setupServer();
-    while(1)
-    {
-        std::cout << "\n   Waiting for new connection \n" << std::endl;
-        Server.acceptConnection();
-    }
+    Server.acceptConnection();
     return 0;
 }

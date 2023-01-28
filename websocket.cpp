@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 10:30:31 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/28 11:23:49 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,28 +44,78 @@ void    webSocket::bindSocket(void)
 
 void    webSocket::listenSocket(void)
 {
-    guard(listen(server_fd, 10), "listen error");
+    guard(listen(server_fd, MAX_CONNECTIONS), "listen error");
+    fds[0].fd = server_fd;
+    fds[0].events = POLLIN;
+    for (int i = 1; i < MAX_CONNECTIONS; i++)
+        fds[i].fd = -1;
 }
 
 //--------------------------------------------------------------------------
 
 void    webSocket::acceptConnection(void)
 {
-    // char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
-    client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-    if (client_fd == -1) 
+    while(1)
     {
-        if (errno == EWOULDBLOCK)/*Operation would block | Try again*/
-            std::cout << "No pending connections" << std::endl;
-        else
-        {
-            perror("error when accepting connection");
-            exit(1);
+        int nfds = poll(fds, MAX_CONNECTIONS, TIMEOUT);
+        if (nfds == -1) {
+            std::cerr << "Error in poll()" << std::endl;
+            continue;
         }
-        sleep(1);
-    } 
-    else
-        read_request(client_fd);
+
+        // Check if the server socket has activity
+        if (fds[0].revents & POLLIN) {
+            // Accept a new connection
+            int client_socket = accept(server_fd, NULL, NULL);
+
+            // Add the new client socket to the pollfd array
+            for (int i = 1; i < MAX_CONNECTIONS; i++) {
+                if (fds[i].fd == -1) {
+                    fds[i].fd = client_socket;
+                    fds[i].events = POLLIN;
+                    break;
+                }
+            }
+        }
+
+        for (int i = 1; i < MAX_CONNECTIONS; i++)
+        {
+            if (fds[i].fd == -1)
+                continue;
+            if (fds[i].revents & POLLIN) {
+                // Read data from the client socket
+                char buffer[1024];
+                int bytes_received = recv(fds[i].fd, buffer, sizeof(buffer), 0);
+
+                if (bytes_received <= 0) {
+                    // Connection closed by client
+                    close(fds[i].fd);
+                    fds[i].fd = -1;
+                } else {
+                    // Send a response to the client
+                    std::string response = "HTTP/1.1 200 OK\r\n\r\nHello, World!";
+                    send(fds[i].fd, response.c_str(), response.length(), 0);
+                }
+            }
+        }
+    }
+
+    
+    // char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+    // client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+    // if (client_fd == -1) 
+    // {
+    //     if (errno == EWOULDBLOCK)/*Operation would block | Try again*/
+    //         std::cout << "No pending connections" << std::endl;
+    //     else
+    //     {
+    //         perror("error when accepting connection");
+    //         exit(1);
+    //     }
+    //     sleep(1);
+    // } 
+    // else
+    //     read_request(client_fd);
 }
 
 //--------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 10:28:49 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/28 11:02:53 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@
 # include <netinet/in.h>
 # include <string.h>
 # include <fcntl.h>
+# include <poll.h>
 # include <errno.h>
-#include <iostream>
-#include <exception>
+# include <iostream>
+# include <exception>
 
 #define PORT 8080
+#define MAX_CONNECTIONS 100
+#define TIMEOUT -1
 
 class webSocket
 {
@@ -35,6 +38,7 @@ public:
     int     server_fd;
     int     client_fd;
     int     flag;
+    struct pollfd fds[MAX_CONNECTIONS];
     void    setupServer();
     void    CreateSocket();
     void    bindSocket();
