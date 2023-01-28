@@ -6,11 +6,21 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/01/25 02:06:46 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/28 10:30:31 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "websocket.hpp"
+
+
+void    webSocket::setupServer()
+{
+    CreateSocket();
+    bindSocket();
+    listenSocket();
+}
+
+//--------------------------------------------------------------------------
 
 void    webSocket::CreateSocket(void)
 {
@@ -41,11 +51,11 @@ void    webSocket::listenSocket(void)
 
 void    webSocket::acceptConnection(void)
 {
-    char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+    // char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
     client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
     if (client_fd == -1) 
     {
-        if (errno == EWOULDBLOCK)
+        if (errno == EWOULDBLOCK)/*Operation would block | Try again*/
             std::cout << "No pending connections" << std::endl;
         else
         {
@@ -55,14 +65,17 @@ void    webSocket::acceptConnection(void)
         sleep(1);
     } 
     else
-    {
-        char buffer[30000] = {0};
-        read(client_fd , buffer, 30000);
-        std::cout << buffer << std::endl;
-        write(client_fd , hello , strlen(hello));
-        std::cout << "------message sent-------" << std::endl;
-        close(client_fd);
-    }
+        read_request(client_fd);
+}
+
+//--------------------------------------------------------------------------
+
+void webSocket::read_request(int client_socket)
+{
+    char buffer[30000] = {0};
+    read(client_socket, buffer, 1024);
+    std::cout << "Request: " << buffer << std::endl;
+    close(client_fd);
 }
 
 //--------------------------------------------------------------------------
@@ -85,3 +98,24 @@ webSocket::webSocket()
 }
 
 webSocket::~webSocket(){}
+
+//--------------------------------------------------------------------------
+
+int sendall(int s, char *buf, int *len)
+{
+    int total = 0; // how many bytes we’ve sent
+    int bytesleft = *len; // how many we have left to send
+    int n;
+    while(total < *len) 
+    {
+        n = send(s, buf+total, bytesleft, 0);
+        if (n == -1)
+            break;
+        total += n;
+        bytesleft -= n;
+    }
+    *len = total; // return number actually sent here
+    return n==-1?-1:0; // return -1 on failure, 0 on success
+}
+
+
