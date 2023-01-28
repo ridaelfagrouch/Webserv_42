@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 11:40:23 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/28 12:11:49 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ void    webSocket::listenSocket(void)
 
 void    webSocket::acceptConnection(void)
 {
-    while(1)
-    {
+    while (true) {
+        // Use poll() to monitor file descriptors for activity
         int nfds = poll(fds, MAX_CONNECTIONS, TIMEOUT);
+
         if (nfds == -1) {
             std::cerr << "Error in poll()" << std::endl;
             continue;
@@ -67,6 +68,7 @@ void    webSocket::acceptConnection(void)
         if (fds[0].revents & POLLIN) {
             // Accept a new connection
             int client_socket = accept(server_fd, NULL, NULL);
+            client_sockets.push_back(client_socket);
 
             // Add the new client socket to the pollfd array
             for (int i = 1; i < MAX_CONNECTIONS; i++) {
@@ -78,10 +80,12 @@ void    webSocket::acceptConnection(void)
             }
         }
 
-        for (int i = 1; i < MAX_CONNECTIONS; i++)
-        {
-            if (fds[i].fd == -1)
+        // Check for activity on the client sockets
+        for (int i = 1; i < MAX_CONNECTIONS; i++) {
+            if (fds[i].fd == -1) {
                 continue;
+            }
+
             if (fds[i].revents & POLLIN) {
                 // Read data from the client socket
                 char buffer[1024];
@@ -91,31 +95,32 @@ void    webSocket::acceptConnection(void)
                     // Connection closed by client
                     close(fds[i].fd);
                     fds[i].fd = -1;
-                } else {
+
+                    // Remove the client
+                      } else {
+                    // Process the data received from the client
+                    std::string request(buffer, bytes_received);
+                    std::cout << "Received request: " << request << std::endl;
+
                     // Send a response to the client
                     std::string response = "HTTP/1.1 200 OK\r\n\r\nHello, World!";
                     send(fds[i].fd, response.c_str(), response.length(), 0);
                 }
             }
         }
+
+        // Remove closed client sockets from the client_sockets vector
+        std::vector<int>::iterator it = client_sockets.begin();
+        while (it != client_sockets.end()) {
+            if (std::find(fds, fds + MAX_CONNECTIONS, *it) == -1) {
+                it = client_sockets.erase(it);
+            } else {
+                ++it;
+            }
+        }
     }
 
-    
-    // char hello[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
-    // client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-    // if (client_fd == -1) 
-    // {
-    //     if (errno == EWOULDBLOCK)/*Operation would block | Try again*/
-    //         std::cout << "No pending connections" << std::endl;
-    //     else
-    //     {
-    //         perror("error when accepting connection");
-    //         exit(1);
-    //     }
-    //     sleep(1);
-    // } 
-    // else
-    //     read_request(client_fd);
+    close(server_fd);
 }
 
 //--------------------------------------------------------------------------

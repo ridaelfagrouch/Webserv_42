@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 11:02:53 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/28 12:06:37 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <errno.h>
 # include <iostream>
 # include <exception>
+# include <vector>
+# include <algorithm>
 
 #define PORT 8080
 #define MAX_CONNECTIONS 100
@@ -39,6 +41,7 @@ public:
     int     client_fd;
     int     flag;
     struct pollfd fds[MAX_CONNECTIONS];
+    std::vector<int> client_sockets;
     void    setupServer();
     void    CreateSocket();
     void    bindSocket();
