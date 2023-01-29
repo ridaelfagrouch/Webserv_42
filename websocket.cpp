@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 12:11:49 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/29 05:25:08 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,14 @@ void    webSocket::acceptConnection(void)
     while (true) {
         // Use poll() to monitor file descriptors for activity
         int nfds = poll(fds, MAX_CONNECTIONS, TIMEOUT);
-
-        if (nfds == -1) {
-            std::cerr << "Error in poll()" << std::endl;
+        if (nfds == -1)
+        {
+            perror("Error in poll()");
             continue;
         }
 
-        // Check if the server socket has activity
-        if (fds[0].revents & POLLIN) {
-            // Accept a new connection
+        if (fds[0].revents & POLLIN)
+        {
             int client_socket = accept(server_fd, NULL, NULL);
             client_sockets.push_back(client_socket);
 
@@ -81,45 +80,41 @@ void    webSocket::acceptConnection(void)
         }
 
         // Check for activity on the client sockets
-        for (int i = 1; i < MAX_CONNECTIONS; i++) {
-            if (fds[i].fd == -1) {
+        for (int i = 1; i < MAX_CONNECTIONS; i++)
+        {
+            if (fds[i].fd == -1)
                 continue;
-            }
 
             if (fds[i].revents & POLLIN) {
                 // Read data from the client socket
                 char buffer[1024];
                 int bytes_received = recv(fds[i].fd, buffer, sizeof(buffer), 0);
-
-                if (bytes_received <= 0) {
+                if (bytes_received <= 0)
+                {
                     // Connection closed by client
                     close(fds[i].fd);
                     fds[i].fd = -1;
-
-                    // Remove the client
-                      } else {
-                    // Process the data received from the client
+                } else 
+                {
                     std::string request(buffer, bytes_received);
                     std::cout << "Received request: " << request << std::endl;
-
-                    // Send a response to the client
                     std::string response = "HTTP/1.1 200 OK\r\n\r\nHello, World!";
-                    send(fds[i].fd, response.c_str(), response.length(), 0);
+                    int bytes_send = send(fds[i].fd, response.c_str(), response.length(), 0);
+                    sendall(fds[i].fd, response.c_str(), response.length() - bytes_send);
                 }
             }
         }
 
-        // Remove closed client sockets from the client_sockets vector
-        std::vector<int>::iterator it = client_sockets.begin();
-        while (it != client_sockets.end()) {
-            if (std::find(fds, fds + MAX_CONNECTIONS, *it) == -1) {
-                it = client_sockets.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        //Remove closed client sockets from the client_sockets vector
+        // std::vector<int>::iterator it = client_sockets.begin();
+        // while (it != client_sockets.end())
+        // {
+        //     if (*(std::find(fds, fds + MAX_CONNECTIONS, *it)) < 0)
+        //         it = client_sockets.erase(it);
+        //     else
+        //         ++it;
+        // }
     }
-
     close(server_fd);
 }
 
@@ -156,12 +151,12 @@ webSocket::~webSocket(){}
 
 //--------------------------------------------------------------------------
 
-int sendall(int s, char *buf, int *len)
+int webSocket::sendall(int s, const char *buf, int len)
 {
     int total = 0; // how many bytes we’ve sent
-    int bytesleft = *len; // how many we have left to send
+    int bytesleft = len;
     int n;
-    while(total < *len) 
+    while(total < len)
     {
         n = send(s, buf+total, bytesleft, 0);
         if (n == -1)
@@ -169,8 +164,15 @@ int sendall(int s, char *buf, int *len)
         total += n;
         bytesleft -= n;
     }
-    *len = total; // return number actually sent here
-    return n==-1?-1:0; // return -1 on failure, 0 on success
+    // *len = total; 
+    return n==-1?-1:0;
 }
 
+//--------------------------------------------------------------------------
 
+// void removeClosedSockets(std::vector<int> &client_sockets, const std::vector<int> &closed_sockets) {
+//     for (unsigned int i = 0; i < closed_sockets.size(); i++) {
+//         int closed_socket = closed_sockets[i];
+//         client_sockets.erase(std::remove(client_sockets.begin(), client_sockets.end(), closed_socket), client_sockets.end());
+//     }
+// }

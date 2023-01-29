@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/01/28 12:06:37 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/29 04:56:49 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <iostream>
 # include <exception>
 # include <vector>
-# include <algorithm>
+# include<bits/stdc++.h>
 
 #define PORT 8080
 #define MAX_CONNECTIONS 100
@@ -34,14 +34,14 @@ class webSocket
 {
 private:
     struct sockaddr_in  address;
-    int                 addrlen;
- 
-public:
+    struct pollfd fds[MAX_CONNECTIONS];
+    std::vector<int> client_sockets;
+    int     addrlen;
     int     server_fd;
     int     client_fd;
     int     flag;
-    struct pollfd fds[MAX_CONNECTIONS];
-    std::vector<int> client_sockets;
+ 
+public:
     void    setupServer();
     void    CreateSocket();
     void    bindSocket();
@@ -49,6 +49,7 @@ public:
     void    acceptConnection();
     void    read_request(int client_socket);
     int     guard(int n, const char *er);
+	int		sendall(int s, const char *buf, int len);
     webSocket();
     ~webSocket();
 };
