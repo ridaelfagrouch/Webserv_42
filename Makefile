@@ -6,7 +6,7 @@
 #    By: garra <garra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/01/30 18:30:19 by garra            ###   ########.fr        #
+#    Updated: 2023/01/30 18:41:33 by garra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ export TITLE
 SRCS = $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -g
+CXXFLAGS = -Iincludes/ -g
 CXX = c++
 NAME = webserver
 
@@ -48,7 +48,7 @@ NAME = webserver
 
 all: $(NAME)
 
-$(NAME): title $(OBJS)
+$(NAME): $(OBJS)
 	@$(CXX) $(CXXFLAGS) $^ -o $(NAME)
 
 title:
