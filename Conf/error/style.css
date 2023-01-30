@@ -1,0 +1,23 @@
+
+
+
+body {
+    background-color:white;
+}
+
+#container {
+    height: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 40px;
+}
+
+#text {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#gif {
+    width: 50%;
+}
