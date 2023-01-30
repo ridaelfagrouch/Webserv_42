@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enterdata.cpp                                      :+:      :+:    :+:   */
+/*   enterlocationdata.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:53:17 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/26 15:54:27 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config.hpp"
+#include "../../includes/config.hpp"
 
 
 void    Locations::enterUploadEnab(std::vector<std::string> info)

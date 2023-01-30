@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/01/29 04:56:49 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/30 03:31:19 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ public:
     void    read_request(int client_socket);
     int     guard(int n, const char *er);
 	int		sendall(int s, const char *buf, int len);
+    void    hooks(int *i);
     webSocket();
     ~webSocket();
 };

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:48:22 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/23 18:43:45 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:39:12 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "config.hpp"
+#include "../../includes/config.hpp"
 
 int	ft_stoi(std::string str)
 {

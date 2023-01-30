@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   servers.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/27 11:21:40 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config.hpp"
+#include "../../includes/config.hpp"
 
 
 void    checkSemicolone(std::vector<std::string> &info)

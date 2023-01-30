@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:11:58 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/27 10:42:52 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:48:07 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config.hpp"
-
+#include "../../includes/config.hpp"
 
 
 int main(int ac, char **av)
 {
+    (void)ac;
     try {
         Config conf;
         if (!av[1])
@@ -25,6 +25,9 @@ int main(int ac, char **av)
         }
         
 	    conf.parse(av[1]);
+        webSocket Server;
+        Server.setupServer();
+        Server.acceptConnection();
     }
     catch (std::exception &e)
     {

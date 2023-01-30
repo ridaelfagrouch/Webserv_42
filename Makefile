@@ -5,29 +5,65 @@
 #                                                     +:+ +:+         +:+      #
 #    By: garra <garra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/24 01:46:16 by garra             #+#    #+#              #
-#    Updated: 2023/01/24 04:07:00 by garra            ###   ########.fr        #
+#    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
+#    Updated: 2023/01/30 18:30:19 by garra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFILES = main.cpp websocket.cpp
-OFILES = ${CFILES:.cpp=.opp}
+# --------------------------- Terminal Color Codes --------------------------- #
+NNN := \033[0m
+RED := \033[31m
+YEL := \033[33m
+GRA := \033[37m
+CYN := \033[36m
+GRN := \033[32m
+MGN := \033[35m
+BLU := \033[34m
+Black:= \033[0;30m
+White:= \033[0;37m
+DARKVIOLET=\033[1;5;1;36m
 
+
+define TITLE
+
+		██╗    ██╗███████╗██████╗     ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗ 
+		██║    ██║██╔════╝██╔══██╗    ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗
+		██║ █╗ ██║█████╗  ██████╔╝    ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝
+		██║███╗██║██╔══╝  ██╔══██╗    ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██╔══╝  ██╔══██╗
+		╚███╔███╔╝███████╗██████╔╝    ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║
+		 ╚══╝╚══╝ ╚══════╝╚═════╝     ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝
+                            \t\t\t- Created By ${BLU}${NNN}\n
+endef
+export TITLE
+
+
+SRCS = $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp)
+OBJS	= $(SRCS:.cpp=.o)
+
+CXXFLAGS = -I includes/ -g
 CXX = c++
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98
-NAME = webServer
-HEADER = websocket.hpp
+NAME = webserver
 
-all : ${OFILES}
-	@${CXX} ${CXXFLAGS} ${CFILES} -o ${NAME}
 
-%.opp:%.cpp ${websocket}
-	@${CXX} ${CXXFLAGS} -o $@ -c $<
+
+all: $(NAME)
+
+$(NAME): title $(OBJS)
+	@$(CXX) $(CXXFLAGS) $^ -o $(NAME)
+
+title:
+	echo "${DARKVIOLET}$$TITLE${NC}"
+
+%.o: %.cpp 
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
+# @echo "${GRN}=> $@${NC}"
 
 clean:
-	@rm -f ${OFILES} ${OBONUS}
+	@rm -rf $(OBJS)
 
-fclean : clean
-	@rm -f ${NAME}
+fclean: clean
+	@rm $(NAME)
 
-re : fclean all
+re: fclean all
+
+.PHONY: all clean fclean re title 

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/25 22:51:07 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config.hpp"
+#include "../../includes/config.hpp"
 
 void    check_brackets(std::vector<std::string> &lines)
 {
