@@ -6,7 +6,7 @@
 #    By: garra <garra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/01/30 18:41:33 by garra            ###   ########.fr        #
+#    Updated: 2023/01/31 11:33:44 by garra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ endef
 export TITLE
 
 
-SRCS = $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp)
+SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
 CXXFLAGS = -Iincludes/ -g
