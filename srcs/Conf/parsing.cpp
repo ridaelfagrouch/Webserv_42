@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/31 12:14:53 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void    Config::parse_servers(Servers &server)
 void    Config::parse(std::string filename)
 {
     std::ifstream fd;
-    fd.open(filename);
+    fd.open(filename.c_str());
 
     std::vector<std::string> lines;
     std::string line;

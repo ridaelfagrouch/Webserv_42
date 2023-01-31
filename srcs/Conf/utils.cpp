@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:48:22 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:39:12 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/31 12:17:48 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_stoi(std::string str)
 {
-	int	i;
+	size_t	i;
 	int	res;
 	int	sign;
 
@@ -43,7 +43,9 @@ std::string trim(std::string &s, char c)
         str += s.substr(index);
     index = str.find_last_not_of(c);
     if (index != std::string::npos)
+	{
         str = str.substr(0, index + 1);
+	}
 	s = str;
 	return (s);
 }
@@ -56,7 +58,7 @@ std::vector<std::string> split(std::string s, char c)
     int del=0,i=0,p=0,j=0;
     
 	str = trim(initial, c);
-    for (int i = 0; i < str.length(); i++)
+    for (size_t i = 0; i < str.length(); i++)
 		if (str[i] == c && str[i + 1] != c)
 			del++;
     while (del-- >= 0)

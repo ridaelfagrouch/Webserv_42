@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/31 12:15:32 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    checkSemicolone(std::vector<std::string> &info)
         for (std::vector<std::string>::iterator it = info.begin(); it != info.end(); it++)
         {
             std::string word = *it;
-            for (int i =0; i < word.length(); i++)
+            for (size_t i =0; i < word.length(); i++)
                 if (word[i] == ';')
                     semi++;
         }
@@ -104,7 +104,7 @@ void    Servers::errorPage(std::vector<std::string> info)
         current.status_code = status;
         if (info.size() == 3)
         {
-            file.open(info[2]);
+            file.open(info[2].c_str());
             current.path = info[2];
             if (!file)
                 current.path = "./error/error.html";
