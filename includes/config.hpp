@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 13:41:55 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:02:50 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <exception>
 
 
-# include "websocket.hpp"
+# include "webserver.hpp"
 
 class Locations {
     public:
@@ -79,9 +79,8 @@ class Servers {
 
 
 class Config {
-    private:
-        std::vector<Servers> servers;
     public :
+        std::vector<Servers> servers;
         void    parse(std::string filename);
         void    parse_servers(Servers &server);
 };

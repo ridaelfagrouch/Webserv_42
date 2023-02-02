@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   websocket.hpp                                      :+:      :+:    :+:   */
+/*   webserver.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/01/30 03:31:19 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/02 18:59:29 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,34 +24,31 @@
 # include <iostream>
 # include <exception>
 # include <vector>
-# include<bits/stdc++.h>
+# include <bits/stdc++.h>
+# include <arpa/inet.h>
 
-#define PORT 8080
+#include "config.hpp"
+
 #define MAX_CONNECTIONS 100
 #define TIMEOUT -1
 
-class webSocket
+class Servers;
+
+class webServer
 {
 private:
-    struct sockaddr_in  address;
-    struct pollfd fds[MAX_CONNECTIONS];
     std::vector<int> client_sockets;
-    int     addrlen;
-    int     server_fd;
+    std::vector<pollfd>  fds;
+    std::vector<Servers> servers;
     int     client_fd;
-    int     flag;
  
 public:
     void    setupServer();
-    void    CreateSocket();
-    void    bindSocket();
-    void    listenSocket();
     void    acceptConnection();
-    void    read_request(int client_socket);
     int     guard(int n, const char *er);
 	int		sendall(int s, const char *buf, int len);
     void    hooks(int *i);
-    webSocket();
-    ~webSocket();
+    webServer(std::vector<Servers> servers);
+    ~webServer();
 };
 
