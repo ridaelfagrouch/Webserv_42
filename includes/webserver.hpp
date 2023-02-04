@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/02 18:59:29 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/04 18:38:35 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,31 @@
 
 class Servers;
 
+
 class webServer
 {
+
 private:
-    std::vector<int> client_sockets;
-    std::vector<pollfd>  fds;
-    std::vector<Servers> servers;
+    struct pollfd fds[200];
+    std::vector<int> socket_list;
+    int fds_len;
+    std::vector<Servers> _serv;
+    socklen_t addrlen;
+    struct sockaddr_in remote;
     int     client_fd;
+    int     m_socket;
+    int     client_sockets;
+    std::string str_header;
+
  
 public:
     void    setupServer();
     void    acceptConnection();
     int     guard(int n, const char *er);
 	int		sendall(int s, const char *buf, int len);
-    void    hooks(int *i);
+    int     is_socket(int fd);
     webServer(std::vector<Servers> servers);
     ~webServer();
 };
+
 
