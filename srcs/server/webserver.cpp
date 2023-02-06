@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/04 18:59:23 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/06 05:45:12 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void    webServer::setupServer()
 {
     for (size_t i = 0; i < _serv.size(); i++)
     {
+		static int index = 0;
         int socket_fd;
 	    int optval = 1;
 
@@ -24,10 +25,9 @@ void    webServer::setupServer()
 	    guard(bind(socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error");
         guard(listen(socket_fd, 100), "listen error");
         guard(fcntl(socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
-		static int index = 0;
 
 	    fds[index].fd = socket_fd;
-	    fds[index].events = 0 | POLLIN;
+	    fds[index].events = POLLIN;
 	    index++;
 	    fds_len = index;
 	    socket_list.push_back(socket_fd);
@@ -44,7 +44,7 @@ int webServer::is_socket(int fd)
 	{
 		if (fd == socket_list[i])
 		{
-			m_socket = fd;
+			server_sock = fd;
 			return 1;
 		}
 	}
@@ -57,7 +57,7 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		guard(poll(fds, fds_len, 0), "poll error");
+		guard(poll(fds, fds_len, -1), "poll error");
 		for (int i = 0; i < fds_len; ++i)
 		{
 			int fd = fds[i].fd;
@@ -65,43 +65,43 @@ void    webServer::acceptConnection(void)
 			{
 				if (is_socket(fd))
 				{
-					while ((client_sockets = accept(m_socket,(struct sockaddr *) &remote, &addrlen)) > 0)
-	                {
-	                	guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
+					while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
+					{
+						guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
 	                	fds[fds_len].fd = client_sockets;
-	                	fds[fds_len].events = 0 | POLLIN;
+	                	fds[fds_len].events = POLLIN;
 	                	fds_len++;
-	                }
-					continue;
+					}
+					// if (client_sockets < 0)
+					// 	continue;
 				}
 				else
 				{
-                    	this->str_header = "";
-                    	int read_len;
-                    	char buffer[1024];
-                    	size_t total;
-                        memset(buffer, '\0', sizeof(buffer));
-                    	total = 0;
-                    	while ((read_len = read(fd, buffer, sizeof(buffer))) > 0)
-                    	{
-                    		total += read_len;
-                    		std::string str(buffer, read_len);
-                    		this->str_header.append(str);
-                    	}
-                        std::cout << str_header << std::endl;
-                    
-                    	if (read_len == -1 && errno != EAGAIN)
+						int read_len = 0;
+                    	read_all(fd, read_len);
+                    	if (read_len <= -1)
+						{
+							// perror("Error receiving data from client");
                     		close(fd);
+						}
                     	if (read_len == 0)
                     	{
                     		perror("Client disconnected");
                     		fds[i].fd = -1;
                     		fds_len--;
+							continue;
                     	}
                     	else
                     		fds[i].events = POLLOUT;
 				}
 			}
+			if (fds[i].revents & (POLLHUP | POLLERR)) 
+			{
+				perror("Connection error with client");
+            	close(fds[i].fd);
+            	i--;
+            	continue;
+          	}
 		}
 	}
     for (int i = 0; i < fds_len; i++)
@@ -142,6 +142,26 @@ webServer::webServer(std::vector<Servers> servers)
 webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
+
+
+void webServer::read_all(int fd, int &read_len)
+{
+	this->str_header = "";
+    char buffer[1024];
+    size_t total;
+    memset(buffer, '\0', sizeof(buffer));
+    total = 0;
+    while ((read_len = read(fd, buffer, sizeof(buffer))) > 0)
+    {
+    	total += read_len;
+    	std::string str(buffer, read_len);
+    	this->str_header.append(str);
+    }
+	std::cout << str_header << std::endl;
+}
+
+//--------------------------------------------------------------------------
+
 
 int webServer::sendall(int s, const char *buf, int len)
 {

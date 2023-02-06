@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/04 18:38:35 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/06 04:15:03 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ private:
     int fds_len;
     std::vector<Servers> _serv;
     socklen_t addrlen;
-    struct sockaddr_in remote;
+    struct sockaddr_in client_address;
     int     client_fd;
-    int     m_socket;
+    int     server_sock;
     int     client_sockets;
     std::string str_header;
 
@@ -57,6 +57,7 @@ public:
     int     guard(int n, const char *er);
 	int		sendall(int s, const char *buf, int len);
     int     is_socket(int fd);
+    void    read_all(int fd, int &read_len);
     webServer(std::vector<Servers> servers);
     ~webServer();
 };

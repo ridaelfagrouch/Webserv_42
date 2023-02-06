@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/04 18:03:32 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/06 09:35:42 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,15 @@ class Servers {
         
         std::string host;
         std::vector<int> port;
-        int _port;
-        struct sockaddr_in _address;
         std::vector<std::string> server_name;
         std::string root;
         std::string returned;
         long client_max_body_size;
+        
+        //-------------------------
+        int _port;
+        struct sockaddr_in _address;
+        //-------------------------
 
         std::vector<Locations> locations;
         std::vector<errorPages> error_page;
