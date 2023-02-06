@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/06 11:35:34 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/06 18:27:32 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ public:
     void    setupServer();
     void    acceptConnection();
     int     guard(int n, const char *er);
-	int		sendall(int s, const char *buf, int len);
+	void	sendall(int s, const char *buf, int len);
     int     is_socket(int fd);
     void    read_all(int fd, int &read_len);
     webServer(std::vector<Servers> servers);

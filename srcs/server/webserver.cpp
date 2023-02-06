@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/06 11:51:49 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/06 19:28:36 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,36 +71,36 @@ void    webServer::acceptConnection(void)
 	                	fds[fds_len].events = POLLIN;
 	                	fds_len++;
 					}
-					// if (client_sockets < 0)
-					// 	continue;
+					continue;
 				}
 				else
 				{
-						int read_len = 0;
-                    	read_all(fds[i].fd, read_len);
-                    	if (read_len <= -1 && errno != EAGAIN)
-                    		close(fds[i].fd);
-                    	if (read_len == 0)
-                    	{
-                    		perror("Client disconnected");
-                    		fds[i].fd = -1;
-                    		fds_len--;
-							continue;
-                    	}
-                    	else
-                    		fds[i].events = POLLOUT;
+					int read_len = 0;
+                    read_all(fds[i].fd, read_len);
+                    if (read_len <= -1 && errno != EAGAIN)
+                    	close(fds[i].fd);
+                    if (read_len == 0)
+                    {
+                    	perror("Client disconnected");
+                    	fds[i].fd = -1;
+                    	fds_len--;
+                    }
+                    else
+                    	fds[i].events = POLLOUT;
 				}
 			}
-			if (fds[i].revents & (POLLHUP | POLLERR)) 
+			else if (fds[i].revents & (POLLHUP | POLLERR)) 
 			{
 				perror("Connection error with client");
             	close(fds[i].fd);
             	i--;
             	continue;
           	}
-			// if (fds[i].revents & POLLOUT)
+			// else if (fds[i].revents & POLLOUT)
 			// {
-				
+			// 	sendall(fds[i].fd, response, len);
+			// 	close(fds[i].fd);
+			// 	fds[i].fd = -1;
 			// }
 		}
 	}
@@ -163,19 +163,17 @@ void webServer::read_all(int fd, int &read_len)
 //--------------------------------------------------------------------------
 
 
-int webServer::sendall(int s, const char *buf, int len)
+void webServer::sendall(int fd, const char *buf, int len)
 {
     int total = 0;
     int bytesleft = len;
     int n;
     while(total < len)
     {
-        n = send(s, buf+total, bytesleft, 0);
+        n = send(fd, buf+total, bytesleft, 0);
         if (n == -1)
             break;
         total += n;
         bytesleft -= n;
     }
-    // *len = total; 
-    return n==-1?-1:0;
 }
