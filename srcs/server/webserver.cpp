@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/06 05:45:12 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:51:49 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,9 @@ void    webServer::acceptConnection(void)
 		guard(poll(fds, fds_len, -1), "poll error");
 		for (int i = 0; i < fds_len; ++i)
 		{
-			int fd = fds[i].fd;
 			if (fds[i].revents & POLLIN)
 			{
-				if (is_socket(fd))
+				if (is_socket(fds[i].fd))
 				{
 					while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
 					{
@@ -78,12 +77,9 @@ void    webServer::acceptConnection(void)
 				else
 				{
 						int read_len = 0;
-                    	read_all(fd, read_len);
-                    	if (read_len <= -1)
-						{
-							// perror("Error receiving data from client");
-                    		close(fd);
-						}
+                    	read_all(fds[i].fd, read_len);
+                    	if (read_len <= -1 && errno != EAGAIN)
+                    		close(fds[i].fd);
                     	if (read_len == 0)
                     	{
                     		perror("Client disconnected");
@@ -102,6 +98,10 @@ void    webServer::acceptConnection(void)
             	i--;
             	continue;
           	}
+			// if (fds[i].revents & POLLOUT)
+			// {
+				
+			// }
 		}
 	}
     for (int i = 0; i < fds_len; i++)
