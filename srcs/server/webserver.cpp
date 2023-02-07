@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/07 15:19:12 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/07 19:43:38 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,47 @@ void    webServer::setupServer()
     for (size_t i = 0; i < _serv.size(); i++)
     {
 		static int index = 0;
-        int socket_fd;
 	    int optval = 1;
 
-	    socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket_fd error");
-	    guard(setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error");
-	    guard(bind(socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error");
-        guard(listen(socket_fd, 100), "listen error");
-        guard(fcntl(socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
-
-	    fds[index].fd = socket_fd;
+	    _serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket_fd error");
+	    guard(setsockopt(_serv[i].socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error");
+	    guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error");
+        guard(listen(_serv[i].socket_fd, 100), "listen error");
+        guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
+	    fds[index].fd = _serv[i].socket_fd;
 	    fds[index].events = POLLIN;
 	    index++;
 	    fds_len = index;
-	    socket_list.push_back(socket_fd);
     }
     acceptConnection();
 }
-
 
 //--------------------------------------------------------------------------
 
 int webServer::is_socket(int fd)
 {
-	for (size_t i = 0; i < socket_list.size(); ++i)
+	for (size_t i = 0; i < _serv.size(); ++i)
 	{
-		if (fd == socket_list[i])
+		if (fd == _serv[i].socket_fd)
 		{
 			server_sock = fd;
 			return 1;
 		}
 	}
 	return 0;
+}
+
+//--------------------------------------------------------------------------
+
+Servers webServer::FoundServer(void)
+{
+	size_t i = 0;
+	for (; i < _serv.size(); i++)
+	{
+		if(_serv[i].socket_fd == server_sock && _serv[i]._port == port)
+			break;
+	}
+	return(_serv[i]);
 }
 
 //--------------------------------------------------------------------------
@@ -88,10 +97,10 @@ int     webServer::Poll_in(int i)
 
 void     webServer::Poll_out(int i)
 {
-	(void)i;
-	// sendall(fds[i].fd, response, len);
-	// close(fds[i].fd);
-	// fds[i].fd = -1;
+	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+	sendall(fds[i].fd, response, response.size());
+	close(fds[i].fd);
+	fds[i].fd = -1;
 }
 
 //--------------------------------------------------------------------------
@@ -123,8 +132,8 @@ void    webServer::acceptConnection(void)
 				Poll_HupErr(i);
             	continue;
 			}
-			// else if (fds[i].revents & POLLOUT)
-			// 	Poll_out(i);
+			else if (fds[i].revents & POLLOUT)
+				Poll_out(i);
 		}
 	}
     for (int i = 0; i < fds_len; i++)
@@ -186,14 +195,14 @@ void webServer::read_all(int fd, int &read_len)
 //--------------------------------------------------------------------------
 
 
-void webServer::sendall(int fd, const char *buf, int len)
+void webServer::sendall(int fd, std::string response, int len)
 {
     int total = 0;
     int bytesleft = len;
     int n;
     while(total < len)
     {
-        n = send(fd, buf+total, bytesleft, 0);
+        n = send(fd, response.c_str()+total, bytesleft, 0);
         if (n == -1)
             break;
         total += n;
