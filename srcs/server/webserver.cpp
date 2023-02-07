@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/06 19:28:36 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/07 15:19:12 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,59 @@ int webServer::is_socket(int fd)
 
 //--------------------------------------------------------------------------
 
+int     webServer::Poll_in(int i)
+{
+	if (is_socket(fds[i].fd))
+	{
+		while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
+		{
+			guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
+	    	fds[fds_len].fd = client_sockets;
+	    	fds[fds_len].events = POLLIN;
+	    	fds_len++;
+		}
+		return(1);
+	}
+	else
+	{
+		int read_len = 0;
+        read_all(fds[i].fd, read_len);
+        if (read_len <= -1 && errno != EAGAIN)
+        	close(fds[i].fd);
+        if (read_len == 0)
+        {
+        	perror("Client disconnected");
+        	fds[i].fd = -1;
+        	fds_len--;
+        }
+        else
+        	fds[i].events = POLLOUT;
+	}
+	return(0);
+}
+
+//--------------------------------------------------------------------------
+
+void     webServer::Poll_out(int i)
+{
+	(void)i;
+	// sendall(fds[i].fd, response, len);
+	// close(fds[i].fd);
+	// fds[i].fd = -1;
+}
+
+//--------------------------------------------------------------------------
+
+void	webServer::Poll_HupErr(int &i)
+{
+	perror("Connection error with client");
+    close(fds[i].fd);
+    i--;
+}
+
+//--------------------------------------------------------------------------
+
+
 void    webServer::acceptConnection(void)
 {
     while(1)
@@ -62,46 +115,16 @@ void    webServer::acceptConnection(void)
 		{
 			if (fds[i].revents & POLLIN)
 			{
-				if (is_socket(fds[i].fd))
-				{
-					while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
-					{
-						guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
-	                	fds[fds_len].fd = client_sockets;
-	                	fds[fds_len].events = POLLIN;
-	                	fds_len++;
-					}
+				if(Poll_in(i))
 					continue;
-				}
-				else
-				{
-					int read_len = 0;
-                    read_all(fds[i].fd, read_len);
-                    if (read_len <= -1 && errno != EAGAIN)
-                    	close(fds[i].fd);
-                    if (read_len == 0)
-                    {
-                    	perror("Client disconnected");
-                    	fds[i].fd = -1;
-                    	fds_len--;
-                    }
-                    else
-                    	fds[i].events = POLLOUT;
-				}
 			}
-			else if (fds[i].revents & (POLLHUP | POLLERR)) 
+			else if (fds[i].revents & (POLLHUP | POLLERR))
 			{
-				perror("Connection error with client");
-            	close(fds[i].fd);
-            	i--;
+				Poll_HupErr(i);
             	continue;
-          	}
+			}
 			// else if (fds[i].revents & POLLOUT)
-			// {
-			// 	sendall(fds[i].fd, response, len);
-			// 	close(fds[i].fd);
-			// 	fds[i].fd = -1;
-			// }
+			// 	Poll_out(i);
 		}
 	}
     for (int i = 0; i < fds_len; i++)

@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/06 18:27:32 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/07 15:24:55 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,16 @@
 
 #include "config.hpp"
 
-#define MAX_CONNECTIONS 100
+#define MAX_CONNECTIONS 300
 #define TIMEOUT -1
 
 class Servers;
-
 
 class webServer
 {
 
 private:
-    struct pollfd fds[200];
+    struct pollfd fds[MAX_CONNECTIONS];
     std::vector<int> socket_list;
     int fds_len;
     std::vector<Servers> _serv;
@@ -58,6 +57,9 @@ public:
 	void	sendall(int s, const char *buf, int len);
     int     is_socket(int fd);
     void    read_all(int fd, int &read_len);
+    int     Poll_in(int i);
+    void    Poll_out(int i);
+    void    Poll_HupErr(int &i);
     webServer(std::vector<Servers> servers);
     ~webServer();
 };
