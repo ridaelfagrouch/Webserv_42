@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/08 16:41:57 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/08 18:47:17 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		guard(poll(fds, fds_len, -1), "poll error");
+		guard(poll(fds, fds_len, 0), "poll error");
 		for (int i = 0; i < fds_len; ++i)
 		{
 			if (fds[i].revents & POLLIN)
@@ -193,11 +193,18 @@ webServer::~webServer(){}
 
 void webServer::read_all(int fd, int &read_len)
 {
+	// size_t j = 0;
+
 	this->str_header = "";
     char buffer[1024];
     size_t total;
     memset(buffer, '\0', sizeof(buffer));
     total = 0;
+	// for (; j < _serv.size(); j++)
+	// {
+	// 	if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
+	// 		break;
+	// }
     while ((read_len = read(fd, buffer, sizeof(buffer))) > 0)
     {
     	total += read_len;
