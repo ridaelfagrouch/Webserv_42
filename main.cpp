@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:11:58 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/04 16:01:17 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/08 15:08:05 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int main(int ac, char **av)
         }
 	    conf.parse(av[1]);
         webServer Server(conf.servers);
+        Server.fileExemple = av[2];
         Server.setupServer();
     }
     catch (std::exception &e)

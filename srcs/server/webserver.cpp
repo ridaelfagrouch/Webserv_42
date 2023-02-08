@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/07 19:43:38 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/08 16:41:57 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void    webServer::setupServer()
 	    fds[index].events = POLLIN;
 	    index++;
 	    fds_len = index;
+		std::cout << "lestening to server " << _serv[i].server_name[0] << " host " << _serv[i].host << \
+			" port " << _serv[i]._port << std::endl;
     }
     acceptConnection();
 }
@@ -40,7 +42,15 @@ int webServer::is_socket(int fd)
 	{
 		if (fd == _serv[i].socket_fd)
 		{
+			while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
+			{
+				guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
+	    		fds[fds_len].fd = client_sockets;
+	    		fds[fds_len].events = POLLIN;
+	    		fds_len++;
+			}
 			server_sock = fd;
+			port = _serv[i]._port;
 			return 1;
 		}
 	}
@@ -49,32 +59,10 @@ int webServer::is_socket(int fd)
 
 //--------------------------------------------------------------------------
 
-Servers webServer::FoundServer(void)
-{
-	size_t i = 0;
-	for (; i < _serv.size(); i++)
-	{
-		if(_serv[i].socket_fd == server_sock && _serv[i]._port == port)
-			break;
-	}
-	return(_serv[i]);
-}
-
-//--------------------------------------------------------------------------
-
 int     webServer::Poll_in(int i)
 {
 	if (is_socket(fds[i].fd))
-	{
-		while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
-		{
-			guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
-	    	fds[fds_len].fd = client_sockets;
-	    	fds[fds_len].events = POLLIN;
-	    	fds_len++;
-		}
-		return(1);
-	}
+		return 1;
 	else
 	{
 		int read_len = 0;
@@ -90,17 +78,44 @@ int     webServer::Poll_in(int i)
         else
         	fds[i].events = POLLOUT;
 	}
-	return(0);
+	return 0;
 }
 
 //--------------------------------------------------------------------------
 
 void     webServer::Poll_out(int i)
 {
-	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+	std::fstream file;
+	std::string line;
+	std::string appendLine;
+	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: ";
+	int len;
+	
+	file.open(fileExemple, std::fstream::in);
+    if (!file.is_open()) std::cout << "Can't open file!" << std::endl , std::exit(EXIT_FAILURE);
+    while (!std::getline(file, line).eof())
+	{
+        appendLine.append(line);
+	}
+
+	len = appendLine.length();
+	response.append(std::to_string(len));
+	response.append("\n\n");
+	response.append(appendLine);
+	size_t j = 0;
+	for (; j < _serv.size(); j++)
+	{
+		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
+		{
+			std::cout << " resppone from server " << _serv[j].server_name[0] << " host " << \
+				_serv[j].host << " port " << _serv[j]._port << std::endl;
+			break;
+		}
+	}
 	sendall(fds[i].fd, response, response.size());
 	close(fds[i].fd);
 	fds[i].fd = -1;
+	std::cout << "-------- message sent --------" << std::endl;
 }
 
 //--------------------------------------------------------------------------
@@ -160,7 +175,7 @@ webServer::webServer(std::vector<Servers> servers)
     {   
         for(size_t j = 0; j < servers[i].port.size(); j++)
         {
-            Servers _servers;
+            Servers _servers = servers[i];
             _servers._port = servers[i].port[j];
             _servers._address.sin_family = AF_INET;
             _servers._address.sin_addr.s_addr = inet_addr(servers[i].host.c_str());
