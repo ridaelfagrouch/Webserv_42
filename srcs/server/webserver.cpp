@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/08 18:47:17 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/08 20:57:21 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    webServer::setupServer()
 	    _serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket_fd error");
 	    guard(setsockopt(_serv[i].socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error");
 	    guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error");
-        guard(listen(_serv[i].socket_fd, 100), "listen error");
+        guard(listen(_serv[i].socket_fd, BACKLOG), "listen error");
         guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
 	    fds[index].fd = _serv[i].socket_fd;
 	    fds[index].events = POLLIN;
@@ -31,6 +31,7 @@ void    webServer::setupServer()
 		std::cout << "lestening to server " << _serv[i].server_name[0] << " host " << _serv[i].host << \
 			" port " << _serv[i]._port << std::endl;
     }
+	std::cout << std::endl;
     acceptConnection();
 }
 

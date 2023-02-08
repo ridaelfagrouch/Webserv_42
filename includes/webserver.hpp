@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/08 15:18:43 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/08 20:54:32 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 
 #include "config.hpp"
 
-#define MAX_CONNECTIONS 300
+#define MAX_CONNECTIONS 70000
+#define BACKLOG 70000
 #define TIMEOUT -1
 
 class Servers;
