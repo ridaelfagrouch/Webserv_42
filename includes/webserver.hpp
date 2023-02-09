@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/08 20:54:32 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/09 20:56:44 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,17 @@
 
 #include "config.hpp"
 
-#define MAX_CONNECTIONS 70000
-#define BACKLOG 70000
-#define TIMEOUT -1
+#define BACKLOG 300
 
 class Servers;
-
 class webServer
 {
 
 private:
-    struct pollfd fds[MAX_CONNECTIONS];
-    int fds_len;
+    std::vector<pollfd> fds;
     std::vector<Servers> _serv;
+    std::vector<int> fdsclose;
+    int fds_len;
     socklen_t addrlen;
     struct sockaddr_in client_address;
     int     client_fd;

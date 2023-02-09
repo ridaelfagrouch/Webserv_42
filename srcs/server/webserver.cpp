@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/08 20:57:21 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/09 20:47:58 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void    webServer::setupServer()
 {
     for (size_t i = 0; i < _serv.size(); i++)
     {
-		static int index = 0;
 	    int optval = 1;
 
 	    _serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket_fd error");
@@ -24,14 +23,15 @@ void    webServer::setupServer()
 	    guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error");
         guard(listen(_serv[i].socket_fd, BACKLOG), "listen error");
         guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
-	    fds[index].fd = _serv[i].socket_fd;
-	    fds[index].events = POLLIN;
-	    index++;
-	    fds_len = index;
+		pollfd tmp;
+	    tmp.fd = _serv[i].socket_fd;
+	    tmp.events = POLLIN;
+		fds.push_back(tmp);
 		std::cout << "lestening to server " << _serv[i].server_name[0] << " host " << _serv[i].host << \
 			" port " << _serv[i]._port << std::endl;
     }
 	std::cout << std::endl;
+	fds_len = fds.size();
     acceptConnection();
 }
 
@@ -46,8 +46,10 @@ int webServer::is_socket(int fd)
 			while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
 			{
 				guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
-	    		fds[fds_len].fd = client_sockets;
-	    		fds[fds_len].events = POLLIN;
+				pollfd tmp;
+	    		tmp.fd = client_sockets;
+	    		tmp.events = POLLIN;
+				fds.push_back(tmp);
 	    		fds_len++;
 			}
 			server_sock = fd;
@@ -135,8 +137,8 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		guard(poll(fds, fds_len, 0), "poll error");
-		for (int i = 0; i < fds_len; ++i)
+		guard(poll(&fds[0], fds_len, 0), "poll error");
+		for (int i = 0; i < fds_len; i++)
 		{
 			if (fds[i].revents & POLLIN)
 			{
