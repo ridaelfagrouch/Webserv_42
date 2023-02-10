@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/31 12:02:36 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/31 12:14:29 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void    checkFile(std::vector<errorPages> &error_pages)
     for (std::vector<errorPages>::iterator it = error_pages.begin(); it != error_pages.end(); it++)
     {
         std::ifstream file;
-        file.open((*it).path);
+        file.open((*it).path.c_str());
         if (!file)
         {
-            file.open("/Users/sahafid/Desktop/webserv" + (*it).path);
+            file.open((const char *)("/Users/sahafid/Desktop/webserv" + (*it).path).c_str());
             if (!file)
                 (*it).path = "./error/";
         }

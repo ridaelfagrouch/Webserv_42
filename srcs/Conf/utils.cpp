@@ -6,7 +6,11 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:48:22 by sahafid           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/01/31 12:06:35 by sahafid          ###   ########.fr       */
+=======
+/*   Updated: 2023/01/31 12:17:48 by garra            ###   ########.fr       */
+>>>>>>> 321f555965f7444c8886e4e5fc9debbfc1986b94
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +47,9 @@ std::string trim(std::string &s, char c)
         str += s.substr(index);
     index = str.find_last_not_of(c);
     if (index != std::string::npos)
+	{
         str = str.substr(0, index + 1);
+	}
 	s = str;
 	return (s);
 }

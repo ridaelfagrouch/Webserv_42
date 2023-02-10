@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   websocket.hpp                                      :+:      :+:    :+:   */
+/*   webserver.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/01/30 03:31:19 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/09 20:56:44 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,34 +24,45 @@
 # include <iostream>
 # include <exception>
 # include <vector>
-# include<bits/stdc++.h>
+# include <bits/stdc++.h>
+# include <arpa/inet.h>
+#include <fstream>
+#include <string> 
 
-#define PORT 8080
-#define MAX_CONNECTIONS 100
-#define TIMEOUT -1
+#include "config.hpp"
 
-class webSocket
+#define BACKLOG 300
+
+class Servers;
+class webServer
 {
+
 private:
-    struct sockaddr_in  address;
-    struct pollfd fds[MAX_CONNECTIONS];
-    std::vector<int> client_sockets;
-    int     addrlen;
-    int     server_fd;
+    std::vector<pollfd> fds;
+    std::vector<Servers> _serv;
+    std::vector<int> fdsclose;
+    int fds_len;
+    socklen_t addrlen;
+    struct sockaddr_in client_address;
     int     client_fd;
-    int     flag;
- 
+    int     server_sock;
+    int     port;
+    int     client_sockets;
+    std::string str_header;
+
 public:
+    const char *fileExemple;
     void    setupServer();
-    void    CreateSocket();
-    void    bindSocket();
-    void    listenSocket();
     void    acceptConnection();
-    void    read_request(int client_socket);
     int     guard(int n, const char *er);
-	int		sendall(int s, const char *buf, int len);
-    void    hooks(int *i);
-    webSocket();
-    ~webSocket();
+	void	sendall(int s, std::string response, int len);
+    int     is_socket(int fd);
+    void    read_all(int fd, int &read_len);
+    int     Poll_in(int i);
+    void    Poll_out(int i);
+    void    Poll_HupErr(int &i);
+    webServer(std::vector<Servers> servers);
+    ~webServer();
 };
+
 

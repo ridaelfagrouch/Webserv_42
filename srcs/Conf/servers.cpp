@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/31 12:06:12 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/10 15:31:34 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void    Servers::errorPage(std::vector<std::string> info)
         current.status_code = status;
         if (info.size() == 3)
         {
-            file.open(info[2]);
+            file.open(info[2].c_str());
             current.path = info[2];
             if (!file)
                 current.path = "./error/error.html";
