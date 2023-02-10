@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/09 20:56:44 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/09 22:47:24 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 #include "config.hpp"
 
-#define BACKLOG 300
+#define BACKLOG 200
 
 class Servers;
 class webServer
@@ -41,14 +41,14 @@ private:
     std::vector<pollfd> fds;
     std::vector<Servers> _serv;
     std::vector<int> fdsclose;
-    int fds_len;
-    socklen_t addrlen;
     struct sockaddr_in client_address;
+    socklen_t addrlen;
+    std::string str_header;
+    int     fds_len;
     int     client_fd;
     int     server_sock;
     int     port;
     int     client_sockets;
-    std::string str_header;
 
 public:
     const char *fileExemple;
