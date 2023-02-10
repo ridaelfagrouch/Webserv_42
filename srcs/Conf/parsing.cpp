@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/31 12:14:53 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/10 16:07:56 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void    Config::parse(std::string filename)
 		    lines.push_back(line.append(" \n"));
     check_brackets(lines);
     split_servers(lines, servers);
-
     for (std::vector<Servers>::iterator it = servers.begin(); it != servers.end(); it++)
     {
         parse_servers(*it);

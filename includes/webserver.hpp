@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserver.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/09 22:47:24 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/10 15:54:08 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ private:
     socklen_t addrlen;
     std::string str_header;
     int     fds_len;
-    int     client_fd;
     int     server_sock;
     int     port;
     int     client_sockets;
