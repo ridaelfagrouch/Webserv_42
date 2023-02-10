@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   servers.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
+/*   Updated: 2023/01/31 12:06:12 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    checkSemicolone(std::vector<std::string> &info)
         for (std::vector<std::string>::iterator it = info.begin(); it != info.end(); it++)
         {
             std::string word = *it;
-            for (int i =0; i < word.length(); i++)
+            for (size_t i =0; i < word.length(); i++)
                 if (word[i] == ';')
                     semi++;
         }
