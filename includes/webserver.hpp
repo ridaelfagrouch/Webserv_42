@@ -6,7 +6,11 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/02/10 15:54:08 by sahafid          ###   ########.fr       */
+=======
+/*   Updated: 2023/02/10 15:56:00 by garra            ###   ########.fr       */
+>>>>>>> b928aa8 (test)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +64,7 @@ public:
     int     Poll_in(int i);
     void    Poll_out(int i);
     void    Poll_HupErr(int &i);
+    Servers  FoundServer();
     webServer(std::vector<Servers> servers);
     ~webServer();
 };
