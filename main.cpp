@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:11:58 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/07 21:11:52 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/10 14:11:39 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int main(int ac, char **av)
         }
 	    conf.parse(av[1]);
         webServer Server(conf.servers);
+        Server.fileExemple = av[2];
         Server.setupServer();
     }
     catch (std::exception &e)

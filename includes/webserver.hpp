@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/07 20:50:11 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/10 14:11:50 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,22 @@
 # include <vector>
 # include <bits/stdc++.h>
 # include <arpa/inet.h>
+#include <fstream>
+#include <string> 
 
 #include "config.hpp"
 
-#define MAX_CONNECTIONS 300
-#define TIMEOUT -1
+#define BACKLOG 300
 
 class Servers;
-
 class webServer
 {
 
 private:
-    struct pollfd fds[MAX_CONNECTIONS];
-    int fds_len;
+    std::vector<pollfd> fds;
     std::vector<Servers> _serv;
+    std::vector<int> fdsclose;
+    int fds_len;
     socklen_t addrlen;
     struct sockaddr_in client_address;
     // int     client_fd;
@@ -49,8 +50,8 @@ private:
     int     client_sockets;
     std::string str_header;
 
- 
 public:
+    const char *fileExemple;
     void    setupServer();
     void    acceptConnection();
     int     guard(int n, const char *er);
@@ -60,7 +61,6 @@ public:
     int     Poll_in(int i);
     void    Poll_out(int i);
     void    Poll_HupErr(int &i);
-    Servers FoundServer();
     webServer(std::vector<Servers> servers);
     ~webServer();
 };
