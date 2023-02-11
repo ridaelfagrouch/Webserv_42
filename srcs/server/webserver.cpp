@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/10 14:11:35 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/11 16:37:16 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void    webServer::setupServer()
 
 int webServer::is_socket(int fd)
 {
-	for (size_t i = 0; i < _serv.size(); ++i)
+	for (size_t i = 0; i < _serv.size(); i++)
 	{
 		if (fd == _serv[i].socket_fd)
 		{
@@ -110,8 +110,8 @@ void     webServer::Poll_out(int i)
 	{
 		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
 		{
-			std::cout << " resppone from server " << _serv[j].server_name[0] << " host " << \
-				_serv[j].host << " port " << _serv[j]._port << std::endl;
+			// std::cout << " resppone from server " << _serv[j].server_name[0] << " host " << 
+			// 	_serv[j].host << " port " << _serv[j]._port << std::endl;
 			break;
 		}
 	}
@@ -196,23 +196,29 @@ webServer::~webServer(){}
 
 void webServer::read_all(int fd, int &read_len)
 {
-	// size_t j = 0;
+	size_t j = 0;
 
 	this->str_header = "";
     char buffer[1024];
     size_t total;
     memset(buffer, '\0', sizeof(buffer));
     total = 0;
-	// for (; j < _serv.size(); j++)
-	// {
-	// 	if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
-	// 		break;
-	// }
+	for (; j < _serv.size(); j++)
+	{
+		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
+			break;
+	}
     while ((read_len = read(fd, buffer, sizeof(buffer))) > 0)
     {
     	total += read_len;
     	std::string str(buffer, read_len);
     	this->str_header.append(str);
+		if(str_header.length() > (size_t)_serv[j].client_max_body_size && (size_t)_serv[j].client_max_body_size != 0)
+		{
+			str_header = "";
+			std::cerr << "server 413 Request Entity Too Large" << std::endl;
+			break;
+		}
     }
 	std::cout << str_header << std::endl;
 }

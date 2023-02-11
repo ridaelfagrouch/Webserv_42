@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enterserverdata.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/10 16:07:06 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void    Servers::enterBodySize(std::vector<std::string> info)
         if (sizeBody.size() == 2 && sizeBody[0] != 0)
             throw std::invalid_argument("invalid max body size");
         char unit = tolower(sizeBody[sizeBody.size() - 1]);
-        if (sizeBody.size() > 2 &&  (unit != 'm' && unit != 'k'))
+        if (sizeBody.size() > 2 &&  (unit != 'm' && unit != 'k' && unit != 'b'))
             throw std::invalid_argument("invalid max body size");
         if (unit == 'k')
         {
@@ -48,11 +48,19 @@ void    Servers::enterBodySize(std::vector<std::string> info)
             client_max_body_size = ft_stoi(sizeBody);
             if (client_max_body_size < 0)
                 throw std::invalid_argument("invalid max body size");
-            client_max_body_size = client_max_body_size / 1000;                
+            client_max_body_size = client_max_body_size * 1024;                
+        }
+        else if (unit == 'm')
+        {
+            trim(sizeBody, 'm');
+            client_max_body_size = ft_stoi(sizeBody);
+            if (client_max_body_size < 0)
+                throw std::invalid_argument("invalid max body size");
+            client_max_body_size = (client_max_body_size * 1024) * 1024;               
         }
         else
         {
-            trim(sizeBody, 'm');
+            trim(sizeBody, 'b');
             client_max_body_size = ft_stoi(sizeBody);
             if (client_max_body_size < 0)
                 throw std::invalid_argument("invalid max body size");

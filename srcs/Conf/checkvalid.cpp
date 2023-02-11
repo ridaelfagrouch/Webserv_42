@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checkvalid.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/31 12:14:29 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/10 16:09:47 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ void    checkDataValidity(Servers &server)
             throw std::invalid_argument("Syntax error: duplicate status code");
         ports.push_back((*it).status_code);
     }
+    if (server.client_max_body_size == -1)
+        server.client_max_body_size = 1;
     checkFile(server.error_page);
 }
