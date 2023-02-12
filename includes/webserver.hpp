@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/11 16:37:29 by rel-fagr         ###   ########.fr       */
+/*   Created: 2023/02/11 16:45:09 by rel-fagr          #+#    #+#             */
+/*   Updated: 2023/02/11 16:45:12 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #pragma once
 
@@ -60,6 +61,7 @@ public:
     int     Poll_in(int i);
     void    Poll_out(int i);
     void    Poll_HupErr(int &i);
+    Servers  FoundServer();
     webServer(std::vector<Servers> servers);
     ~webServer();
 };

@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/11 16:37:16 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/11 16:48:10 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    webServer::setupServer()
 
 	    _serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket_fd error");
 	    guard(setsockopt(_serv[i].socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error");
-	    guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error");
+	   	bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address));
         guard(listen(_serv[i].socket_fd, BACKLOG), "listen error");
         guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
 		pollfd tmp;
@@ -93,6 +93,7 @@ void     webServer::Poll_out(int i)
 	std::string appendLine;
 	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: ";
 	int len;
+	Servers my_server = FoundServer();
 	
 	file.open(fileExemple, std::fstream::in);
     if (!file.is_open()) std::cout << "Can't open file!" << std::endl , std::exit(EXIT_FAILURE);
@@ -105,20 +106,11 @@ void     webServer::Poll_out(int i)
 	response.append(std::to_string(len));
 	response.append("\n\n");
 	response.append(appendLine);
-	size_t j = 0;
-	for (; j < _serv.size(); j++)
-	{
-		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
-		{
-			// std::cout << " resppone from server " << _serv[j].server_name[0] << " host " << 
-			// 	_serv[j].host << " port " << _serv[j]._port << std::endl;
-			break;
-		}
-	}
+	
 	sendall(fds[i].fd, response, response.size());
 	close(fds[i].fd);
 	fds[i].fd = -1;
-	std::cout << "-------- message sent --------" << std::endl;
+	// std::cout << "-------- message sent --------" << std::endl;
 }
 
 //--------------------------------------------------------------------------
@@ -193,27 +185,35 @@ webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
 
-
-void webServer::read_all(int fd, int &read_len)
+Servers  webServer::FoundServer()
 {
 	size_t j = 0;
-
-	this->str_header = "";
-    char buffer[1024];
-    size_t total;
-    memset(buffer, '\0', sizeof(buffer));
-    total = 0;
 	for (; j < _serv.size(); j++)
 	{
 		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
 			break;
 	}
+	return _serv[j];
+}
+
+//--------------------------------------------------------------------------
+
+
+void webServer::read_all(int fd, int &read_len)
+{
+	Servers my_server = FoundServer();
+    char buffer[1024];
+    size_t total;
+
+	this->str_header = "";
+    memset(buffer, '\0', sizeof(buffer));
+    total = 0;
     while ((read_len = read(fd, buffer, sizeof(buffer))) > 0)
     {
     	total += read_len;
     	std::string str(buffer, read_len);
     	this->str_header.append(str);
-		if(str_header.length() > (size_t)_serv[j].client_max_body_size && (size_t)_serv[j].client_max_body_size != 0)
+		if(str_header.length() > (size_t)my_server.client_max_body_size && (size_t)my_server.client_max_body_size != 0)
 		{
 			str_header = "";
 			std::cerr << "server 413 Request Entity Too Large" << std::endl;
