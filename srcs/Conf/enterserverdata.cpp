@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/10 16:07:06 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/13 12:49:20 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void    Servers::enterPorts(std::vector<std::string> info)
         }
     }
 }
-
 
 
 void    Servers::enterBodySize(std::vector<std::string> info)
