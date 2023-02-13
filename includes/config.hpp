@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/07 18:45:53 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:46:01 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <iterator>
 #include <exception>
 
 
@@ -65,6 +66,10 @@ class Servers {
         std::string returned;
         long client_max_body_size;
         
+
+        bool isDuplicate;
+        std::vector<int> dup_port;
+
         //-------------------------
         int _port;
         int socket_fd;
@@ -81,6 +86,7 @@ class Servers {
         void    enterData(std::vector<std::string> info);
         void    enterPorts(std::vector<std::string> info);
         void    enterBodySize(std::vector<std::string> info);
+        
 };
 
 
@@ -97,3 +103,4 @@ int                         ft_stoi(std::string str);
 void                        check_syntax(std::vector<Locations> &locations);
 void                        checkSemicolone(std::vector<std::string> &info);
 void                        checkDataValidity(Servers &server);
+void                        checkSpecialCase(std::vector<Servers> &servers);

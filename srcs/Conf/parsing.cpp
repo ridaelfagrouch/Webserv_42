@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/10 16:07:56 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/13 13:30:11 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void    split_servers(std::vector<std::string> &lines, std::vector<Servers> &ser
                 trim(*itera, '\n');
             }
             server.raw_server = raw;
+            server.isDuplicate = 0;
             servers.push_back(server);
             raw.clear();
         }
@@ -88,6 +89,7 @@ void    Config::parse_servers(Servers &server)
     server.check_syntaxError(server.raw_server);
     check_syntax(server.locations);
 }
+
 
 void    Config::parse(std::string filename)
 {
@@ -108,4 +110,6 @@ void    Config::parse(std::string filename)
         parse_servers(*it);
         checkDataValidity(*it);
     }
+
+    checkSpecialCase(servers);
 }
