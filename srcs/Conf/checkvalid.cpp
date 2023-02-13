@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/13 16:06:31 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/13 16:59:33 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ void    checkDataValidity(Servers &server)
 
 int checkServerName(std::vector<std::string>  server_name1, std::vector<std::string>  server_name2)
 {
-    
+    if (server_name1 != server_name2)
+        return 1;
+    else
+        throw std::invalid_argument("invalid input: duplicate port number\n");
 }
 
 

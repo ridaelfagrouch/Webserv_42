@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/13 16:09:57 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/13 16:12:21 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 # include <vector>
 # include <bits/stdc++.h>
 # include <arpa/inet.h>
-#include <fstream>
-#include <string> 
+# include <fstream>
+# include <string> 
 
-#include "config.hpp"
+# include "config.hpp"
 
 #define BACKLOG 200
 

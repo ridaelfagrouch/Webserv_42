@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/13 12:49:20 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/13 16:14:16 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,13 @@ void    Servers::enterData(std::vector<std::string> info)
     if (info.size() > 1 && info[0] == "listen")
         enterPorts(info);
     else if (info.size() > 2 && info[0] == "server_name")
+    {
         for (std::vector<std::string>::iterator iter = info.begin() + 1; iter != info.end(); iter++)
-            this->server_name.push_back(*iter);
+        {
+            if (find(this->server_name.begin(), this->server_name.end(), *iter) == this->server_name.end())
+                this->server_name.push_back(*iter);
+        }
+    }
     else if (info.size() > 1 && info[0] == "error_page")
     {
         if (info.size() == 3 || info.size() == 2)
