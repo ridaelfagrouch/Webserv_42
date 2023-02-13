@@ -6,7 +6,7 @@
 /*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/10 15:39:18 by garra            ###   ########.fr       */
+/*   Updated: 2023/02/11 16:21:49 by garra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void     webServer::Poll_out(int i)
 	std::string appendLine;
 	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: ";
 	int len;
+	Servers my_server = FoundServer();
 	
 	file.open(fileExemple, std::fstream::in);
     if (!file.is_open()) std::cout << "Can't open file!" << std::endl , std::exit(EXIT_FAILURE);
@@ -105,20 +106,11 @@ void     webServer::Poll_out(int i)
 	response.append(std::to_string(len));
 	response.append("\n\n");
 	response.append(appendLine);
-	size_t j = 0;
-	for (; j < _serv.size(); j++)
-	{
-		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
-		{
-			// std::cout << " resppone from server " << _serv[j].server_name[0] << " host " << 
-			// 	_serv[j].host << " port " << _serv[j]._port << std::endl;
-			break;
-		}
-	}
+	
 	sendall(fds[i].fd, response, response.size());
 	close(fds[i].fd);
 	fds[i].fd = -1;
-	std::cout << "-------- message sent --------" << std::endl;
+	// std::cout << "-------- message sent --------" << std::endl;
 }
 
 //--------------------------------------------------------------------------
@@ -193,27 +185,35 @@ webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
 
-
-void webServer::read_all(int fd, int &read_len)
+Servers  webServer::FoundServer()
 {
 	size_t j = 0;
-
-	this->str_header = "";
-    char buffer[1024];
-    size_t total;
-    memset(buffer, '\0', sizeof(buffer));
-    total = 0;
 	for (; j < _serv.size(); j++)
 	{
 		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
 			break;
 	}
+	return _serv[j];
+}
+
+//--------------------------------------------------------------------------
+
+
+void webServer::read_all(int fd, int &read_len)
+{
+	Servers my_server = FoundServer();
+    char buffer[1024];
+    size_t total;
+
+	this->str_header = "";
+    memset(buffer, '\0', sizeof(buffer));
+    total = 0;
     while ((read_len = read(fd, buffer, sizeof(buffer))) > 0)
     {
     	total += read_len;
     	std::string str(buffer, read_len);
     	this->str_header.append(str);
-		if(str_header.length() > (size_t)_serv[j].client_max_body_size && (size_t)_serv[j].client_max_body_size != 0)
+		if(str_header.length() > (size_t)my_server.client_max_body_size && (size_t)my_server.client_max_body_size != 0)
 		{
 			str_header = "";
 			std::cerr << "server 413 Request Entity Too Large" << std::endl;
