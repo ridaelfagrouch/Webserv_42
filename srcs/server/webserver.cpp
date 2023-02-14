@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/14 16:14:05 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/14 23:51:16 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void webServer::fdData(fds_info &fdtmp, int fd)
 	fdtmp.is_complet = false;
 	fdtmp.str_header = "";
 	fdtmp.is_first_time = true;
-	fdtmp.content_length = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -42,8 +41,7 @@ void    webServer::setupServer()
 	
 		fdsInfo.push_back(fdtmp);
 		fds.push_back(fdtmp.tmp);
-		std::cout << "lestening to server " << _serv[i].server_name[0] << " host " << _serv[i].host << \
-			" port " << _serv[i]._port << std::endl;
+		std::cout << "lestening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
     }
 	std::cout << std::endl;
     acceptConnection();
@@ -68,6 +66,7 @@ int webServer::is_socket(int fd)
 			}
 			server_sock = fd;
 			port = _serv[i]._port;
+			ip_host = _serv[i].host;
 			return 1;
 		}
 	}
@@ -108,7 +107,7 @@ void     webServer::Poll_out(int i)
 	std::string line;
 	std::string appendLine;
 	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length:";
-	Servers my_server = FoundServer();
+	// Servers my_server = FoundServer();
 	int len;
 	
 	file.open(fileExemple, std::fstream::in);
@@ -178,6 +177,7 @@ int webServer::guard(int n, const char *er)
 
 webServer::webServer(std::vector<Servers> servers)
 {
+	this->_servers = servers;
     for (size_t i = 0; i < servers.size(); i++)
     {
         for(size_t j = 0; j < servers[i].port.size(); j++)
@@ -211,15 +211,53 @@ fds_info webServer::FoundFd(int fd)
 
 //--------------------------------------------------------------------------
 
-Servers  webServer::FoundServer()
+std::string	webServer::FoundServerName(std::string str)
+{
+	std::vector<std::string> splited = split(str, '\n');
+	size_t pos;
+	for (size_t i = 0; i < splited.size(); i++)
+	{
+		pos = splited[i].find("Host:", 0);
+		if(pos != std::string::npos)
+			return splited[i].erase(pos, 6);
+	}
+	return "Not_Found";
+}
+
+//--------------------------------------------------------------------------
+
+void  webServer::FoundServer(std::vector<Servers> &my_servers, fds_info my_fd)
 {
 	size_t j = 0;
 	for (; j < _serv.size(); j++)
 	{
-		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
-			break;
+		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port && _serv[j].host == ip_host)
+		{
+			for(size_t i; i < _serv[j].server_name.size(); i++)
+			{
+				if (my_fd.serverName == _serv[j].server_name[i])
+				{
+					my_servers.push_back(_serv[j]);
+					return;
+				}
+			}
+			if (my_fd.serverName == "Not_Found" || _serv[j].server_name.size() == 0)
+			{
+				my_servers.push_back(_serv[j]);
+				for(size_t i; i < _servers.size(); i++){;}
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+				//I stope here
+			}
+		}
 	}
-	return _serv[j];
 }
 
 //--------------------------------------------------------------------------
@@ -232,7 +270,10 @@ int webServer::checkContentLength(std::string str)
 	{
 		pos = splited[i].find("Content-Length:", 0);
 		if(pos != std::string::npos)
-			return(ft_stoi(splited[i].erase(pos, 15)));
+		{
+			std::string ptr = splited[i].erase(pos, 16);
+			return ft_stoi(trim(ptr,13));
+		}
 	}
 	return 0;
 }
@@ -241,38 +282,41 @@ int webServer::checkContentLength(std::string str)
 
 void webServer::read_header(int i)
 {
-	Servers my_server = FoundServer();
+	std::vector<Servers> my_servers;
     char buffer[50000] = {0};
-    // memset(buffer, '\0', sizeof(buffer));
+    fds_info &my_fd = fdsInfo[i];
 
-	fdsInfo[i].read_len = 0;
-    fdsInfo[i].read_len = read(fdsInfo[i].tmp.fd, buffer, sizeof(buffer));
-	if (fdsInfo[i].read_len > 0)
+	my_fd.read_len = 0;
+    my_fd.read_len = read(my_fd.tmp.fd, buffer, sizeof(buffer));
+	if (my_fd.read_len > 0)
 	{
-    	std::string str(buffer, fdsInfo[i].read_len);
-		if(fdsInfo[i].is_first_time)
+    	std::string str(buffer, my_fd.read_len);
+		if(my_fd.is_first_time)
 		{
-			fdsInfo[i].content_length = checkContentLength(str);
-			fdsInfo[i].is_first_time = false;
+			my_fd.serverName = FoundServerName(str);
+			my_fd.content_length = checkContentLength(str);
+			FoundServer(my_servers, my_fd);
+			my_fd.is_first_time = false;
 		}
 		
-    	fdsInfo[i].str_header += str;
-    	fdsInfo[i].total += fdsInfo[i].read_len;
-		if (fdsInfo[i].total > my_server.client_max_body_size && my_server.client_max_body_size != 0)
+    	my_fd.str_header += str;
+    	my_fd.total += my_fd.read_len;
+		if (my_fd.total > my_servers[0].client_max_body_size && my_servers[0].client_max_body_size != 0)
 		{
-			fdsInfo[i].str_header = "";
+			my_fd.str_header = "";
 			std::cerr << "server 413 Request Entity Too Large" << std::endl;
 			return ;
 		}
-		if (fdsInfo[i].content_length == 0 || (fdsInfo[i].total == fdsInfo[i].content_length))
-			fdsInfo[i].is_complet = true;
+		if (my_fd.content_length == 0 || (my_fd.total == my_fd.content_length))
+			my_fd.is_complet = true;
     }
-	std::cout << "str_header = "<< fdsInfo[i].str_header << std::endl;
-	std::cout <<"is_complet = " << fdsInfo[i].is_complet<<std::endl;
-	std::cout <<"is_first_time = " << fdsInfo[i].is_first_time<<std::endl;
-	std::cout <<"content_length = " << fdsInfo[i].content_length<<std::endl;
-	std::cout <<"read_len = " << fdsInfo[i].read_len<<std::endl;
-	std::cout <<"total = " << fdsInfo[i].total<<std::endl;
+	
+	std::cout << "str_header = "<< my_fd.str_header << std::endl;
+	// std::cout <<"is_complet = " << my_fd.is_complet<<std::endl;
+	// std::cout <<"is_first_time = " << my_fd.is_first_time<<std::endl;
+	// std::cout <<"content_length = " << my_fd.content_length<<std::endl;
+	// std::cout <<"read_len = " << my_fd.read_len<<std::endl;
+	// std::cout <<"total = " << my_fd.total<<std::endl;
 	std::cout << "--------------------------------------------" << std::endl;
 	
 }
