@@ -6,7 +6,7 @@
 #    By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/02/13 22:51:38 by rel-fagr         ###   ########.fr        #
+#    Updated: 2023/02/14 15:03:04 by rel-fagr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,8 @@ export TITLE
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Conf/php/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror -g
-#-fsanitize=address -static-libsan
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror -g 
+# -fsanitize=address
 CXX = c++
 NAME = webserver
 

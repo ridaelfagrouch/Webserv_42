@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/13 22:51:26 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:37:55 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ public:
     void    Poll_HupErr(int &i);
     Servers  FoundServer();
     fds_info FoundFd(int fd);
+    void    fdData(fds_info &fdtmp, int fd);
+    int     checkContentLength(std::string str);
     webServer(std::vector<Servers> servers);
     ~webServer();
 };

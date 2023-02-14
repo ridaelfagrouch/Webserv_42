@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enterserverdata.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/13 16:14:16 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/14 14:49:33 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,6 @@ void    Servers::enterData(std::vector<std::string> info)
             throw std::invalid_argument("Syntax Error: wrong number of arguments"); 
     }
     else
-        if (!info[0].empty())
+        if (info.size() > 0 && !info[0].empty())
             throw std::invalid_argument("Syntax Error: unknow argument"); 
 }
