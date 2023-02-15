@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/15 18:24:47 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/15 21:27:42 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ class fds_info
         std::vector<Servers> my_servers;
         std::string str_header;
         std::string serverName;
+        std::string Connection;
         bool        is_first_time;
         int         content_length;
         bool        is_complet;
@@ -84,6 +85,9 @@ public:
     int     checkContentLength(std::string str);
     std::string FoundServerName(std::string str);
     void    check_otherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd);
+    std::string	FoundConnection(std::string str);
+    void	checkFirstTime(fds_info &my_fd, std::string str);
+    void    resetMyFdInfo(fds_info &my_fd);
     
     webServer(std::vector<Servers> servers);
     ~webServer();

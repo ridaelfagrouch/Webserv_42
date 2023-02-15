@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/15 19:14:53 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/15 21:35:50 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void webServer::fdData(fds_info &fdtmp, int fd)
 	fdtmp.is_complet = false;
 	fdtmp.str_header = "";
 	fdtmp.is_first_time = true;
+	fdtmp.Connection = "";
+	fdtmp.serverName = "";
+	fdtmp.str_header = "";
 }
 
 //--------------------------------------------------------------------------
@@ -100,6 +103,21 @@ int     webServer::Poll_in(int &i)
 
 //--------------------------------------------------------------------------
 
+void webServer::resetMyFdInfo(fds_info &my_fd)
+{
+	my_fd.Connection = "";
+	my_fd.content_length = 0;
+	my_fd.is_complet = false;
+	my_fd.is_first_time = true;
+	my_fd.my_servers.clear();
+	my_fd.read_len = 0;
+	my_fd.serverName = "";
+	my_fd.str_header = "";
+	my_fd.total = 0;
+}
+
+//--------------------------------------------------------------------------
+
 void     webServer::Poll_out(int i)
 {
 	std::fstream file;
@@ -121,10 +139,14 @@ void     webServer::Poll_out(int i)
 	response.append(appendLine);
 	
 	sendall(fdsInfo[i].tmp.fd, response, response.size());
-	
-	close(fdsInfo[i].tmp.fd);
-	fdsInfo.erase(fdsInfo.begin()+i);
-	fds.erase(fds.begin()+i);
+	if (fdsInfo[i].Connection == "keep-alive")
+		resetMyFdInfo(fdsInfo[i]);
+	else
+	{
+		close(fdsInfo[i].tmp.fd);
+		fdsInfo.erase(fdsInfo.begin()+i);
+		fds.erase(fds.begin()+i);
+	}
 }
 
 
@@ -145,14 +167,14 @@ void    webServer::acceptConnection(void)
 			}
 			else if (fds[i].revents & POLLOUT)
 				Poll_out(i);
-			// else if (fds[i].revents & (POLLHUP | POLLERR))
-			// {
-    		// 	close(fds[i].fd);
-			// 	fdsInfo.erase(fdsInfo.begin()+i);
-			// 	fds.erase(fds.begin()+i);
-    		// 	i--;
-            // 	continue;
-			// }
+			else if (fds[i].revents & (POLLHUP | POLLERR))
+			{
+    			close(fds[i].fd);
+				fdsInfo.erase(fdsInfo.begin()+i);
+				fds.erase(fds.begin()+i);
+    			i--;
+            	continue;
+			}
 		}
 	}
     for (int i = 0; i < fds.size(); i++)
@@ -201,11 +223,32 @@ std::string	webServer::FoundServerName(std::string str)
 	size_t pos;
 	for (size_t i = 0; i < splited.size(); i++)
 	{
-		pos = splited[i].find("Host:", 0);
+		pos = splited[i].find("Host: ", 0);
 		if(pos != std::string::npos)
-			return splited[i].erase(pos, 6);
+		{
+			std::string ptr = splited[i].erase(pos, 6);
+			return trim(ptr, 13);
+		}
 	}
 	return "Not_Found";
+}
+
+//--------------------------------------------------------------------------
+
+std::string	webServer::FoundConnection(std::string str)
+{
+	std::vector<std::string> splited = split(str, '\n');
+	size_t pos;
+	for (size_t i = 0; i < splited.size(); i++)
+	{
+		pos = splited[i].find("Connetion: ", 0);
+		if(pos != std::string::npos)
+		{
+			std::string ptr = splited[i].erase(pos, 11);
+			return trim(ptr, 13);
+		}
+	}
+	return "close";
 }
 
 //--------------------------------------------------------------------------
@@ -222,17 +265,8 @@ void webServer::check_otherServers(int _port, std::vector<Servers> &ServReserve,
 			{
 				std::vector<std::string>::iterator it1;
 				it1 = std::find (_servers[i].server_name.begin(), _servers[i].server_name.end(), my_fd.serverName);
-				// std::cout << "|server Name = |" << my_fd.serverName 
-				// i am hare
-				// i am hare
-				// i am hare
-				// i am hare
-				// i am hare
-				// i am hare
-				// i am hare
 				if (it1 != _servers[i].server_name.end())
 				{
-					std::cout << "i am hare" << std::endl;
 					my_fd.my_servers.push_back(_servers[i]);
 					return;
 				}
@@ -295,6 +329,20 @@ int webServer::checkContentLength(std::string str)
 
 //--------------------------------------------------------------------------
 
+void	webServer::checkFirstTime(fds_info &my_fd, std::string str)
+{
+	if (my_fd.is_first_time)
+	{
+		my_fd.serverName = FoundServerName(str);
+		my_fd.Connection = FoundConnection(str);
+		my_fd.content_length = checkContentLength(str);
+		FoundServer(my_fd);
+		my_fd.is_first_time = false;
+	}
+}
+
+//--------------------------------------------------------------------------
+
 void webServer::read_header(int i)
 {
     char buffer[50000] = {0};
@@ -305,13 +353,7 @@ void webServer::read_header(int i)
 	if (my_fd.read_len > 0)
 	{
     	std::string str(buffer, my_fd.read_len);
-		if(my_fd.is_first_time)
-		{
-			my_fd.serverName = FoundServerName(str);
-			my_fd.content_length = checkContentLength(str);
-			FoundServer(my_fd);
-			my_fd.is_first_time = false;
-		}
+		checkFirstTime(my_fd, str);
 		
     	my_fd.str_header += str;
     	my_fd.total += my_fd.read_len;
@@ -326,15 +368,14 @@ void webServer::read_header(int i)
     }
 	
 	std::cout << "str_header = "<< my_fd.str_header << std::endl;
-	std::cout << "size = " <<  my_fd.my_servers.size() <<std::endl;
-	std::cout << "serverName = " <<  my_fd.my_servers[0].server_name[0] <<std::endl;
+	// std::cout << "size = " <<  my_fd.my_servers.size() <<std::endl;
+	// std::cout << "serverName = " <<  my_fd.my_servers[0].server_name[0] <<std::endl;
 	// std::cout <<"is_complet = " << my_fd.is_complet<<std::endl;
 	// std::cout <<"is_first_time = " << my_fd.is_first_time<<std::endl;
 	// std::cout <<"content_length = " << my_fd.content_length<<std::endl;
 	// std::cout <<"read_len = " << my_fd.read_len<<std::endl;
 	// std::cout <<"total = " << my_fd.total<<std::endl;
 	std::cout << "--------------------------------------------" << std::endl;
-	
 }
 
 //--------------------------------------------------------------------------

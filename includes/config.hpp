@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/15 16:05:21 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/15 20:01:13 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ class Servers {
         void    enterData(std::vector<std::string> info);
         void    enterPorts(std::vector<std::string> info);
         void    enterBodySize(std::vector<std::string> info);
-        
+        void    executeCgi(std::string fileName);
 };
 
 
