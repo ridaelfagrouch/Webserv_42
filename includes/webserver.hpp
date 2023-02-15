@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/14 23:41:18 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/15 18:24:47 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Servers;
 class fds_info
 {
     public:
+        std::vector<Servers> my_servers;
         std::string str_header;
         std::string serverName;
         bool        is_first_time;
@@ -64,7 +65,6 @@ private:
     int     fds_len;
     int     server_sock;
     int     port;
-    std::string ip_host;
     int     client_sockets;
 
 public:
@@ -78,11 +78,13 @@ public:
     int     Poll_in(int &i);
     void    Poll_out(int i);
     void    Poll_HupErr(int &i);
-    void    FoundServer(std::vector<Servers> &my_servers, fds_info my_fd);
+    void    FoundServer(fds_info &my_fd);
     fds_info FoundFd(int fd);
     void    fdData(fds_info &fdtmp, int fd);
     int     checkContentLength(std::string str);
-    std::string webServer::FoundServerName(std::string str);
+    std::string FoundServerName(std::string str);
+    void    check_otherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd);
+    
     webServer(std::vector<Servers> servers);
     ~webServer();
 };

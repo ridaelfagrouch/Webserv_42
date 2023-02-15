@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/14 23:03:28 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/15 16:05:21 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ class Servers {
         std::string returned;
         long client_max_body_size;
         
-
         bool isDuplicate;
         std::vector<int> dup_port;
 

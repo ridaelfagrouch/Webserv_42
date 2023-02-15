@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/14 23:51:16 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/15 19:14:53 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int webServer::is_socket(int fd)
 			}
 			server_sock = fd;
 			port = _serv[i]._port;
-			ip_host = _serv[i].host;
 			return 1;
 		}
 	}
@@ -107,7 +106,6 @@ void     webServer::Poll_out(int i)
 	std::string line;
 	std::string appendLine;
 	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length:";
-	// Servers my_server = FoundServer();
 	int len;
 	
 	file.open(fileExemple, std::fstream::in);
@@ -197,20 +195,6 @@ webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
 
-fds_info webServer::FoundFd(int fd)
-{
-	size_t j = 0;
-	for (; j < fdsInfo.size(); j++)
-	{
-		if(fd == fdsInfo[j].tmp.fd)
-			break;
-	}
-	std::cout << "j = " << j << std::endl; 
-	return fdsInfo[j];
-}
-
-//--------------------------------------------------------------------------
-
 std::string	webServer::FoundServerName(std::string str)
 {
 	std::vector<std::string> splited = split(str, '\n');
@@ -226,35 +210,66 @@ std::string	webServer::FoundServerName(std::string str)
 
 //--------------------------------------------------------------------------
 
-void  webServer::FoundServer(std::vector<Servers> &my_servers, fds_info my_fd)
+void webServer::check_otherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd)
 {
-	size_t j = 0;
-	for (; j < _serv.size(); j++)
+	for(size_t i = 0; i < _servers.size(); i++)
 	{
-		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port && _serv[j].host == ip_host)
+		if(_servers[i].isDuplicate)
 		{
-			for(size_t i; i < _serv[j].server_name.size(); i++)
+			std::vector<int>::iterator it;
+			it = std::find (_servers[i].dup_port.begin(), _servers[i].dup_port.end(), _port);
+			if (it != _servers[i].dup_port.end())
 			{
-				if (my_fd.serverName == _serv[j].server_name[i])
+				std::vector<std::string>::iterator it1;
+				it1 = std::find (_servers[i].server_name.begin(), _servers[i].server_name.end(), my_fd.serverName);
+				// std::cout << "|server Name = |" << my_fd.serverName 
+				// i am hare
+				// i am hare
+				// i am hare
+				// i am hare
+				// i am hare
+				// i am hare
+				// i am hare
+				if (it1 != _servers[i].server_name.end())
 				{
-					my_servers.push_back(_serv[j]);
+					std::cout << "i am hare" << std::endl;
+					my_fd.my_servers.push_back(_servers[i]);
 					return;
 				}
+				else
+				{
+					ServReserve.push_back(_servers[i]);
+					break;
+				}
 			}
-			if (my_fd.serverName == "Not_Found" || _serv[j].server_name.size() == 0)
+		}
+	}
+	for(size_t i = 0; i < ServReserve.size(); i++)
+		my_fd.my_servers.push_back(ServReserve[i]);
+}
+
+//--------------------------------------------------------------------------
+
+void  webServer::FoundServer(fds_info &my_fd)
+{
+	std::vector<Servers> ServReserve;
+	size_t 	j = 0;
+	for (; j < _serv.size(); j++)
+	{
+		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
+		{
+			std::vector<std::string>::iterator it;
+			it = std::find (_serv[j].server_name.begin(), _serv[j].server_name.end(), my_fd.serverName);
+			if(it != _serv[j].server_name.end())
 			{
-				my_servers.push_back(_serv[j]);
-				for(size_t i; i < _servers.size(); i++){;}
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
-				//I stope here
+				my_fd.my_servers.push_back(_serv[j]);
+				return;
+			}
+			else
+			{
+				ServReserve.push_back(_serv[j]);
+				check_otherServers(_serv[j]._port, ServReserve, my_fd);
+				return;
 			}
 		}
 	}
@@ -282,7 +297,6 @@ int webServer::checkContentLength(std::string str)
 
 void webServer::read_header(int i)
 {
-	std::vector<Servers> my_servers;
     char buffer[50000] = {0};
     fds_info &my_fd = fdsInfo[i];
 
@@ -295,13 +309,13 @@ void webServer::read_header(int i)
 		{
 			my_fd.serverName = FoundServerName(str);
 			my_fd.content_length = checkContentLength(str);
-			FoundServer(my_servers, my_fd);
+			FoundServer(my_fd);
 			my_fd.is_first_time = false;
 		}
 		
     	my_fd.str_header += str;
     	my_fd.total += my_fd.read_len;
-		if (my_fd.total > my_servers[0].client_max_body_size && my_servers[0].client_max_body_size != 0)
+		if (my_fd.total > my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
 		{
 			my_fd.str_header = "";
 			std::cerr << "server 413 Request Entity Too Large" << std::endl;
@@ -312,6 +326,8 @@ void webServer::read_header(int i)
     }
 	
 	std::cout << "str_header = "<< my_fd.str_header << std::endl;
+	std::cout << "size = " <<  my_fd.my_servers.size() <<std::endl;
+	std::cout << "serverName = " <<  my_fd.my_servers[0].server_name[0] <<std::endl;
 	// std::cout <<"is_complet = " << my_fd.is_complet<<std::endl;
 	// std::cout <<"is_first_time = " << my_fd.is_first_time<<std::endl;
 	// std::cout <<"content_length = " << my_fd.content_length<<std::endl;
