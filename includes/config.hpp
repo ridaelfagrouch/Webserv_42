@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/13 14:46:01 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/13 17:36:41 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ class Servers {
         void    enterData(std::vector<std::string> info);
         void    enterPorts(std::vector<std::string> info);
         void    enterBodySize(std::vector<std::string> info);
-        
+        void    executeCgi(std::string fileName);
 };
 
 
