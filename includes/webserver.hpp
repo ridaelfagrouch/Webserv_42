@@ -6,9 +6,10 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/13 16:12:21 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/15 14:04:50 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #pragma once
 
@@ -32,21 +33,38 @@
 # include "config.hpp"
 
 #define BACKLOG 200
-
 class Servers;
+
+
+class fds_info
+{
+    public:
+        std::string str_header;
+        std::string serverName;
+        bool        is_first_time;
+        int         content_length;
+        bool        is_complet;
+        int         read_len;
+        int         total;
+        pollfd      tmp;
+};
+
+
+
 class webServer
 {
 
 private:
+    std::vector<Servers> _servers;
     std::vector<pollfd> fds;
     std::vector<Servers> _serv;
-    std::vector<int> fdsclose;
+    std::vector<fds_info> fdsInfo;
     struct sockaddr_in client_address;
     socklen_t addrlen;
-    std::string str_header;
     int     fds_len;
     int     server_sock;
     int     port;
+    std::string ip_host;
     int     client_sockets;
 
 public:
@@ -56,11 +74,15 @@ public:
     int     guard(int n, const char *er);
 	void	sendall(int s, std::string response, int len);
     int     is_socket(int fd);
-    void    read_all(int fd, int &read_len);
-    int     Poll_in(int i);
+    void    read_header(int i);
+    int     Poll_in(int &i);
     void    Poll_out(int i);
     void    Poll_HupErr(int &i);
-    Servers  FoundServer();
+    void    FoundServer(std::vector<Servers> &my_servers, fds_info my_fd);
+    fds_info FoundFd(int fd);
+    void    fdData(fds_info &fdtmp, int fd);
+    int     checkContentLength(std::string str);
+    std::string FoundServerName(std::string str);
     webServer(std::vector<Servers> servers);
     ~webServer();
 };
