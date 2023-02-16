@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/16 11:51:28 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/16 12:42:36 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ void  executeCgi(std::string fileName)
 }
 
 
-int main()
-{
-    executeCgi("./file.php");
-    return 0;
-}
+// int main()
+// {
+//     executeCgi("./file.php");
+//     return 0;
+// }

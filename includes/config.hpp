@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/16 12:21:16 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/16 12:41:55 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ class Servers {
         std::string returned;
         long client_max_body_size;
         
-
         bool isDuplicate;
         std::vector<int> dup_port;
 
