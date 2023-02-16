@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/13 13:30:11 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/16 11:56:07 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,5 @@ void    Config::parse(std::string filename)
         parse_servers(*it);
         checkDataValidity(*it);
     }
-
     checkSpecialCase(servers);
 }

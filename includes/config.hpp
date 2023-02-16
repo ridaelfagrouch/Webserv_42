@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/15 14:04:31 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/16 12:21:16 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ class Servers {
         std::vector<std::string> raw_server;
         
         std::string host;
+        std::string index;
         std::vector<int> port;
         std::vector<std::string> server_name;
         std::string root;
@@ -86,7 +87,7 @@ class Servers {
         void    enterData(std::vector<std::string> info);
         void    enterPorts(std::vector<std::string> info);
         void    enterBodySize(std::vector<std::string> info);
-        void    executeCgi(std::string fileName);
+        void    executeCgi(std::string fileName, Locations &location);
 };
 
 
