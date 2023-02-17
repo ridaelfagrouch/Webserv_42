@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/15 21:35:50 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/17 21:10:24 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,19 @@
 void webServer::fdData(fds_info &fdtmp, int fd)
 {
 	fdtmp.tmp.fd = fd;
-	fdtmp.tmp.events = POLLIN;
-	fdtmp.total = 0;
-	fdtmp.is_complet = false;
-	fdtmp.str_header = "";
-	fdtmp.is_first_time = true;
+	fdtmp.tmp.events = POLLIN | POLLOUT | POLLHUP | POLLERR;
+	fdtmp.totalRead = 0;
+	fdtmp.totalSend = 0;
+	fdtmp.bytesLeft = 0;
+	fdtmp.responseLength = 0;
+	fdtmp.isRecvComplet = false;
+	fdtmp.strHeader = "";
+	fdtmp.isFirstTimeRead = true;
+	fdtmp.isFirstTimeSend = true;
+	fdtmp.response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length:";
 	fdtmp.Connection = "";
 	fdtmp.serverName = "";
-	fdtmp.str_header = "";
+	fdtmp.strHeader = "";
 }
 
 //--------------------------------------------------------------------------
@@ -44,7 +49,7 @@ void    webServer::setupServer()
 	
 		fdsInfo.push_back(fdtmp);
 		fds.push_back(fdtmp.tmp);
-		std::cout << "lestening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
+		std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
     }
 	std::cout << std::endl;
     acceptConnection();
@@ -52,22 +57,21 @@ void    webServer::setupServer()
 
 //--------------------------------------------------------------------------
 
-int webServer::is_socket(int fd)
+int webServer::isSocket(int fd)
 {
 	for (size_t i = 0; i < _serv.size(); i++)
 	{
 		if (fd == _serv[i].socket_fd)
 		{
-			while((client_sockets = accept(server_sock,(struct sockaddr *) &client_address, &addrlen)) > 0)
+			while((clientSockets = accept(serverSock,(struct sockaddr *) &clientAddress, &addrlen)) > 0)
 			{
-				guard(fcntl(client_sockets, F_SETFL, O_NONBLOCK), "fcntl error");
+				guard(fcntl(clientSockets, F_SETFL, O_NONBLOCK), "fcntl error");
 				fds_info fdtmp;
-				fdData(fdtmp, client_sockets);
-
+				fdData(fdtmp, clientSockets);
 				fds.push_back(fdtmp.tmp);
 				fdsInfo.push_back(fdtmp);
 			}
-			server_sock = fd;
+			serverSock = fd;
 			port = _serv[i]._port;
 			return 1;
 		}
@@ -78,27 +82,24 @@ int webServer::is_socket(int fd)
 
 //--------------------------------------------------------------------------
 
-int     webServer::Poll_in(int &i)
+void    webServer::pollIn(int &i)
 {
-	if (is_socket(fds[i].fd))
-		return 1;
+	if (isSocket(fds[i].fd))
+		return;
 	else
 	{
-        read_header(i);
-        if ((fdsInfo[i].read_len <= -1 && errno != EAGAIN) || fdsInfo[i].read_len == 0)
+        readHeader(i);
+        if ((fdsInfo[i].readLen <= -1 && errno != EAGAIN) || fdsInfo[i].readLen == 0)
 		{
-			if (fdsInfo[i].read_len == 0)
+			if (fdsInfo[i].readLen == 0)
 				perror("Client disconnected");
 			close(fdsInfo[i].tmp.fd);
 			fdsInfo.erase(fdsInfo.begin()+i);
 			fds.erase(fds.begin()+i);
 			i--;
-			return 1;
 		}
-        else if (fdsInfo[i].is_complet == true)
-        	fds[i].events = POLLOUT;
 	}
-	return 0;
+	return;
 }
 
 //--------------------------------------------------------------------------
@@ -106,49 +107,78 @@ int     webServer::Poll_in(int &i)
 void webServer::resetMyFdInfo(fds_info &my_fd)
 {
 	my_fd.Connection = "";
-	my_fd.content_length = 0;
-	my_fd.is_complet = false;
-	my_fd.is_first_time = true;
+	my_fd.contentLength = 0;
+	my_fd.isRecvComplet = false;
+	my_fd.isFirstTimeRead = true;
+	my_fd.isFirstTimeSend = true;
 	my_fd.my_servers.clear();
-	my_fd.read_len = 0;
 	my_fd.serverName = "";
-	my_fd.str_header = "";
-	my_fd.total = 0;
+	my_fd.strHeader = "";
+	my_fd.totalRead = 0;
+	my_fd.totalSend = 0;
+	my_fd.bytesLeft = 0;
+	my_fd.responseLength = 0;
 }
 
 //--------------------------------------------------------------------------
 
-void     webServer::Poll_out(int i)
+void     webServer::pollOut(int &i, fds_info &my_fd)
 {
-	std::fstream file;
+	int len;
+	std::fstream fileIN;
 	std::string line;
 	std::string appendLine;
-	std::string response = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length:";
-	int len;
-	
-	file.open(fileExemple, std::fstream::in);
-    if (!file.is_open()) std::cout << "Can't open file!" << std::endl , std::exit(EXIT_FAILURE);
-    while (!std::getline(file, line).eof())
+	fileIN.open(fileExemple, std::fstream::in);
+    if (!fileIN.is_open()) std::cout << "Can't open file!" << std::endl , std::exit(EXIT_FAILURE);
+    while (!std::getline(fileIN, line).eof())
 	{
         appendLine.append(line);
 	}
-
 	len = appendLine.length();
-	response.append(std::to_string(len));
-	response.append("\n\n");
-	response.append(appendLine);
 	
-	sendall(fdsInfo[i].tmp.fd, response, response.size());
-	if (fdsInfo[i].Connection == "keep-alive")
-		resetMyFdInfo(fdsInfo[i]);
-	else
+
+	if (my_fd.isFirstTimeSend)
 	{
-		close(fdsInfo[i].tmp.fd);
-		fdsInfo.erase(fdsInfo.begin()+i);
-		fds.erase(fds.begin()+i);
+		my_fd.response.append(std::to_string(len));
+		my_fd.response.append("\n\n");
+		my_fd.response.append(appendLine);
+		fileIN.close();
+	
+		my_fd.responseLength = my_fd.response.size();
+		my_fd.bytesLeft = my_fd.response.size();
+		my_fd.isFirstTimeSend = false;
 	}
+	sendData(my_fd, i);
 }
 
+//--------------------------------------------------------------------------
+
+void webServer::sendData(fds_info &my_fd, int &i)
+{
+	int	sendLen = 0;
+    if (my_fd.totalSend < my_fd.responseLength && sendLen >= 0)
+    {
+       	sendLen = send(my_fd.tmp.fd, my_fd.response.c_str() + my_fd.totalSend, my_fd.bytesLeft, 0);
+		if (sendLen >= 0)
+		{
+			my_fd.totalSend += sendLen;
+        	my_fd.bytesLeft -= sendLen;
+		}
+		else
+			perror("send error");
+    }
+	if (my_fd.totalSend >= my_fd.responseLength)
+	{
+		// resetMyFdInfo(my_fd);
+		if (my_fd.Connection == "close")
+		{
+			close(my_fd.tmp.fd);
+			fdsInfo.erase(fdsInfo.begin()+i);
+			fds.erase(fds.begin()+i);
+			i--;
+		}
+	}
+}
 
 //--------------------------------------------------------------------------
 
@@ -157,16 +187,13 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		guard(poll(&fds[0], fds.size(), 0), "poll error");
+		guard(poll(&fds[0], fds.size(), -1), "poll error");
 		for (int i = 0; i < (int)fds.size(); i++)
 		{
 			if (fds[i].revents & POLLIN)
-			{
-				if(Poll_in(i))
-					continue;
-			}
+				pollIn(i);
 			else if (fds[i].revents & POLLOUT)
-				Poll_out(i);
+				pollOut(i, fdsInfo[i]);
 			else if (fds[i].revents & (POLLHUP | POLLERR))
 			{
     			close(fds[i].fd);
@@ -217,7 +244,7 @@ webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
 
-std::string	webServer::FoundServerName(std::string str)
+std::string	webServer::foundServerName(std::string str)
 {
 	std::vector<std::string> splited = split(str, '\n');
 	size_t pos;
@@ -253,7 +280,7 @@ std::string	webServer::FoundConnection(std::string str)
 
 //--------------------------------------------------------------------------
 
-void webServer::check_otherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd)
+void webServer::checkOtherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd)
 {
 	for(size_t i = 0; i < _servers.size(); i++)
 	{
@@ -284,13 +311,13 @@ void webServer::check_otherServers(int _port, std::vector<Servers> &ServReserve,
 
 //--------------------------------------------------------------------------
 
-void  webServer::FoundServer(fds_info &my_fd)
+void  webServer::foundServer(fds_info &my_fd)
 {
 	std::vector<Servers> ServReserve;
 	size_t 	j = 0;
 	for (; j < _serv.size(); j++)
 	{
-		if(_serv[j].socket_fd == server_sock && _serv[j]._port == port)
+		if(_serv[j].socket_fd == serverSock && _serv[j]._port == port)
 		{
 			std::vector<std::string>::iterator it;
 			it = std::find (_serv[j].server_name.begin(), _serv[j].server_name.end(), my_fd.serverName);
@@ -302,7 +329,7 @@ void  webServer::FoundServer(fds_info &my_fd)
 			else
 			{
 				ServReserve.push_back(_serv[j]);
-				check_otherServers(_serv[j]._port, ServReserve, my_fd);
+				checkOtherServers(_serv[j]._port, ServReserve, my_fd);
 				return;
 			}
 		}
@@ -329,69 +356,60 @@ int webServer::checkContentLength(std::string str)
 
 //--------------------------------------------------------------------------
 
+long int webServer::getTimeMs()
+{
+	struct timeval tp;
+	long int	Time;
+	
+	gettimeofday(&tp, NULL);
+	Time = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+	return (Time);
+}
+
+//--------------------------------------------------------------------------
+
 void	webServer::checkFirstTime(fds_info &my_fd, std::string str)
 {
-	if (my_fd.is_first_time)
+	if (my_fd.isFirstTimeRead)
 	{
-		my_fd.serverName = FoundServerName(str);
+		my_fd.serverName = foundServerName(str);
 		my_fd.Connection = FoundConnection(str);
-		my_fd.content_length = checkContentLength(str);
-		FoundServer(my_fd);
-		my_fd.is_first_time = false;
+		my_fd.contentLength = checkContentLength(str);
+		foundServer(my_fd);
+		my_fd.isFirstTimeRead = false;
 	}
 }
 
 //--------------------------------------------------------------------------
 
-void webServer::read_header(int i)
+void webServer::readHeader(int i)
 {
-    char buffer[50000] = {0};
+    char buffer[1000] = {0};
     fds_info &my_fd = fdsInfo[i];
 
-	my_fd.read_len = 0;
-    my_fd.read_len = read(my_fd.tmp.fd, buffer, sizeof(buffer));
-	if (my_fd.read_len > 0)
+	if (!my_fd.isRecvComplet)
 	{
-    	std::string str(buffer, my_fd.read_len);
+		my_fd.readLen = 0;
+    	my_fd.readLen = recv(my_fd.tmp.fd, buffer, sizeof(buffer), 0);
+    	std::string str(buffer, my_fd.readLen);
 		checkFirstTime(my_fd, str);
-		
-    	my_fd.str_header += str;
-    	my_fd.total += my_fd.read_len;
-		if (my_fd.total > my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
+    	my_fd.strHeader += str;
+    	my_fd.totalRead += my_fd.readLen;
+		// my_fd.lastTime = getTimeMs();
+		if (my_fd.totalRead > (size_t)my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
 		{
-			my_fd.str_header = "";
+			resetMyFdInfo(my_fd);
 			std::cerr << "server 413 Request Entity Too Large" << std::endl;
 			return ;
 		}
-		if (my_fd.content_length == 0 || (my_fd.total == my_fd.content_length))
-			my_fd.is_complet = true;
-    }
-	
-	std::cout << "str_header = "<< my_fd.str_header << std::endl;
-	// std::cout << "size = " <<  my_fd.my_servers.size() <<std::endl;
-	// std::cout << "serverName = " <<  my_fd.my_servers[0].server_name[0] <<std::endl;
-	// std::cout <<"is_complet = " << my_fd.is_complet<<std::endl;
-	// std::cout <<"is_first_time = " << my_fd.is_first_time<<std::endl;
-	// std::cout <<"content_length = " << my_fd.content_length<<std::endl;
-	// std::cout <<"read_len = " << my_fd.read_len<<std::endl;
-	// std::cout <<"total = " << my_fd.total<<std::endl;
-	std::cout << "--------------------------------------------" << std::endl;
+		if (my_fd.contentLength == 0 || (my_fd.totalRead >= my_fd.contentLength))
+		{
+			my_fd.isRecvComplet = true;
+			std::cout << "strHeader = "<< my_fd.strHeader << std::endl;
+		}
+	}
 }
 
 //--------------------------------------------------------------------------
 
 
-void webServer::sendall(int fd, std::string response, int len)
-{
-    int total = 0;
-    int bytesleft = len;
-    int n;
-    while(total < len)
-    {
-        n = send(fd, response.c_str()+total, bytesleft, 0);
-        if (n == -1)
-            break;
-        total += n;
-        bytesleft -= n;
-    }
-}

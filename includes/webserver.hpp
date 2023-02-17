@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/15 21:27:42 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/17 21:00:21 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,41 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <netinet/in.h>
-# include <string.h>
-# include <fcntl.h>
 # include <poll.h>
 # include <errno.h>
-# include <iostream>
-# include <exception>
-# include <vector>
-# include <bits/stdc++.h>
+// # include <bits/stdc++.h>
 # include <arpa/inet.h>
-# include <fstream>
-# include <string> 
+# include <sys/time.h>
 
 # include "config.hpp"
 
-#define BACKLOG 200
+#define BACKLOG 300
 class Servers;
 
 
 class fds_info
 {
-    public:
-        std::vector<Servers> my_servers;
-        std::string str_header;
-        std::string serverName;
-        std::string Connection;
-        bool        is_first_time;
-        int         content_length;
-        bool        is_complet;
-        int         read_len;
-        int         total;
-        pollfd      tmp;
+public:
+    std::vector<Servers>	my_servers;
+
+    std::string             response;
+    std::string 			strHeader;
+    std::string 			serverName;
+    std::string				Connection;
+    pollfd              	tmp;
+
+    size_t      			contentLength;
+    size_t                  responseLength;
+    long int  				lastTime;
+    
+    bool        			isFirstTimeRead;
+    bool        			isFirstTimeSend;
+    bool        			isRecvComplet;
+    
+    int         			readLen;
+    size_t         			totalRead;
+    size_t                  totalSend;
+    size_t                  bytesLeft;
 };
 
 
@@ -57,37 +61,37 @@ class webServer
 {
 
 private:
-    std::vector<Servers> _servers;
-    std::vector<pollfd> fds;
-    std::vector<Servers> _serv;
-    std::vector<fds_info> fdsInfo;
-    struct sockaddr_in client_address;
-    socklen_t addrlen;
-    int     fds_len;
-    int     server_sock;
-    int     port;
-    int     client_sockets;
+    std::vector<Servers>	_servers;
+    std::vector<pollfd> 	fds;
+    std::vector<Servers> 	_serv;
+    std::vector<fds_info> 	fdsInfo;
+    struct sockaddr_in 		clientAddress;
+    socklen_t 				addrlen;
+    int     				serverSock;
+    int     				port;
+    int     				clientSockets;
 
 public:
     const char *fileExemple;
-    void    setupServer();
-    void    acceptConnection();
-    int     guard(int n, const char *er);
-	void	sendall(int s, std::string response, int len);
-    int     is_socket(int fd);
-    void    read_header(int i);
-    int     Poll_in(int &i);
-    void    Poll_out(int i);
-    void    Poll_HupErr(int &i);
-    void    FoundServer(fds_info &my_fd);
-    fds_info FoundFd(int fd);
-    void    fdData(fds_info &fdtmp, int fd);
-    int     checkContentLength(std::string str);
-    std::string FoundServerName(std::string str);
-    void    check_otherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd);
+
+    fds_info	FoundFd(int fd);
+    std::string foundServerName(std::string str);
     std::string	FoundConnection(std::string str);
-    void	checkFirstTime(fds_info &my_fd, std::string str);
-    void    resetMyFdInfo(fds_info &my_fd);
+    long int	getTimeMs();
+    int     	guard(int n, const char *er);
+    int     	isSocket(int fd);
+    void     	pollIn(int &i);
+    int     	checkContentLength(std::string str);
+    void    	setupServer();
+    void    	acceptConnection();
+	void		sendData(fds_info &my_fd, int &i);
+    void    	readHeader(int i);
+    void    	pollOut(int &i, fds_info &my_fd);
+    void    	foundServer(fds_info &my_fd);
+    void    	fdData(fds_info &fdtmp, int fd);
+    void    	checkOtherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd);
+    void		checkFirstTime(fds_info &my_fd, std::string str);
+    void    	resetMyFdInfo(fds_info &my_fd);
     
     webServer(std::vector<Servers> servers);
     ~webServer();
