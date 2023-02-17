@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/13 16:59:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/16 12:23:30 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,26 @@ void    checkFile(std::vector<errorPages> &error_pages)
     }
 }
 
+void    checkLocationValidity(Locations &location, std::string root)
+{
+    if (location.root.empty())
+        location.root = root;
+    if (location.directive == "*.php")
+    {
+        if (location.fatscgi_pass.empty())
+            location.fatscgi_pass = "./php-cgi";
+        else if ((location.fatscgi_pass != "./php-cgi") || (location.fatscgi_pass != "/Users/sahafid/Desktop/webserv/php/php-cgi"))
+            location.fatscgi_pass = "./php-cgi";
+    }
+}
+
 void    checkDataValidity(Servers &server)
 {
     std::vector<int> status_code;
 
+    if (server.root.empty())
+        throw std::invalid_argument("invalid input: no root");
+        
     if (server.host.empty())
         throw std::invalid_argument("invalid input: no host");
 
@@ -48,15 +64,13 @@ void    checkDataValidity(Servers &server)
         server.client_max_body_size = 1;
 
     checkFile(server.error_page);
-}
-
-
-int checkServerName(std::vector<std::string>  server_name1, std::vector<std::string>  server_name2)
-{
-    if (server_name1 != server_name2)
-        return 1;
-    else
-        throw std::invalid_argument("invalid input: duplicate port number\n");
+    std::vector<std::string> directive;
+    for (std::vector<Locations>::iterator it = server.locations.begin(); it != server.locations.end(); it++)
+    {
+        if (find(directive.begin(), directive.end(), (*it).directive) != directive.end())
+            throw std::invalid_argument("invalid input: duplicate directive");
+        checkLocationValidity(*it, server.root);
+    }
 }
 
 
@@ -69,13 +83,10 @@ void    checkDuplicates(Servers &server1, Servers &server2)
     {
         if (find(server2.port.begin(), server2.port.end(), *it) != server2.port.end())
         {
-            if (checkServerName(server1.server_name, server2.server_name))
-            {
-                server2.dup_port.push_back(*it);
-                server2.isDuplicate = 1;
-                std::vector<int>::iterator iter = find(server2.port.begin(), server2.port.end(), *it);
-                server2.port.erase(iter);
-            }
+            server2.dup_port.push_back(*it);
+            server2.isDuplicate = 1;
+            std::vector<int>::iterator iter = find(server2.port.begin(), server2.port.end(), *it);
+            server2.port.erase(iter);
         }
     }
 }
