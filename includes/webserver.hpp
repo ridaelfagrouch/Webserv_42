@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/17 21:00:21 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/18 15:49:14 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ public:
     bool        			isFirstTimeSend;
     bool        			isRecvComplet;
     
+    int     				serverSock;
+    int     				port;
     int         			readLen;
     size_t         			totalRead;
     size_t                  totalSend;
@@ -65,11 +67,7 @@ private:
     std::vector<pollfd> 	fds;
     std::vector<Servers> 	_serv;
     std::vector<fds_info> 	fdsInfo;
-    struct sockaddr_in 		clientAddress;
-    socklen_t 				addrlen;
-    int     				serverSock;
-    int     				port;
-    int     				clientSockets;
+    int                     clientSockets;
 
 public:
     const char *fileExemple;
@@ -79,7 +77,6 @@ public:
     std::string	FoundConnection(std::string str);
     long int	getTimeMs();
     int     	guard(int n, const char *er);
-    int     	isSocket(int fd);
     void     	pollIn(int &i);
     int     	checkContentLength(std::string str);
     void    	setupServer();
