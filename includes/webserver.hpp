@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/18 15:49:14 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/18 20:01:35 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 # include <sys/time.h>
 
 # include "config.hpp"
+
+#define RED "\033[1;31m"
+#define GRN "\033[1;32m"
+#define END "\033[0m"
 
 #define BACKLOG 300
 class Servers;

@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/18 19:50:20 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/18 20:17:15 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,9 @@ void webServer::sendData(fds_info &my_fd, int &i)
 	if (my_fd.totalSend >= my_fd.responseLength || sendLen < 0)
 	{
 		std::cout << "totalSend : " << my_fd.totalSend << std::endl;
-		std::cout << "----> the response was successfully sent " << std::endl;
+		std::cout << GRN << "-> the response was successfully sent " << END << std::endl;
 		std::cout << "----------------------------------------------------------" << std::endl;
+		std::cout << std::endl;
 		resetMyFdInfo(my_fd);
 		if (my_fd.Connection == "close" || sendLen < 0)
 		{
@@ -188,7 +189,6 @@ void webServer::sendData(fds_info &my_fd, int &i)
 
 void    webServer::acceptConnection(void)
 {
-	static int count = 0;
     while(1)
 	{
 		guard(poll(&fds[0], fds.size(), 0), "poll error");
@@ -197,11 +197,7 @@ void    webServer::acceptConnection(void)
 			if (fds[i].revents & POLLIN)
 				pollIn(i);
 			else if (fds[i].revents & POLLOUT && fdsInfo[i].isRecvComplet)
-			{
-				count++;
-				printf("hello %d\n", count);
 				pollOut(i, fdsInfo[i]);
-			}
 			else if (fds[i].revents & (POLLHUP | POLLERR))
 			{
     			close(fds[i].fd);
@@ -210,12 +206,11 @@ void    webServer::acceptConnection(void)
     			i--;
             	continue;
 			}
-			// if (getTimeMs() - fdsInfo[i].lastTime > 300)
-			// {
-			// 	std::cerr << "timeout error 504" << std::endl;
-			// 	std::cerr << "i: " << i << std::endl;
-			// 	exit(1);
-			// }q
+			if ((getTimeMs() - fdsInfo[i].lastTime) > 300 && !fdsInfo[i].isFirstTimeRead)
+			{
+				std::cerr << "timeout error 504" << std::endl;
+				exit(1);
+			}
 		}
 	}
     for (int i = 0; i < fds.size(); i++)
@@ -253,7 +248,6 @@ webServer::webServer(std::vector<Servers> servers)
         }
     }
 }
-
 webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
@@ -424,9 +418,8 @@ void webServer::readHeader(int i)
 		if (my_fd.contentLength == 0 || (my_fd.totalRead > my_fd.contentLength))
 		{
 			my_fd.isRecvComplet = true;
-			// std::cout << my_fd.strHeader << std::endl;
-			// std::cout<<std::endl;
-			std::cout << "-> strHeader request is complet : "<< std::endl;
+			std::cout << "----------------------------------------------------------" << std::endl;
+			std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
 			std::cout << "	- port : "<< my_fd.port <<  std::endl;
 			std::cout << "	- host : "<< my_fd.my_servers[0].host <<  std::endl;
 			std::cout << "	- connection : "<< my_fd.Connection <<  std::endl;
@@ -439,5 +432,3 @@ void webServer::readHeader(int i)
 }
 
 //--------------------------------------------------------------------------
-
-
