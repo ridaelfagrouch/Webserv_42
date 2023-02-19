@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/18 20:17:15 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/19 20:29:31 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,9 +196,9 @@ void    webServer::acceptConnection(void)
 		{
 			if (fds[i].revents & POLLIN)
 				pollIn(i);
-			else if (fds[i].revents & POLLOUT && fdsInfo[i].isRecvComplet)
+			if (fds[i].revents & POLLOUT && fdsInfo[i].isRecvComplet)
 				pollOut(i, fdsInfo[i]);
-			else if (fds[i].revents & (POLLHUP | POLLERR))
+			if (fds[i].revents & (POLLHUP | POLLERR))
 			{
     			close(fds[i].fd);
 				fdsInfo.erase(fdsInfo.begin()+i);
@@ -418,6 +418,7 @@ void webServer::readHeader(int i)
 		if (my_fd.contentLength == 0 || (my_fd.totalRead > my_fd.contentLength))
 		{
 			my_fd.isRecvComplet = true;
+			// std::cout << my_fd.strHeader << std::endl ;
 			std::cout << "----------------------------------------------------------" << std::endl;
 			std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
 			std::cout << "	- port : "<< my_fd.port <<  std::endl;
