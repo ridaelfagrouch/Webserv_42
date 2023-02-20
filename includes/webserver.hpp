@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/18 20:01:35 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/20 15:10:06 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ public:
     const char *fileExemple;
 
     fds_info	FoundFd(int fd);
-    std::string foundServerName(std::string str);
-    std::string	FoundConnection(std::string str);
+    std::string foundKey(std::string str, std::string key);
     long int	getTimeMs();
     int     	guard(int n, const char *er);
     void     	pollIn(int &i);

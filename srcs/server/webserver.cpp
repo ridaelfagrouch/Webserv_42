@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/19 20:29:31 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/20 16:43:31 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void    webServer::pollIn(int &i)
 		}
 	}
     readHeader(i);
+	fdsInfo[i].lastTime = getTimeMs();
     if ((fdsInfo[i].readLen <= -1 && errno != EAGAIN) || fdsInfo[i].readLen == 0)
 	{
 		if (fdsInfo[i].readLen == 0)
@@ -92,7 +93,6 @@ void    webServer::pollIn(int &i)
 		fds.erase(fds.begin()+i);
 		i--;
 	}
-	fdsInfo[i].lastTime = getTimeMs();
 }
 
 //--------------------------------------------------------------------------
@@ -173,14 +173,15 @@ void webServer::sendData(fds_info &my_fd, int &i)
 		std::cout << GRN << "-> the response was successfully sent " << END << std::endl;
 		std::cout << "----------------------------------------------------------" << std::endl;
 		std::cout << std::endl;
-		resetMyFdInfo(my_fd);
-		if (my_fd.Connection == "close" || sendLen < 0)
+		if (!strncmp(my_fd.Connection.c_str(), "close", my_fd.Connection.size()) || sendLen < 0)
 		{
 			close(my_fd.tmp.fd);
 			fdsInfo.erase(fdsInfo.begin()+i);
 			fds.erase(fds.begin()+i);
 			i--;
 		}
+		else
+			resetMyFdInfo(my_fd);
 	}
 }
 
@@ -213,7 +214,7 @@ void    webServer::acceptConnection(void)
 			}
 		}
 	}
-    for (int i = 0; i < fds.size(); i++)
+    for (size_t i = 0; i < fds.size(); i++)
         close(fds[i].fd);
 }
 
@@ -252,42 +253,25 @@ webServer::~webServer(){}
 
 //--------------------------------------------------------------------------
 
-std::string	webServer::foundServerName(std::string str)
+std::string	webServer::foundKey(std::string str, std::string key)
 {
 	std::vector<std::string> splited = split(str, '\n');
 	size_t pos;
 	for (size_t i = 0; i < splited.size(); i++)
 	{
-		pos = splited[i].find("Host:", 0);
+		pos = splited[i].find(key.c_str(), 0);
 		if(pos != std::string::npos)
 		{
-			std::string ptr = splited[i].erase(pos, 6);
+			std::string ptr = splited[i].erase(pos, key.size());
 			splited.clear();
 			return trim(ptr, 13);
 		}
 	}
 	splited.clear();
-	return "Not_Found";
-}
-
-//--------------------------------------------------------------------------
-
-std::string	webServer::FoundConnection(std::string str)
-{
-	std::vector<std::string> splited = split(str, '\n');
-	size_t pos;
-	for (size_t i = 0; i < splited.size(); i++)
-	{
-		pos = splited[i].find("Connection:", 0);
-		if(pos != std::string::npos)
-		{
-			std::string ptr = splited[i].erase(pos, 12);
-			splited.clear();
-			return trim(ptr, 13);
-		}
-	}
-	splited.clear();
-	return "close";
+	if (!strncmp(key.c_str(), "Host: ", key.size()))
+		return "Not_Found";
+	else
+		return "close";
 }
 
 //--------------------------------------------------------------------------
@@ -353,10 +337,9 @@ void  webServer::foundServer(fds_info &my_fd)
 int webServer::checkContentLength(std::string str)
 {
 	std::vector<std::string> splited = split(str, '\n');
-	size_t pos;
 	for (size_t i = 0; i < splited.size(); i++)
 	{
-		pos = splited[i].find("Content-Length:", 0);
+		size_t pos = splited[i].find("Content-Length: ", 0);
 		if(pos != std::string::npos)
 		{
 			std::string ptr = splited[i].erase(pos, 16);
@@ -386,8 +369,8 @@ void	webServer::checkFirstTime(fds_info &my_fd, std::string str)
 {
 	if (my_fd.isFirstTimeRead)
 	{
-		my_fd.serverName = foundServerName(str);
-		my_fd.Connection = FoundConnection(str);
+		my_fd.serverName = foundKey(str, "Host: ");
+		my_fd.Connection = foundKey(str, "Connection: ");
 		my_fd.contentLength = checkContentLength(str);
 		foundServer(my_fd);
 		my_fd.isFirstTimeRead = false;
@@ -398,7 +381,7 @@ void	webServer::checkFirstTime(fds_info &my_fd, std::string str)
 
 void webServer::readHeader(int i)
 {
-    char buffer[1000] = {0};
+    char buffer[1024] = {0};
     fds_info &my_fd = fdsInfo[i];
 
 	if (!my_fd.isRecvComplet)
