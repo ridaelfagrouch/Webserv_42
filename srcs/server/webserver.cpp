@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/20 16:43:31 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:42:49 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,16 @@ void    webServer::setupServer()
     {
 	    int optval = 1;
 
-	    _serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket_fd error");
-	    guard(setsockopt(_serv[i].socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error");
-	   	guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "error bind");
-        guard(listen(_serv[i].socket_fd, BACKLOG), "listen error");
-        guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error");
+		if ((_serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket error")) < 0)
+			continue;
+		if (guard(setsockopt(_serv[i].socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error") < 0)
+			continue;
+	   	if(guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error") < 0)
+			continue;
+        if(guard(listen(_serv[i].socket_fd, BACKLOG), "listen error") < 0)
+			continue;
+        if(guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error") < 0)
+			continue;
 
 		fds_info fdtmp;
 		fdData(fdtmp, _serv[i].socket_fd);
@@ -54,8 +59,6 @@ void    webServer::setupServer()
 	std::cout << std::endl;
     acceptConnection();
 }
-
-
 
 //--------------------------------------------------------------------------
 
@@ -69,13 +72,16 @@ void    webServer::pollIn(int &i)
     		socklen_t 			addrlen;
 			while((clientSockets = accept(fds[i].fd,(struct sockaddr *) &clientAddress, &addrlen)) > 0)
 			{
-				guard(fcntl(clientSockets, F_SETFL, O_NONBLOCK), "fcntl error");
+				if (fcntl(clientSockets, F_SETFL, O_NONBLOCK) < 0)
+				{
+					perror("fcntl error");
+					return ;
+				}
 				fds_info fdtmp;
 				fdData(fdtmp, clientSockets);
 
 				fdtmp.serverSock = fds[i].fd;
 				fdtmp.port = _serv[i]._port;
-
 				fds.push_back(fdtmp.tmp);
 				fdsInfo.push_back(fdtmp);
 				return ;
@@ -192,7 +198,11 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		guard(poll(&fds[0], fds.size(), 0), "poll error");
+		if (poll(&fds[0], fds.size(), 0) < 0)
+		{
+			perror("poll error");
+			exit(1);
+		}
 		for (int i = 0; i < (int)fds.size(); i++)
 		{
 			if (fds[i].revents & POLLIN)
@@ -225,7 +235,7 @@ int webServer::guard(int n, const char *er)
     if (n < 0)
     {
         perror(er);
-        exit(EXIT_FAILURE);
+        return -1;
     }
     return n;
 }
