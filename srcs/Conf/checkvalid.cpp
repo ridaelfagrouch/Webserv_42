@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/16 12:23:30 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/21 19:03:51 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void    checkLocationValidity(Locations &location, std::string root)
 {
     if (location.root.empty())
         location.root = root;
+    if (location.autoindex.empty())
+        location.autoindex = "off";
     if (location.directive == "*.php")
     {
         if (location.fatscgi_pass.empty())
