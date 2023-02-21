@@ -6,12 +6,11 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:11:58 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/15 21:45:03 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:06:53 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/config.hpp"
-
 
 int main(int ac, char **av)
 {

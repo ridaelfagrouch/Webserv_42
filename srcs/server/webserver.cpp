@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/20 17:42:49 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/21 19:39:16 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void    webServer::setupServer()
 			continue;
 	   	if(guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error") < 0)
 			continue;
-        if(guard(listen(_serv[i].socket_fd, BACKLOG), "listen error") < 0)
+        if(guard(listen(_serv[i].socket_fd, SOMAXCONN), "listen error") < 0)
 			continue;
         if(guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error") < 0)
 			continue;
@@ -137,9 +137,7 @@ void     webServer::pollOut(int &i, fds_info &my_fd)
 	fileIN.open(fileExemple, std::fstream::in);
     if (!fileIN.is_open()) std::cout << "Can't open file!" << std::endl , std::exit(EXIT_FAILURE);
     while (!std::getline(fileIN, line).eof())
-	{
         appendLine.append(line);
-	}
 	len = appendLine.length();
 
 	if (my_fd.isFirstTimeSend)
@@ -198,7 +196,7 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		if (poll(&fds[0], fds.size(), 0) < 0)
+		if (poll(&fds[0], fds.size(), 0) < 0 && errno != EAGAIN && errno != EWOULDBLOCK)
 		{
 			perror("poll error");
 			exit(1);
@@ -278,10 +276,7 @@ std::string	webServer::foundKey(std::string str, std::string key)
 		}
 	}
 	splited.clear();
-	if (!strncmp(key.c_str(), "Host: ", key.size()))
-		return "Not_Found";
-	else
-		return "close";
+	return !strncmp(key.c_str(), "Host: ", key.size()) ? "Not_Found" : "close";
 }
 
 //--------------------------------------------------------------------------
@@ -366,11 +361,9 @@ int webServer::checkContentLength(std::string str)
 long int webServer::getTimeMs()
 {
 	struct timeval tp;
-	long int	Time;
 	
 	gettimeofday(&tp, NULL);
-	Time = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-	return (Time);
+	return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
 //--------------------------------------------------------------------------
@@ -400,7 +393,7 @@ void webServer::readHeader(int i)
     	my_fd.readLen = recv(my_fd.tmp.fd, buffer, sizeof(buffer), 0);
     	std::string str(buffer, my_fd.readLen);
 		checkFirstTime(my_fd, str);
-    	my_fd.strHeader += str;
+    	my_fd.strHeader.append(str);
     	my_fd.totalRead += my_fd.readLen;
 		if (my_fd.totalRead > (size_t)my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
 		{
@@ -424,5 +417,3 @@ void webServer::readHeader(int i)
 		}
 	}
 }
-
-//--------------------------------------------------------------------------

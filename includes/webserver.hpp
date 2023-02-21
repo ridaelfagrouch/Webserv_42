@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/20 17:35:55 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/21 18:22:05 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,37 +30,35 @@
 #define GRN "\033[1;32m"
 #define END "\033[0m"
 
-#define BACKLOG 300
 class Servers;
 
 
 class fds_info
 {
 public:
-    std::vector<Servers>	my_servers;
+    std::vector<Servers>	my_servers;//
 
-    std::string             response;
-    std::string 			strHeader;
-    std::string 			serverName;
-    std::string				Connection;
+    std::string             response;//
+    std::string 			strHeader;//
+    std::string 			serverName;//
+    std::string				Connection;//
     pollfd              	tmp;
 
-    size_t      			contentLength;
+    size_t      			contentLength;//
     size_t                  responseLength;
     long int  				lastTime;
     
-    bool        			isFirstTimeRead;
-    bool        			isFirstTimeSend;
-    bool        			isRecvComplet;
+    bool        			isFirstTimeRead;//
+    bool        			isFirstTimeSend;//
+    bool        			isRecvComplet;//
     
     int     				serverSock;
     int     				port;
     int         			readLen;
-    size_t         			totalRead;
-    size_t                  totalSend;
-    size_t                  bytesLeft;
+    size_t         			totalRead;//
+    size_t                  totalSend;//
+    size_t                  bytesLeft;//
 };
-
 
 
 class webServer
