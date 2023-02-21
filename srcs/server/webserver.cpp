@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/21 19:39:16 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/21 19:54:01 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void webServer::sendData(fds_info &my_fd, int &i)
 			my_fd.totalSend += sendLen;
         	my_fd.bytesLeft -= sendLen;
 		}
-		else
+		else if (sendLen < 0 && errno != EAGAIN)
 			perror("send error");
     }
 	if (my_fd.totalSend >= my_fd.responseLength || sendLen < 0)
