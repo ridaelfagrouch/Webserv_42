@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/16 12:42:36 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/02/23 20:33:16 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char    **setEnv()
     return envirement;
 }
 
-void  executeCgi(std::string fileName)
+void  executeCgiPhp(std::string fileName)
 {
     
     std::ifstream check;
@@ -94,7 +94,7 @@ void  executeCgi(std::string fileName)
     int pid = fork();
     if (pid == 0)
     {
-        // dup2(fd, 1);
+        dup2(fd, 1);
         close(fd);
         char *argv[3];
         argv[0] = (char*)cmd.c_str();
