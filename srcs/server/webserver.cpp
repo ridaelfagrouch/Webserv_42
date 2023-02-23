@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/21 19:54:01 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/23 21:45:51 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void webServer::fdData(fds_info &fdtmp, int fd)
 	fdtmp.Connection = "";
 	fdtmp.serverName = "";
 	fdtmp.strHeader = "";
+	fdtmp.isTimeOut = false;
 }
 
 //--------------------------------------------------------------------------
@@ -90,7 +91,7 @@ void    webServer::pollIn(int &i)
 	}
     readHeader(i);
 	fdsInfo[i].lastTime = getTimeMs();
-    if ((fdsInfo[i].readLen <= -1 && errno != EAGAIN) || fdsInfo[i].readLen == 0)
+    if (fdsInfo[i].readLen <= -1 || fdsInfo[i].readLen == 0)
 	{
 		if (fdsInfo[i].readLen == 0)
 			perror("Client disconnected");
@@ -124,6 +125,7 @@ void webServer::resetMyFdInfo(fds_info &my_fd)
 	my_fd.totalSend = 0;
 	my_fd.bytesLeft = 0;
 	my_fd.responseLength = 0;
+	my_fd.isTimeOut = false;
 }
 
 //--------------------------------------------------------------------------
@@ -168,7 +170,7 @@ void webServer::sendData(fds_info &my_fd, int &i)
 			my_fd.totalSend += sendLen;
         	my_fd.bytesLeft -= sendLen;
 		}
-		else if (sendLen < 0 && errno != EAGAIN)
+		else
 			perror("send error");
     }
 	if (my_fd.totalSend >= my_fd.responseLength || sendLen < 0)
@@ -196,10 +198,10 @@ void    webServer::acceptConnection(void)
 {
     while(1)
 	{
-		if (poll(&fds[0], fds.size(), 0) < 0 && errno != EAGAIN && errno != EWOULDBLOCK)
+		if (poll(&fds[0], fds.size(), -1) < 0 && errno != EAGAIN && errno != EWOULDBLOCK)
 		{
 			perror("poll error");
-			exit(1);
+			continue;
 		}
 		for (int i = 0; i < (int)fds.size(); i++)
 		{
@@ -218,7 +220,9 @@ void    webServer::acceptConnection(void)
 			if ((getTimeMs() - fdsInfo[i].lastTime) > 300 && !fdsInfo[i].isFirstTimeRead)
 			{
 				std::cerr << "timeout error 504" << std::endl;
-				exit(1);
+				fds[i].revents = POLLOUT;
+				fdsInfo[i].isTimeOut = true;
+				exit(1);//temporary
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/21 18:22:05 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/23 21:41:01 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ public:
     bool        			isFirstTimeRead;//
     bool        			isFirstTimeSend;//
     bool        			isRecvComplet;//
+    bool                    isTimeOut;
     
     int     				serverSock;
     int     				port;
