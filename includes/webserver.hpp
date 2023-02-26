@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/23 21:41:01 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/26 17:21:42 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #define END "\033[0m"
 
 class Servers;
-
+   
 
 class fds_info
 {
@@ -55,6 +55,7 @@ public:
     
     int     				serverSock;
     int     				port;
+    std::string             ipHost;
     int         			readLen;
     size_t         			totalRead;//
     size_t                  totalSend;//

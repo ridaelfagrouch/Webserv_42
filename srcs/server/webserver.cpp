@@ -6,7 +6,7 @@
 /*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/02/23 21:48:01 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/26 17:58:15 by rel-fagr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,27 @@ void    webServer::setupServer()
 
 void    webServer::pollIn(int &i)
 {
-	for (size_t i = 0; i < _serv.size(); i++)
+	if (fds[i].fd == _serv[i].socket_fd)
 	{
-		if (fds[i].fd == _serv[i].socket_fd)
+		struct sockaddr_in	clientAddress;
+    	socklen_t 			addrlen;
+		clientSockets = accept(fds[i].fd,(struct sockaddr *) &clientAddress, &addrlen);
+		if (clientSockets > 0)
 		{
-			struct sockaddr_in	clientAddress;
-    		socklen_t 			addrlen;
-			while((clientSockets = accept(fds[i].fd,(struct sockaddr *) &clientAddress, &addrlen)) > 0)
+			if (fcntl(clientSockets, F_SETFL, O_NONBLOCK) < 0)
 			{
-				if (fcntl(clientSockets, F_SETFL, O_NONBLOCK) < 0)
-				{
-					perror("fcntl error");
-					return ;
-				}
-				fds_info fdtmp;
-				fdData(fdtmp, clientSockets);
-
-				fdtmp.serverSock = fds[i].fd;
-				fdtmp.port = _serv[i]._port;
-				fds.push_back(fdtmp.tmp);
-				fdsInfo.push_back(fdtmp);
+				perror("fcntl error");
 				return ;
 			}
+			fds_info fdtmp;
+			fdData(fdtmp, clientSockets);
+			fdtmp.serverSock = fds[i].fd;
+			fdtmp.port = _serv[i]._port;
+			fdtmp.ipHost = _serv[i].host;
+			
+			fds.push_back(fdtmp.tmp);
+			fdsInfo.push_back(fdtmp);
+			return ;
 		}
 	}
     readHeader(i);
@@ -118,7 +117,6 @@ void webServer::resetMyFdInfo(fds_info &my_fd)
 	my_fd.isRecvComplet = false;
 	my_fd.isFirstTimeRead = true;
 	my_fd.isFirstTimeSend = true;
-	my_fd.my_servers.clear();
 	my_fd.strHeader.clear();
 	my_fd.response.clear();
 	my_fd.totalRead = 0;
@@ -222,7 +220,7 @@ void    webServer::acceptConnection(void)
 				std::cerr << "timeout error 504" << std::endl;
 				fds[i].revents = POLLOUT;
 				fdsInfo[i].isTimeOut = true;
-				exit(1);//temporary
+				fdsInfo[i].isRecvComplet = true;
 			}
 		}
 	}
@@ -310,8 +308,7 @@ void webServer::checkOtherServers(int _port, std::vector<Servers> &ServReserve, 
 			}
 		}
 	}
-	for(size_t i = 0; i < ServReserve.size(); i++)
-		my_fd.my_servers.push_back(ServReserve[i]);
+	my_fd.my_servers.push_back(ServReserve[0]);
 }
 
 //--------------------------------------------------------------------------
@@ -322,7 +319,7 @@ void  webServer::foundServer(fds_info &my_fd)
 	size_t 	j = 0;
 	for (; j < _serv.size(); j++)
 	{
-		if(_serv[j].socket_fd == my_fd.serverSock && _serv[j]._port == my_fd.port)
+		if(_serv[j].socket_fd == my_fd.serverSock && _serv[j]._port == my_fd.port && my_fd.ipHost == _serv[j].host)
 		{
 			std::vector<std::string>::iterator it;
 			it = std::find (_serv[j].server_name.begin(), _serv[j].server_name.end(), my_fd.serverName);
