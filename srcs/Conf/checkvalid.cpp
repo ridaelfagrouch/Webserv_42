@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/21 19:03:51 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/02 18:45:50 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    checkFile(std::vector<errorPages> &error_pages)
         {
             file.open((const char *)("/Users/sahafid/Desktop/webserv" + (*it).path).c_str());
             if (!file)
-                (*it).path = "./error/";
+                (*it).path = "./error/error.html";
         }
     }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:34:43 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
+/*   Updated: 2023/03/16 16:55:21 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void    Locations::enterLocationData(std::vector<std::string> info)
         info.erase(info.end()-1);
     if (info.size() > 1)
     {
-        if (info[0] == "uplaod_enable")
+        if (info[0] == "upload_enable")
             enterUploadEnab(info);
         else if (info[0] == "upload_store")
             this->upload_store = info[1];
