@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:48:22 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/17 18:48:30 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/03/21 15:39:57 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ std::vector<std::string> split(std::string s, char c)
     while (del-- >= 0)
 	{
 		i = 0;
-		while (str[p] != c && str[p++])
+		while (str[p] && str[p] != c && str[p++])
 			i++;
 		splited.push_back(str.substr(j, i));
-		while (str[p] == c)
+		while (str[p] && str[p] == c)
 			p++;
 		j = p;
 	}

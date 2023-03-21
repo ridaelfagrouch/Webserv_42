@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+         #
+#    By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/02/17 20:43:03 by rel-fagr         ###   ########.fr        #
+#    Updated: 2023/03/21 15:31:34 by sahafid          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,8 +40,7 @@ export TITLE
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Conf/php/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror 
-# -fsanitize=address -g
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror  -fsanitize=address -g
 CXX = c++
 NAME = webserver
 
