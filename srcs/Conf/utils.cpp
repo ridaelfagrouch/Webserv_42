@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:48:22 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/21 22:19:01 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/21 15:43:27 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ std::vector<std::string> split(std::string s, char c)
     std::string  str;
     std::vector<std::string> splited;
     std::string  initial = s;
-    int del= 0,i= 0,p= 0,j= 0;
+    int del=0,i=0,p=0,j=0;
     
 	str = trim(initial, c);
     for (size_t i = 0; i < str.length(); i++)
-		if (str[i] == c && str[i + 1] != c)
+		if (str[i] && str[i] == c && str[i + 1] != c)
 			del++;
     while (del-- >= 0)
 	{

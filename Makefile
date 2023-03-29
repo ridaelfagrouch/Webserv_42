@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+         #
+#    By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/03/21 15:31:34 by sahafid          ###   ########.fr        #
+#    Updated: 2023/03/28 23:24:50 by ouzhamza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,11 +37,11 @@ endef
 export TITLE
 
 
-SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Conf/php/*.cpp)
+SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Request/*.cpp) $(wildcard ./srcs/Response/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror  -fsanitize=address -g
-CXX = c++
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror
+CXX = c++ 
 NAME = webserver
 
 
@@ -49,8 +49,7 @@ NAME = webserver
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CXX) $(CXXFLAGS) $^ -o $(NAME)
-
+	@$(CXX) $(CXXFLAGS) $^ -o $(NAME) 
 title:
 	echo "${DARKVIOLET}$$TITLE${NC}"
 
@@ -66,4 +65,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re title 
+.PHONY: all clean fclean re title

@@ -5,47 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/23 20:33:16 by sahafid          ###   ########.fr       */
+/*   Created: 2023/02/18 13:29:25 by sahafid           #+#    #+#             */
+/*   Updated: 2023/02/23 20:34:02 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../../includes/config.hpp"
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
 #include <fcntl.h>
-
-
-// void  Servers::executeCgi(std::string fileName, Locations &location)
-// {
-    
-//     std::ifstream check;
-
-//     check.open(location.root + fileName);
-
-//     if (!check.is_open())
-//     {
-//         std::cout << "no file found\n";
-//         return ;
-//     }
-//     int fd = open("/tmp/tmpFile", O_WRONLY | O_TRUNC);
-//     int pid = fork();
-//     std::string cmd = location.fatscgi_pass;
-//     if (pid == 0)
-//     {
-//         char *argv[1];
-//         argv[0] = (char *)fileName.c_str();
-//         argv[1] = NULL;
-//         char **envp;
-//         execve(cmd.c_str(), argv, envp);
-//         std::cout << "ana hna\n";
-//     }
-    
-    
-// }
-
 
 char    **setEnv()
 {
@@ -76,7 +45,7 @@ char    **setEnv()
     return envirement;
 }
 
-void  executeCgiPhp(std::string fileName)
+void  executeCgiPy(std::string fileName)
 {
     
     std::ifstream check;
@@ -88,7 +57,7 @@ void  executeCgiPhp(std::string fileName)
         std::cout << "no file found\n";
         return ;
     }
-    std::string cmd = "./php-cgi";
+    std::string cmd = "/usr/bin/python3";
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
     int pid = fork();
@@ -97,7 +66,7 @@ void  executeCgiPhp(std::string fileName)
         dup2(fd, 1);
         close(fd);
         char *argv[3];
-        argv[0] = (char*)cmd.c_str();
+        argv[0] = (char *)cmd.c_str();
         argv[1] = (char *)fileName.c_str();
         argv[2] = NULL;
         char **envp = setEnv();
@@ -118,9 +87,7 @@ void  executeCgiPhp(std::string fileName)
     std::cout << line;
 }
 
-
-// int main()
-// {
-//     executeCgi("./file.php");
-//     return 0;
-// }
+int main()
+{
+    executeCgiPy("file.py");
+}

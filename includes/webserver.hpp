@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserver.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/26 17:21:42 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/02/24 20:20:14 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 // # include <bits/stdc++.h>
 # include <arpa/inet.h>
 # include <sys/time.h>
+# include <cstring>
 
 # include "config.hpp"
 
@@ -31,7 +32,7 @@
 #define END "\033[0m"
 
 class Servers;
-   
+
 
 class fds_info
 {
@@ -55,7 +56,6 @@ public:
     
     int     				serverSock;
     int     				port;
-    std::string             ipHost;
     int         			readLen;
     size_t         			totalRead;//
     size_t                  totalSend;//

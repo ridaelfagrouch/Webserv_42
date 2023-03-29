@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checkvalid.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/02 18:45:50 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/02 20:17:31 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void    checkFile(std::vector<errorPages> &error_pages)
         file.open((*it).path.c_str());
         if (!file)
         {
-            file.open((const char *)("/Users/sahafid/Desktop/webserv" + (*it).path).c_str());
+            file.open((const char *)("/home/ouzhamza/Desktop/Webserv_42" + (*it).path).c_str());
             if (!file)
-                (*it).path = "./error/error.html";
+                (*it).path = "./srcs/Conf/error/error.html";
         }
     }
 }

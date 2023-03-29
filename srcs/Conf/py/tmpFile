@@ -1,0 +1,12 @@
+Content-type: text/html
+
+
+<html>
+<head>
+<title>My CGI Page</title>
+</head>
+<body>
+<h1>Welcome to my CGI page!</h1>
+<p>This is some example text.</p>
+</body>
+</html>

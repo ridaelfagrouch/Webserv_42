@@ -5,16 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(lldb) Launch",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
-            "program": "/Users/rel-fagr/Desktop/Webserv_42/webserver",
-            "args": ["srcs/Conf/config.conf", "srcs/Conf/error/error.html"] ,
-            "stopAtEntry": false,
-            "cwd": "/Users/rel-fagr/Desktop/Webserv_42",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "lldb"
-        },
+            "name": "Debug",
+            "program": "${workspaceFolder}/webserver",
+            "args": ["./srcs/Conf/config.conf"],
+            "cwd": "${workspaceFolder}"
+        }
     ]
 }

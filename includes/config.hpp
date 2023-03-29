@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/16 12:41:55 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/16 16:52:16 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <map>
 #include <iterator>
 #include <exception>
-
+#include  <algorithm>
 
 # include "webserver.hpp"
 
@@ -40,7 +40,7 @@ class Locations {
 
         
         void    enterLocationData(std::vector<std::string> info);
-        void    enterUploadEnab(std::vector<std::string> info);
+        void    enterUploadEnab(std::vector<std::string> &info);
         void    enterAllowedMethodes(std::vector<std::string> info);
         void    enterReturn(std::vector<std::string> info);
         void    enterIndex(std::vector<std::string> info);

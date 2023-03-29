@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   enterlocationdata.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: garra <garra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:53:17 by sahafid           #+#    #+#             */
-/*   Updated: 2023/01/30 16:38:45 by garra            ###   ########.fr       */
+/*   Updated: 2023/03/16 16:54:04 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config.hpp"
 
 
-void    Locations::enterUploadEnab(std::vector<std::string> info)
+void    Locations::enterUploadEnab(std::vector<std::string> &info)
 {
     if (info.size() == 2)
     {
