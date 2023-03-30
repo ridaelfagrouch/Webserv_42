@@ -6,23 +6,25 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/29 16:36:03 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/30 23:10:02 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/response.hpp"
 
 
-Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_fd), server(choseServer())
+Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_fd), server(fd.my_servers[0])
 {
 	// if (_fd.isTimeOut == true)
 	// 	std::cout << _version << std::endl;
 	initErrorMap();
 	initRespMaps();
 	initContentMap();
-	setBool();
 	setPath();
-
+	setBool();
+	if (isAbsoluteURI())
+		changeHost();
+	std::cout << "third: " << server.root << std::endl;
 }
 
 
@@ -36,12 +38,55 @@ Response::Cgi::~Cgi(){}
 
 /* ************************************************************************** */
 
-Servers& Response::choseServer()
+int Response::isAbsoluteURI()
 {
-	// server = servers[0];
-	// std::cout << request.get_header("Host") << std::endl;
-	// std::cout << request.get_path() << std::endl;
-	return(fd.my_servers[0]);
+	size_t i;
+	if ((i = _path.find("http://"))!= std::string::npos ||(i = _path.find("https://")) != std::string::npos)
+		return (1);
+	return (0);
+}
+
+/* ************************************************************************** */
+
+void Response::changeHost()
+{
+	size_t i;
+	size_t j;
+	std::string newHost;
+	// std::string port;
+	if ((i = _path.find("http://")) != std::string::npos) {
+		
+		j = _path.find("/", i + 7);
+		newHost = _path.substr(i + 7, j);
+	}
+	
+	else if ((i = _path.find("http://")) != std::string::npos) {
+		
+		j = _path.find("/", i + 8);
+		newHost = _path.substr(i + 8, j);
+	}
+	
+	if ((i = newHost.find("localhost")) != std::string::npos) {
+
+		newHost.erase(i, 9);
+		newHost = "127.0.0.1" + newHost;
+	}
+
+	for (std::vector<Servers>::iterator it = fd.all_servers.begin(); it != fd.all_servers.end(); it++) {
+		
+		for(std::vector<int>::iterator i = it->port.begin(); i != it->port.end(); i++) {
+			
+			// std::cout << it->host.append(":").append(to_String(*i)) << std::endl;
+			// std::cout << newHost << std::endl;
+		
+ 			if (!newHost.compare(it->host + ":" + to_String(*i)))
+			{
+				std::cout << "first: " << it->root << std::endl;				
+				server = *it;
+			}
+		}
+	}
+	std::cout << "second: " << server.root << std::endl;
 }
 
 /* ************************************************************************** */
@@ -127,7 +172,6 @@ std::string Response::call()
 	return (_response);
 }
 
-
 /* ************************************************************************** */
 
 void	Response::setPath()
@@ -184,12 +228,6 @@ void	Response::setRet()
 void	Response::setMethode()
 {
 	this->_methode = request.get_methode();
-	setHost();
-}
-
-void	Response::setHost()
-{
-	this->_host = request.get_header("Host");
 	setPort();
 }
 

@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 03:30:01 by garra             #+#    #+#             */
-/*   Updated: 2023/02/24 20:20:14 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:48:53 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class fds_info
 {
 public:
     std::vector<Servers>	my_servers;//
+    std::vector<Servers>    all_servers;
 
     std::string             response;//
     std::string 			strHeader;//

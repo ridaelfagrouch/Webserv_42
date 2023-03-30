@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/03/29 14:36:38 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:10:57 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void     webServer::pollOut(int &i, fds_info &my_fd)
 	{
 		Request request(my_fd.strHeader);
 		Response response(request, my_fd);
-		// my_fd.response = "HTTP/1.1 405 OK\nContent-Type: text/plain\nContent-Length: 19\n\nMethod Not Allowed!";
+		// my_fd.response = "HTTP/1.1 405 OK\nContent-Type: text/plain\nContent-Length: 19\n\fdnMethod Not Allowed!";
 		my_fd.response = response.call();
 		my_fd.responseLength = my_fd.response.size();
 		my_fd.bytesLeft = my_fd.response.size();
@@ -278,6 +278,7 @@ std::string	webServer::foundKey(std::string str, std::string key)
 
 void webServer::checkOtherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd)
 {
+	my_fd.all_servers = _servers;
 	for(size_t i = 0; i < _servers.size(); i++)
 	{
 		if(_servers[i].isDuplicate)

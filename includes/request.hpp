@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 18:49:20 by houazzan          #+#    #+#             */
-/*   Updated: 2023/03/20 21:13:28 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:53:56 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,13 @@ class Request{
 		int				set_methode(const std::string &line);
 		int				set_path(const std::string &line);
 		int				set_version(const std::string &line);
+		int				checkHost();
 		std::string		getLine(const std::string &str, size_t &i);
 		std::string		set_key(const std::string &str);
 		std::string		set_value(const std::string &str);
+		std::string		extractPort();
 		void			refinement();
+		void			set_port();
 		void			set_body(const std::string &str, size_t i);
 		
 		// ! initiation of data
