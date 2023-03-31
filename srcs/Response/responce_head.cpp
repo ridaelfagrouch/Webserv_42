@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   responce_head.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 16:06:32 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/27 15:28:47 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:31:09 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void Response::headMap()
 	else
 	{
 		_header["Date"] += get_Current_Time();
-		_header["Connection"] += get_Current_Time();
+		_header["Connection"] += get_Connection();
 		_header["Content-Type"] += get_Content_Type();
 		_header["Content-Length"]  += get_Content_Length();
 		

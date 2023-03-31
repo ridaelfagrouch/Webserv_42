@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/30 21:11:19 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 19:43:59 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,9 @@ class Response{
     		    std::string redirectStatus;
     		    std::string contentLength;
     		    std::string contentType;
-    		    std::string sreverName;
+    		    std::string serverName;
     		    std::string serverProtocol;
+				std::string port;
     		public:
 				// void		setCgiserverProtocol(std::string protocol);
 				void		setCgicontentType(std::string port);
@@ -196,7 +197,24 @@ class Response{
 				void		setCgiServerName(std::string sserverName);
 				void		setCgiMethode(std::string methode);
 				void		setCgiserverProtocol();
+				void		setCgiPort(int port);
+
+
+				std::string		getCgicontentType();
+				std::string		getCgicontentLength();
+				std::string		getCgiPath();
+				std::string		getCgiQuery();
+				std::string		getCgiredirectStatus();
+				std::string		getCgiroot();
+				std::string		getCgiServerName();
+				std::string		getCgiMethode();
+				std::string		getCgiserverProtocol();
+				std::string		getCgiPort();
+
     		    Cgi();
     		    ~Cgi();
 		};
+
+		std::string     executeCgi(std::string filename, Cgi cgi);
+
 };
