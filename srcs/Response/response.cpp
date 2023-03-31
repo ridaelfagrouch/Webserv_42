@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/29 16:36:03 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:14:23 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ std::string Response::call()
 		error();
 	else {
 	_ret = ParsingResponse();
-	if (_cgi)
+	if (_cgi) 
 		runcgi();
 	else if (_ret != 200)
 		error();
-	if(_methode == "GET")
+	else if(_methode == "GET")
 		getMethode();
 	else if (_methode == "POST")
 		postMethode();

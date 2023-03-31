@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/28 22:22:13 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:21:40 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int Response::runcgi()
 {
     fillClass();
-    return(1);
+    return(200);
 }
 
 void Response::fillClass()
@@ -30,6 +30,13 @@ void Response::fillClass()
     cgi.setCgicontentLength(request.get_header("Content-Length"));
     cgi.setCgicontentType(request.get_header("Content-Type"));
     cgi.setCgiserverProtocol();
+    cgi.setCgiPort(request.get_port());
+    
+    
+    _Resbody += executeCgi("/Users/sahafid/Desktop/webserv_copy/srcs/Conf/php/file.php", cgi);
+    std::cout << "exited" << std::endl;
+    std::cout << _Resbody << std::endl;
+    
     // std::cout << server.port[0] << std::endl; 
 }
 
@@ -55,7 +62,9 @@ void Response::Cgi::setCgiroot(std::string _root)
 
 void Response::Cgi::setCgiredirectStatus(int _ret)
 {
-    redirectStatus = _ret;
+    std::stringstream ss;
+    ss << _ret;
+    this->redirectStatus = ss.str();
 }
 
 void Response::Cgi::setCgicontentLength(std::string _lenght)
@@ -70,10 +79,71 @@ void Response::Cgi::setCgicontentType (std::string _type)
 
 void Response::Cgi::setCgiServerName(std::string _serverName)
 {
-    sreverName = _serverName;
+    serverName = _serverName;
 }
 
 void Response::Cgi::setCgiserverProtocol()
 {
     serverProtocol = "TCP";
+}
+
+void Response::Cgi::setCgiPort(int port)
+{
+    std::stringstream ss;
+    ss << port;
+    this->port = ss.str();
+}
+
+
+
+
+
+std::string		Response::Cgi::getCgicontentType()
+{
+    return contentType;
+}
+
+std::string		Response::Cgi::getCgicontentLength()
+{
+    return contentLength;
+}
+
+std::string		Response::Cgi::getCgiPath()
+{
+    return Path;
+}
+
+std::string		Response::Cgi::getCgiQuery()
+{
+    return Query;
+}
+
+std::string		Response::Cgi::getCgiredirectStatus()
+{
+    return redirectStatus;
+}
+
+std::string		Response::Cgi::getCgiroot()
+{
+    return root;
+}
+
+std::string		Response::Cgi::getCgiServerName()
+{
+    return serverName;
+}
+
+std::string		Response::Cgi::getCgiMethode()
+{
+    return Methode;
+}
+
+std::string		Response::Cgi::getCgiserverProtocol()
+{
+    return serverProtocol;
+}
+
+std::string		Response::Cgi::getCgiPort()
+{
+    return port;
 }

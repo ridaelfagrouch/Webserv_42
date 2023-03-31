@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/28 16:57:27 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:11:27 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void Response::getMethode()
 
 int Response::readObject()
 {
-	if (_cgi)
+	if (_cgi){
 		return (runcgi());
+	}
 	else if (isFile())
 		return(readFile());
 	else if (_index)
