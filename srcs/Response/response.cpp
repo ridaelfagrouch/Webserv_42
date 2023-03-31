@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 19:43:21 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 20:12:56 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_f
 	setBool();
 	if (isAbsoluteURI())
 		changeHost();
-	std::cout << "third: " << server.root << std::endl;
 }
 
 
@@ -79,14 +78,10 @@ void Response::changeHost()
 			// std::cout << it->host.append(":").append(to_String(*i)) << std::endl;
 			// std::cout << newHost << std::endl;
 		
- 			if (!newHost.compare(it->host + ":" + to_String(*i)))
-			{
-				std::cout << "first: " << it->root << std::endl;				
+ 			if (!newHost.compare(it->host + ":" + to_String(*i)))				
 				server = *it;
-			}
 		}
 	}
-	std::cout << "second: " << server.root << std::endl;
 }
 
 /* ************************************************************************** */

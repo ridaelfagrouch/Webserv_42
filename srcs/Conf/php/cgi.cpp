@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/31 16:30:03 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 20:48:31 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,13 @@ std::string  executeCgiPhp(std::string fileName, Response::Cgi cgi)
         std::cout << "no file found\n";
         return "";
     }
-    std::string cmd = "/Users/sahafid/Desktop/webserv_copy/srcs/Conf/php/php-cgi";
+    std::string cmd = "/Users/sahafid/Desktop/webserv_42/srcs/Conf/php/php-cgi";
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
 
     int pid = fork();
     if (pid == 0)
     {
-        std::cout << fileName << " " << cgi.getCgiQuery() << std::endl;
         dup2(fd, 1);
         close(fd);
         char *argv[3];
@@ -136,7 +135,6 @@ std::string  executeCgiPhp(std::string fileName, Response::Cgi cgi)
         lines.append(tmp);
     }
     remove("./tmpFile");
-    std::cout << "ready to exit" << std::endl;
     return lines;
 }
 
