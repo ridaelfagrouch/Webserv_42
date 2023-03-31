@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:32:14 by houazzan          #+#    #+#             */
-/*   Updated: 2023/03/23 23:15:02 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/30 19:53:57 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void Request::tokenizingAndParsing(const std::string &str)
     _ret = parseFirstline(getLine(str, i));
     while ((line = getLine(str, i)) != "\r" && line != "" && _ret != 400)
         _header[set_key(line)] = set_value(line);
+    _ret = checkHost();
+    set_port();
     set_body(str, i);
 }
 
@@ -127,9 +129,33 @@ void Request::set_body(const std::string &str, size_t i)
 }
  /* *************************************************************************** */
 
+void Request::set_port()
+{
+   _port = atoi(extractPort().c_str());
+}
+ /* *************************************************************************** */
 
 
+int Request::checkHost()
+{
+    for (std::map<std::string, std::string>::iterator it = _header.begin(); it != _header.end(); it++)
+    {
+        if (it->first.compare("HOST") == 0)
+            return(200);
+    }
+    return(400);
+}
 
+
+std::string Request::extractPort()
+{
+    std::string host;
+    size_t i;
+    host = get_header("Host");
+    if ((i = host.find(":")) != std::string::npos)
+        return (host.substr(i + 1));
+    return ("0");
+}
 
 
 

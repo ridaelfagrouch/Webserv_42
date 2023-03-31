@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/30 17:03:04 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 19:43:59 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,6 @@ class Response{
 
 
 		//^ Datainit functions
-
-
-		Servers&			choseServer();
 		void				initErrorMap();
 		void				initRespMaps();
 		void				initContentMap();
@@ -83,7 +80,10 @@ class Response{
 		void				setQuery();
 		void				setRet();
 		void				setMethode();
-		void				setHost();
+		int					isAbsoluteURI();
+		void				changeHost();
+		// void				setserver();
+		// void				setHost();
 		void				setPort();
 		void				setBody();
 		std::string			decodePath();
