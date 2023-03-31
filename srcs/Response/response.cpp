@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 20:12:56 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 21:30:01 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,6 @@ void Response::changeHost()
 	for (std::vector<Servers>::iterator it = fd.all_servers.begin(); it != fd.all_servers.end(); it++) {
 		
 		for(std::vector<int>::iterator i = it->port.begin(); i != it->port.end(); i++) {
-			
-			// std::cout << it->host.append(":").append(to_String(*i)) << std::endl;
-			// std::cout << newHost << std::endl;
 		
  			if (!newHost.compare(it->host + ":" + to_String(*i)))				
 				server = *it;
@@ -122,6 +119,7 @@ void	Response::initRespMaps()
 	_header["Content-Type"] = "Content-Type: ";
 	_header["Content-Length"] = "Content-Length: ";
 	_header["Location"] = "Location: ";
+	_header["Allow"] = "Allow: ";
 	// _header["Cache-Control"] = "";
 	// _header["Transfer-Encoding"] = "";
 }

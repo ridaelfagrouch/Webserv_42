@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 16:11:27 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 21:27:29 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ int Response::readObject()
 	else if (!server.index.empty())
 		return (readDefault());
     else
-	    return (_ret = 404, 0); // Not found
+	    return (_ret = 404, 0);
 }

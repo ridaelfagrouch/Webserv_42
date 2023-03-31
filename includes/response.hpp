@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 19:43:59 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 21:28:26 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ class Response{
 		std::string			get_Content_Type();
 		std::string			get_Content_Length();
 		std::string			get_Rederiction();
+		std::string			get_Allow_Methodes();
 
 		
 		std::string			to_String(int n);

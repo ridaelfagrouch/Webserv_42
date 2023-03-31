@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:32:14 by houazzan          #+#    #+#             */
-/*   Updated: 2023/03/30 19:53:57 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:01:06 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int Request::checkHost()
 {
     for (std::map<std::string, std::string>::iterator it = _header.begin(); it != _header.end(); it++)
     {
-        if (it->first.compare("HOST") == 0)
+        if (it->first.compare("Host") == 0)
             return(200);
     }
     return(400);

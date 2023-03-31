@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   responce_head.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 16:06:32 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 16:31:09 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 21:27:21 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,17 @@ void Response::headMap()
 		_header["Connection"] += get_Connection();
 		_header["Content-Type"] += get_Content_Type();
 		_header["Content-Length"]  += get_Content_Length();
+		_header["Allow"] += get_Allow_Methodes();
 		
+		if (_ret == 405) {
+			std::cout << "hello" << std::endl;
+		_response.append(_header["Date"]).append(_header["Connection"]).append(_header["Content-Type"]).append
+		(_header["Content-Length"]).append(_header["Allow"].append(_Resbody));
+		}
+		else {
 		_response.append(_header["Date"]).append(_header["Connection"]).append(_header["Content-Type"]).append\
 		(_header["Content-Length"]).append(_Resbody);
+			
+		}
 	}
 } 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/31 20:48:31 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/03/31 21:28:55 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <fstream>
 #include <iostream>
 #include <fcntl.h>
+#include <sys/wait.h>
 
 // "REDIRECT_STATUS","DOCUMENT_ROOT", "SERVER_SOFTWARE"
 //     ,"SERVER_PORT","GATEWAY_INTERFACE"
