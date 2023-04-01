@@ -58,6 +58,7 @@ public:
     int     				serverSock;
     int     				port;
     int         			readLen;
+    int        			    HeaderLength;
     size_t         			totalRead;//
     size_t                  totalSend;//
     size_t                  bytesLeft;//
@@ -93,6 +94,7 @@ public:
     void    	checkOtherServers(int _port, std::vector<Servers> &ServReserve, fds_info &my_fd);
     void		checkFirstTime(fds_info &my_fd, std::string str);
     void    	resetMyFdInfo(fds_info &my_fd);
+    int         getHeaderLength(const std::string& requestHeader);
     
     webServer(std::vector<Servers> servers);
     ~webServer();

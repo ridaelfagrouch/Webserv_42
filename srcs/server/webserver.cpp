@@ -57,7 +57,7 @@ void    webServer::setupServer()
 	
 		fdsInfo.push_back(fdtmp);
 		fds.push_back(fdtmp.tmp);
-		// std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
+		std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
     }
     acceptConnection();
 }
@@ -373,7 +373,18 @@ void	webServer::checkFirstTime(fds_info &my_fd, std::string str)
 		my_fd.contentLength = checkContentLength(str);
 		foundServer(my_fd);
 		my_fd.isFirstTimeRead = false;
+		my_fd.HeaderLength = getHeaderLength(str);
 	}
+}
+
+//--------------------------------------------------------------------------
+
+int webServer::getHeaderLength(const std::string& requestHeader) {
+    size_t endOfHeaderPos = requestHeader.find("\r\n\r\n");
+    if (endOfHeaderPos == std::string::npos) {
+        return -1;
+    }
+    return endOfHeaderPos + 4;
 }
 
 //--------------------------------------------------------------------------
@@ -393,13 +404,18 @@ void webServer::readHeader(int i)
 		if (my_fd.readLen < 0)
 			my_fd.readLen = 0;
     	my_fd.totalRead += my_fd.readLen;
+		if (my_fd.HeaderLength > 0 && my_fd.totalRead > 0)
+		{
+			my_fd.totalRead -= my_fd.HeaderLength;
+			my_fd.HeaderLength = 0;
+		}
 		if (my_fd.totalRead > (size_t)my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
 		{
 			resetMyFdInfo(my_fd);
 			std::cerr << "server 413 Request Entity Too Large" << std::endl;
 			return ;
 		}
-		if (my_fd.contentLength == 0 || (my_fd.totalRead > my_fd.contentLength))
+		if (my_fd.contentLength == 0 || (my_fd.totalRead == my_fd.contentLength))
 		{
 			my_fd.isRecvComplet = true;
 			// std::cout << my_fd.strHeader << std::endl ;
@@ -411,6 +427,7 @@ void webServer::readHeader(int i)
 			// std::cout << "	- serverName : "<< my_fd.serverName <<  std::endl;
 			// std::cout << "	- contentLength : "<< my_fd.contentLength <<  std::endl;
 			// std::cout << "	- totalRead : " << my_fd.totalRead << std::endl;
+			// std::cout << "	- HeaderLength : " << my_fd.HeaderLength << std::endl;
 			// std::cout << "----------------------------------------------------------" << std::endl;
 		}
 	}

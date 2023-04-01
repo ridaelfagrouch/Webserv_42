@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 21:30:01 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/01 01:58:50 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,7 @@ std::string Response::call()
 		error();
 	else {
 	_ret = ParsingResponse();
-	if (_cgi) 
-		runcgi();
-	else if (_ret != 200)
+	if (_ret != 200)
 		error();
 	else if(_methode == "GET")
 		getMethode();
@@ -227,6 +225,12 @@ void	Response::setMethode()
 void	Response::setPort()
 {
 	this->_port = request.get_port();
+	setHost();
+}
+
+void	Response::setHost()
+{
+	this->_host = request.get_header("Host");
 	setBody();
 }
 

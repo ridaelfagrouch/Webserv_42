@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/01 23:02:19 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/01 23:10:25 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,11 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     if (!check.is_open())
     {
-        std::cout << "no file found\n";
+        std::cout << "no file found "  << fileName << std::endl;
         return "";
     }
 
     std::string cmd = server.locations[_l].fatscgi_pass;
-    std::cout << cmd << " " << server.locations[_l].directive << std::endl;
     
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
@@ -164,6 +163,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 
     
     remove("./tmpFile");
+    // std::cout << lines << std::endl;
     return lines;
 }
 

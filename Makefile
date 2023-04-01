@@ -40,7 +40,7 @@ export TITLE
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/Conf/php/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Request/*.cpp) $(wildcard ./srcs/Response/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror -fsanitize=address
 CXX = c++ 
 NAME = webserver
 
