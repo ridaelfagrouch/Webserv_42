@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/01 18:30:19 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/01 23:02:19 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,22 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     
+    fileName = cgi.getCgiroot() + fileName;
     std::ifstream check;
     check.open(fileName);
+    
     int out_fd = dup(1);
+    
+    
     if (!check.is_open())
     {
         std::cout << "no file found\n";
         return "";
     }
-    std::string cmd = "/Users/sahafid/Desktop/webserv_42/srcs/Conf/php/php-cgi";
+
+    std::string cmd = server.locations[_l].fatscgi_pass;
+    std::cout << cmd << " " << server.locations[_l].directive << std::endl;
+    
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
 
@@ -118,6 +125,8 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         execve(argv[0], argv, envp);
         exit(0);
     }
+
+    
     waitpid(-1, NULL, 0);
     close(fd);
     dup2(out_fd, 1);
@@ -137,17 +146,22 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         alllines.push_back(tmp);
     }
     
-    alllines.erase(alllines.begin());
-    
-    headers += alllines[0];
-    alllines.erase(alllines.begin());
-    
-    std::vector<std::string> head = split(headers, ':');
-    
-    for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
-        lines.append(*it);
-    
-    _header["Content-Type"] = head[1];
+    if (alllines.size() > 2)
+    {
+        alllines.erase(alllines.begin());
+        
+        
+        headers += alllines[0];
+        alllines.erase(alllines.begin());
+        
+        std::vector<std::string> head = split(headers, ':');
+        
+        for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
+            lines.append(*it);
+        
+        _header["Content-Type"] = head[1];
+    }
+
     
     remove("./tmpFile");
     return lines;
