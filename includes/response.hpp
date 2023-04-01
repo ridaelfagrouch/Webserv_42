@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 21:28:26 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:09:57 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,5 +217,8 @@ class Response{
 		};
 
 		std::string     executeCgi(std::string filename, Cgi cgi);
+		std::string		executeCgiPy(std::string fileName, Response::Cgi cgi);
+		std::string		executeCgiPhp(std::string fileName, Response::Cgi cgi);
+
 
 };

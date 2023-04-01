@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/31 21:28:55 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:30:19 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
     return envirement;
 }
 
-std::string  executeCgiPhp(std::string fileName, Response::Cgi cgi)
+std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     
     std::ifstream check;
@@ -129,19 +129,33 @@ std::string  executeCgiPhp(std::string fileName, Response::Cgi cgi)
 
     std::string tmp;
     std::string lines;
+    std::string headers;
+    std::vector<std::string> alllines;
     
     while(getline(test, tmp))
     {
-        lines.append("\n");
-        lines.append(tmp);
+        alllines.push_back(tmp);
     }
+    
+    alllines.erase(alllines.begin());
+    
+    headers += alllines[0];
+    alllines.erase(alllines.begin());
+    
+    std::vector<std::string> head = split(headers, ':');
+    
+    for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
+        lines.append(*it);
+    
+    _header["Content-Type"] = head[1];
+    
     remove("./tmpFile");
     return lines;
 }
 
 
 
-std::string   executeCgiPy(std::string fileName, Response::Cgi cgi)
+std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
 {
     
     std::ifstream check;

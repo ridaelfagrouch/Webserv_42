@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/31 21:27:29 by ouzhamza         ###   ########.fr       */
-=======
-/*   Updated: 2023/03/31 20:50:16 by ouzhamza         ###   ########.fr       */
->>>>>>> 91de3b3 (Added the allowed methode header)
+/*   Updated: 2023/03/31 21:33:27 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
