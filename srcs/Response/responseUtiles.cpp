@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/29 02:00:50 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/01 01:41:42 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int Response::isFile()
 int Response::checkPath()
 {
 	struct stat st;
-
+	
 	server.root.append(_pathExtra);
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);

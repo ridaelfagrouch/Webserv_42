@@ -1,0 +1,7 @@
+.DS_Store
+*.o
+*/*/*.o
+*/*.o
+*.dSYM
+.vscode
+public/upload

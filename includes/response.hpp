@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/01 18:09:57 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/01 18:50:11 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ class Response{
 		int					isAbsoluteURI();
 		void				changeHost();
 		// void				setserver();
-		// void				setHost();
+		void				setHost();
 		void				setPort();
 		void				setBody();
 		std::string			decodePath();

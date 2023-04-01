@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 02:28:13 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/22 23:01:09 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/03/31 23:29:18 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int Response::readFile()
 		file.close();
 		return (_ret = 200, 1);
 	}
+	std::cout << "i'm here: " << std::endl;
 	return(_ret = 403, 0); // Forbidden 
 }
 

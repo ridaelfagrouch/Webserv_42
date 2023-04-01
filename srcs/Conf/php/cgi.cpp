@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/01 18:30:19 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/01 18:50:00 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     int out_fd = dup(1);
     if (!check.is_open())
     {
-        std::cout << "no file found\n";
+        std::cout << "no file found "  << fileName << std::endl;
         return "";
     }
-    std::string cmd = "/Users/sahafid/Desktop/webserv_42/srcs/Conf/php/php-cgi";
+    std::string cmd = "./srcs/Conf/php/php-cgi";
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
 
@@ -150,6 +150,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     _header["Content-Type"] = head[1];
     
     remove("./tmpFile");
+    std::cout << lines << std::endl;
     return lines;
 }
 
