@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/16 12:22:27 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 23:57:58 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,11 @@ void    Servers::enterData(std::vector<std::string> info)
     else if (info.size() > 1 && info[0] == "index")
     {
         if (info.size() == 2)
+        {
+            if (!this->index.empty())
+                throw std::invalid_argument("Syntax Error: invalid"); 
             this->index = info[1];
+        }
         else
             throw std::invalid_argument("Syntax Error: wrong number of arguments"); 
     }  
