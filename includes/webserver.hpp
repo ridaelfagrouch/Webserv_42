@@ -82,12 +82,12 @@ public:
     std::string foundKey(std::string str, std::string key);
     long int	getTimeMs();
     int     	guard(int n, const char *er);
-    void     	pollIn(int &i);
+    int     	pollIn(int &i);
     int     	checkContentLength(std::string str);
     void    	setupServer();
     void    	acceptConnection();
 	void		sendData(fds_info &my_fd, int &i);
-    void    	readHeader(int i);
+    void    	readHeader(fds_info &my_fd);
     void    	pollOut(int &i, fds_info &my_fd);
     void    	foundServer(fds_info &my_fd);
     void    	fdData(fds_info &fdtmp, int fd);
