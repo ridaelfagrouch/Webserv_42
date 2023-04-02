@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 23:18:49 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 23:38:41 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,24 @@ void    Servers::checkHost(std::string info)
 }
 
 
-std::string setErrorPage(std::string status_code)
+std::string setErrorPage(std::string path, std::string status_code)
 {
     std::ifstream file;
-    file.open("./srcs/Conf/error/error.html");
-    // int code = atoi(status_code.c_str());
+    file.open(path.c_str());
+
     std::string line;
     std::string lines;
+
+    
     while (getline(file, line))
         lines.append(line + "\n");
-    int pos = lines.find("404");
-    lines[pos] = status_code[0];
-    lines[pos+1] = status_code[1];
-    lines[pos+2] = status_code[2];
+    if (path == "./srcs/Conf/error/error.html")
+    {
+        int pos = lines.find("404");
+        lines[pos] = status_code[0];
+        lines[pos+1] = status_code[1];
+        lines[pos+2] = status_code[2];
+    }
     return lines;
 }
 
@@ -103,7 +108,6 @@ int    allcodes(int code)
     codes.push_back(450);
     codes.push_back(451);
     codes.push_back(456);
-    
     codes.push_back(444);
     codes.push_back(495);
     codes.push_back(496);
@@ -150,16 +154,17 @@ void    Servers::errorPage(std::vector<std::string> info)
         {
             file.open(info[2].c_str());
             current.path = info[2];
+            current.page = setErrorPage(current.path, to_String(status));
             if (!file)
             {
-                current.path = "./error/error.html";
-                current.page = setErrorPage(to_String(status));
+                current.path = "./srcs/Conf/error/error.html";
+                current.page = setErrorPage(current.path, to_String(status));
             }
         }
         else
         {
-            current.path = "./error/error.html";
-            current.page = setErrorPage(to_String(status));
+            current.path = "./srcs/Conf/error/error.html";
+            current.page = setErrorPage(current.path, to_String(status));
         }
         this->error_page.push_back(current);
     }
