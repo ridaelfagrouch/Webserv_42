@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 02:25:05 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 20:39:40 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 
 
     variable = "HTTP_COOKIE=";
-    variable.append("");
+    variable.append(cgi.getCoockies());
     envirement[10] = strdup(variable.c_str());
 
     variable = "SCRIPT_FILENAME=";
@@ -86,14 +86,11 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
     envirement[11] = strdup(variable.c_str());
     
     envirement[12] = NULL;
+    
     return envirement;
 }
 
 
-void    checkCookie()
-{
-    
-}
 
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
@@ -101,31 +98,26 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     fileName = cgi.getCgiroot() + fileName;
     std::ifstream check;
     check.open(fileName);
-    
+
     int out_fd = dup(1);
     
-    
+    std::cout << cgi.getCoockies() << std::endl;
     if (!check.is_open())
     {
         std::cout << "no file found "  << fileName << std::endl;
         return "";
     }
-
-    checkCookie();
-
     std::string cmd = server.locations[_l].fatscgi_pass;
-
-    std::cout << "the command is: " << cmd << std::endl;
-    std::cout << "the fileName is: " << fileName << std::endl;
     
     remove("./tmpFile");
-    int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
+    int fd = open("./tmpFile", O_CREAT | O_WRONLY | O_TRUNC);
 
     int pid = fork();
     if (pid == 0)
     {
         dup2(fd, 1);
         close(fd);
+        
         char *argv[3];
         argv[0] = strdup((char*)cmd.c_str());
         argv[1] = strdup((char *)fileName.c_str());
@@ -141,52 +133,53 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     close(fd);
     dup2(out_fd, 1);
 
-    std::ifstream test;
-
-    test.open("./tmpFile");
+    
 
 
     std::string tmp;
     std::string lines;
-    std::string headers;
     std::vector<std::string> alllines;
+    
+    std::ifstream test;
+
+    test.open("./tmpFile");
+    
     
     while(getline(test, tmp))
     {
         alllines.push_back(tmp);
     }
     
+    
     if (alllines.size() > 2)
     {
-
+        std::vector<std::string>::iterator iter = alllines.begin();
+        
+        while (iter != alllines.end())
+        {
+            if ((*iter)[0] == 13 && (*(iter +1))[0] == 0)
+            {
+                iter = alllines.erase(iter);
+                iter = alllines.erase(iter);
+                break ;
+            }
+            std::vector<std::string> data = split(*iter, ':');
+            if (data.size() == 2){
+                cgi_header.push_back(*iter);
+            }
+            iter = alllines.erase(iter);
+        }        
+        
         for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
         {
-            if ((*it)[0] == 13 && (*(it +1))[0] == 0)
-                break ;
-            std::vector<std::string> data = split(*it, ':');
-            if (data.size() == 2){
-                _header[data[0]] = data[1];
-                std::cout << data[0] << " " << data[1] << std::endl;
-            }
-        }
-        
-        alllines.erase(alllines.begin());
-        
-        
-        headers += alllines[0];
-        alllines.erase(alllines.begin());
-        
-        std::vector<std::string> head = split(headers, ':');
-        
-        for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
             lines.append(*it);
-        
-        _header["Content-Type"] = head[1];
+        }
     }
+    else
+        throw std::invalid_argument("missing lines");
 
-    
+        
     remove("./tmpFile");
-    std::cout << lines << std::endl;
     return lines;
 }
 
@@ -234,7 +227,6 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
 
     while(getline(test, tmp))
     {
-        lines.append("\n");
         lines.append(tmp);
     }
     remove("./tmpFile");

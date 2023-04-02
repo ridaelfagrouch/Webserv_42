@@ -2,6 +2,10 @@
 
 // Set the content type to HTML
 header("Content-Type: text/html");
+setcookie('mycookie', 'Hello, Cookie!', time() + (1 * 30), '/');
+session_start();
+
+$_SESSION['myvar'] = 'Hello, Session!';
 
 // Generate some HTML
 $html = "

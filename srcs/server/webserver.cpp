@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/04/02 02:25:30 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 02:26:49 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int    webServer::pollIn(int &i)
 			fds.push_back(fdtmp.tmp);
 			fdsInfo.push_back(fdtmp);
 		}
-		// std::cout << clientSockets << std::endl;
 		return (0);
 	}
 	else

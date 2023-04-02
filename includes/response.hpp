@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 02:02:31 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:21:50 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ class Response {
 		std::map<std::string, std::string> _postObject;
 		std::map<std::string, std::string> _Query;
 		
+		std::vector<std::string> cgi_header;
 		// std::map<std::string, std::string (*)(const std::string&)>_methodes;
 	public:
 		Response(Request &_request, fds_info &_fd);
@@ -171,6 +172,7 @@ class Response {
 		std::string			get_Content_Length();
 		std::string			get_Rederiction();
 		std::string			get_Allow_Methodes();
+		std::string			getcgiheader();
 
 		
 		std::string			to_String(int n);
@@ -188,7 +190,7 @@ class Response {
     		    std::string serverName;
     		    std::string serverProtocol;
 				std::string port;
-				std::string Cockies;
+				std::string Coockies;
     		public:
 				// void		setCgiserverProtocol(std::string protocol);
 				void		setCgicontentType(std::string port);
@@ -201,7 +203,7 @@ class Response {
 				void		setCgiMethode(std::string methode);
 				void		setCgiserverProtocol();
 				void		setCgiPort(int port);
-				void		setCockies(std::string cockies);
+				void		setCoockies(std::string coockies);
 
 
 				std::string		getCgicontentType();
@@ -214,6 +216,7 @@ class Response {
 				std::string		getCgiMethode();
 				std::string		getCgiserverProtocol();
 				std::string		getCgiPort();
+				std::string		getCoockies();
 
     		    Cgi();
     		    ~Cgi();
