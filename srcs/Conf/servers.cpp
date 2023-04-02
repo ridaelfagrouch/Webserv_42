@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/10 15:31:34 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 21:50:10 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void    Servers::errorPage(std::vector<std::string> info)
     std::vector<int> saved_codes;
 
     int status = ft_stoi(info[1]);
-    // if (std::find(saved_codes.begin(), saved_codes.end(), status) != saved_codes.end())
-    //     throw std::invalid_argument("Syntax error: duplicate status code");
+
 
     if (allcodes(status))
     {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/16 16:52:16 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:51:41 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Locations {
         std::string upload_store;
         std::vector<std::string> allow_methods;
         std::string fatscgi_pass;
+        std::string index;
 
         
         void    enterLocationData(std::vector<std::string> info);
