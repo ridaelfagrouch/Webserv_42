@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 02:01:57 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 02:25:05 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,12 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 
         for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
         {
-            if (*it == "" && *(it +1) == "")
-            {
-                std::cout << "ana hna\n";
+            if ((*it)[0] == 13 && (*(it +1))[0] == 0)
                 break ;
+            std::vector<std::string> data = split(*it, ':');
+            if (data.size() == 2){
+                _header[data[0]] = data[1];
+                std::cout << data[0] << " " << data[1] << std::endl;
             }
         }
         
