@@ -6,12 +6,11 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 22:07:31 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 23:18:49 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config.hpp"
-
 
 void    checkSemicolone(std::vector<std::string> &info)
 {
@@ -32,6 +31,7 @@ void    checkSemicolone(std::vector<std::string> &info)
     if (semi > 1)
         throw std::invalid_argument("Syntax Error: extra semicolone");
 }
+
 
 
 
@@ -73,6 +73,23 @@ void    Servers::checkHost(std::string info)
     this->host = host;
 }
 
+
+std::string setErrorPage(std::string status_code)
+{
+    std::ifstream file;
+    file.open("./srcs/Conf/error/error.html");
+    // int code = atoi(status_code.c_str());
+    std::string line;
+    std::string lines;
+    while (getline(file, line))
+        lines.append(line + "\n");
+    int pos = lines.find("404");
+    lines[pos] = status_code[0];
+    lines[pos+1] = status_code[1];
+    lines[pos+2] = status_code[2];
+    return lines;
+}
+
 int    allcodes(int code)
 {
     std::vector<int> codes;
@@ -81,20 +98,40 @@ int    allcodes(int code)
     for (int i = 421; i < 429; i++)
         codes.push_back(i);
 
-
-
-
     codes.push_back(431);
     codes.push_back(449);
     codes.push_back(450);
     codes.push_back(451);
     codes.push_back(456);
+    
+    codes.push_back(444);
+    codes.push_back(495);
+    codes.push_back(496);
+    codes.push_back(497);
+    codes.push_back(498);
+    codes.push_back(499);
+
+    for (int i = 500; i < 512; i++)
+        codes.push_back(i);
 
     
+    for (int i = 520; i < 528; i++)
+        codes.push_back(i);
+        
     if (std::find(codes.begin(), codes.end(), code) != codes.end())
         return true;
     return false;
 }
+
+std::string	to_String(int n)
+{
+	std::stringstream tmp;
+
+	tmp << n;
+
+	return tmp.str();
+}
+
 
 void    Servers::errorPage(std::vector<std::string> info)
 {
@@ -114,10 +151,16 @@ void    Servers::errorPage(std::vector<std::string> info)
             file.open(info[2].c_str());
             current.path = info[2];
             if (!file)
+            {
                 current.path = "./error/error.html";
+                current.page = setErrorPage(to_String(status));
+            }
         }
         else
+        {
             current.path = "./error/error.html";
+            current.page = setErrorPage(to_String(status));
+        }
         this->error_page.push_back(current);
     }
     else
