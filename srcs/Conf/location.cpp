@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:34:43 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/16 16:54:55 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:51:44 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,15 @@ void    Locations::enterLocationData(std::vector<std::string> info)
             else
                 throw std::invalid_argument("Syntax Error: wrong number of arguments"); 
         }
+        else if (info[0] == "index")
+        {
+            if (info.size() == 2)
+                this->index = info[1];
+            else
+                throw std::invalid_argument("Syntax Error: wrong number of arguments"); 
+        }
+        else
+            throw std::invalid_argument("Syntax Error: unknow arguments"); 
     }
     else
         throw std::invalid_argument("Syntax Error: wrong number of arguments"); 

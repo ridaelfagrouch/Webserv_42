@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/16 16:52:16 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 23:16:10 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <iterator>
 #include <exception>
 #include  <algorithm>
+#include <sstream>
 
 # include "webserver.hpp"
 
@@ -37,6 +38,7 @@ class Locations {
         std::string upload_store;
         std::vector<std::string> allow_methods;
         std::string fatscgi_pass;
+        std::string index;
 
         
         void    enterLocationData(std::vector<std::string> info);
@@ -50,6 +52,7 @@ class errorPages {
     public:
         int status_code;
         std::string path;
+        std::string page;
 };
 
 
@@ -99,6 +102,7 @@ class Config {
 
 std::vector<std::string>    split(std::string s, char c);
 std::string                 trim(std::string &s, char c);
+std::string                 to_String(int n);
 int                         ft_stoi(std::string str);
 void                        check_syntax(std::vector<Locations> &locations);
 void                        checkSemicolone(std::vector<std::string> &info);

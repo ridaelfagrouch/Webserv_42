@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/01 23:06:26 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 21:59:49 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,6 @@ void    checkLocationValidity(Locations &location, std::string root)
         location.root = root;
     if (location.autoindex.empty())
         location.autoindex = "off";
-    if (location.directive == "*.php")
-    {
-        // if (location.fatscgi_pass.empty())
-        //     location.fatscgi_pass = "./php-cgi";
-        // else if ((location.fatscgi_pass != "./php-cgi") || (location.fatscgi_pass != "/Users/sahafid/Desktop/webserv/php/php-cgi"))
-        //     location.fatscgi_pass = "./php-cgi";
-    }
 }
 
 void    checkDataValidity(Servers &server)

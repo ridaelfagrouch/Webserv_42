@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 17:32:29 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:25:06 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,20 @@ std::string	Response::to_String(int n)
 	tmp << n;
 
 	return tmp.str();
+}
+
+
+std::string Response::getcgiheader()
+{
+    std::string line = "";
+    for (std::vector<std::string>::iterator it = cgi_header.begin(); it != cgi_header.end(); it++)
+	{
+		std::vector<std::string> data = split(*it, ':');
+    	if (data.size() == 2){
+			if (data[0] == "Content-type")
+				data[0] = "Content-Type";
+            line += data[0] + ": " + data[1] + "\r\n";
+		}
+	}
+    return line;
 }
