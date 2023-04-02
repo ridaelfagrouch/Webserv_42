@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/01 18:50:11 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/01 23:37:35 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 #include "../includes/request.hpp"
 #include "../includes/webserver.hpp"
 
-class Response{
+class Response {
+	
 	private:
 		std::string _response;
 		std::string _path;
