@@ -64,43 +64,43 @@ void    webServer::setupServer()
 
 //--------------------------------------------------------------------------
 
-void    webServer::pollIn(int &i)
+int    webServer::pollIn(int &i)
 {
-	for (size_t i = 0; i < _serv.size(); i++)
+	if (fds[i].fd == _serv[i].socket_fd)
 	{
-		if (fds[i].fd == _serv[i].socket_fd)
+		struct sockaddr_in	clientAddress;
+    	socklen_t 			addrlen = sizeof(clientAddress);
+		if((clientSockets = accept(_serv[i].socket_fd,(struct sockaddr *) &clientAddress, &addrlen)) > 0)
 		{
-			struct sockaddr_in	clientAddress;
-    		socklen_t 			addrlen;
-			while((clientSockets = accept(fds[i].fd,(struct sockaddr *) &clientAddress, &addrlen)) > 0)
+			if (fcntl(clientSockets, F_SETFL, O_NONBLOCK) < 0)
 			{
-				if (fcntl(clientSockets, F_SETFL, O_NONBLOCK) < 0)
-				{
-					perror("fcntl error");
-					return ;
-				}
-				fds_info fdtmp;
-				fdData(fdtmp, clientSockets);
-
-				fdtmp.serverSock = fds[i].fd;
-				fdtmp.port = _serv[i]._port;
-				fds.push_back(fdtmp.tmp);
-				fdsInfo.push_back(fdtmp);
-				return ;
+				perror("fcntl error");
+				return (0);
 			}
+			fds_info fdtmp;
+			fdData(fdtmp, clientSockets);
+			fdtmp.serverSock = fds[i].fd;
+			fdtmp.port = _serv[i]._port;
+			fds.push_back(fdtmp.tmp);
+			fdsInfo.push_back(fdtmp);
+			return (0);
 		}
 	}
-    readHeader(i);
-	fdsInfo[i].lastTime = getTimeMs();
-    if (fdsInfo[i].readLen <= -1 || fdsInfo[i].readLen == 0)
+	else
 	{
-		if (fdsInfo[i].readLen == 0)
-			perror("Client disconnected");
-		close(fdsInfo[i].tmp.fd);
-		fdsInfo.erase(fdsInfo.begin()+i);
-		fds.erase(fds.begin()+i);
-		i--;
+    	readHeader(fdsInfo[i]);
+		fdsInfo[i].lastTime = getTimeMs();
+    	if (fdsInfo[i].readLen <= 0)
+		{
+			if (fdsInfo[i].readLen == 0)
+				perror("Client disconnected");
+			close(fdsInfo[i].tmp.fd);
+			fdsInfo.erase(fdsInfo.begin()+i);
+			fds.erase(fds.begin()+i);
+			return (-1);
+		}
 	}
+	return (0);
 }
 
 //--------------------------------------------------------------------------
@@ -197,7 +197,10 @@ void    webServer::acceptConnection(void)
 		for (int i = 0; i < (int)fds.size(); i++)
 		{
 			if (fds[i].revents & POLLIN)
-				pollIn(i);
+			{
+				if (pollIn(i) == -1)
+					continue;
+			}
 			if (fds[i].revents & POLLOUT && fdsInfo[i].isRecvComplet)
 				pollOut(i, fdsInfo[i]);
 			if (fds[i].revents & (POLLHUP | POLLERR))
@@ -208,7 +211,7 @@ void    webServer::acceptConnection(void)
     			i--;
             	continue;
 			}
-			if ((getTimeMs() - fdsInfo[i].lastTime) > 300 && !fdsInfo[i].isFirstTimeRead)
+			if ((getTimeMs() - fdsInfo[i].lastTime) >= 5000 && !fdsInfo[i].isFirstTimeRead)
 			{
 				// std::cerr << "timeout error 504" << std::endl;
 				fds[i].revents = POLLOUT;
@@ -389,46 +392,47 @@ int webServer::getHeaderLength(const std::string& requestHeader) {
 
 //--------------------------------------------------------------------------
 
-void webServer::readHeader(int i)
+void webServer::readHeader(fds_info &my_fd)
 {
-    char buffer[1024] = {0};
-    fds_info &my_fd = fdsInfo[i];
+    char buffer[10000] = {0};
 
 	if (!my_fd.isRecvComplet)
 	{
 		my_fd.readLen = 0;
-    	my_fd.readLen = recv(my_fd.tmp.fd, buffer, sizeof(buffer), 0);
-    	std::string str(buffer, my_fd.readLen);
-		checkFirstTime(my_fd, str);
-    	my_fd.strHeader.append(str);
-		if (my_fd.readLen < 0)
-			my_fd.readLen = 0;
-    	my_fd.totalRead += my_fd.readLen;
-		if (my_fd.HeaderLength > 0 && my_fd.totalRead > 0)
+    	my_fd.readLen = recv(my_fd.tmp.fd, buffer, 10000, 0);
+		if (my_fd.readLen > 0)
 		{
-			my_fd.totalRead -= my_fd.HeaderLength;
-			my_fd.HeaderLength = 0;
-		}
-		if (my_fd.totalRead > (size_t)my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
-		{
-			resetMyFdInfo(my_fd);
-			std::cerr << "server 413 Request Entity Too Large" << std::endl;
-			return ;
-		}
-		if (my_fd.contentLength == 0 || (my_fd.totalRead == my_fd.contentLength))
-		{
-			my_fd.isRecvComplet = true;
-			// std::cout << my_fd.strHeader << std::endl ;
-			// std::cout << "----------------------------------------------------------" << std::endl;
-			// std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
-			// std::cout << "	- port : "<< my_fd.port <<  std::endl;
-			// std::cout << "	- host : "<< my_fd.my_servers[0].host <<  std::endl;
-			// std::cout << "	- connection : "<< my_fd.Connection <<  std::endl;
-			// std::cout << "	- serverName : "<< my_fd.serverName <<  std::endl;
-			// std::cout << "	- contentLength : "<< my_fd.contentLength <<  std::endl;
-			// std::cout << "	- totalRead : " << my_fd.totalRead << std::endl;
-			// std::cout << "	- HeaderLength : " << my_fd.HeaderLength << std::endl;
-			// std::cout << "----------------------------------------------------------" << std::endl;
+    		std::string str(buffer, my_fd.readLen);
+			checkFirstTime(my_fd, str);
+    		my_fd.strHeader.append(str);
+			if (my_fd.readLen < 0)
+				my_fd.readLen = 0;
+    		my_fd.totalRead += my_fd.readLen;
+			if (my_fd.HeaderLength > 0 && my_fd.totalRead > 0)
+			{
+				my_fd.totalRead -= my_fd.HeaderLength;
+				my_fd.HeaderLength = 0;
+			}
+			if (my_fd.totalRead > (size_t)my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
+			{
+				resetMyFdInfo(my_fd);
+				std::cerr << "server 413 Request Entity Too Large" << std::endl;
+				return ;
+			}
+			if (my_fd.contentLength == 0 || (my_fd.totalRead == my_fd.contentLength))
+			{
+				my_fd.isRecvComplet = true;
+				// std::cout << my_fd.strHeader << std::endl ;
+				std::cout << "----------------------------------------------------------" << std::endl;
+				std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
+				std::cout << "	- port : "<< my_fd.port <<  std::endl;
+				std::cout << "	- host : "<< my_fd.my_servers[0].host <<  std::endl;
+				std::cout << "	- connection : "<< my_fd.Connection <<  std::endl;
+				std::cout << "	- serverName : "<< my_fd.serverName <<  std::endl;
+				std::cout << "	- contentLength : "<< my_fd.contentLength <<  std::endl;
+				std::cout << "	- totalRead : " << my_fd.totalRead << std::endl;
+				std::cout << "----------------------------------------------------------" << std::endl;
+			}
 		}
 	}
 }
