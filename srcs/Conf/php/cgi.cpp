@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/01 23:16:27 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:14:44 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
     return envirement;
 }
 
+
+void    checkCookie()
+{
+    
+}
+
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     
@@ -104,6 +110,8 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         std::cout << "no file found "  << fileName << std::endl;
         return "";
     }
+
+    checkCookie();
 
     std::string cmd = server.locations[_l].fatscgi_pass;
     

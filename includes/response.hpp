@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/01 23:37:35 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:32:50 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ class Response {
 		
 		//! FUNCTIONS FOR CGI
 		int					runcgi();
-		void				fillClass();
+		int				fillClass();
 
 		// void				tokenizeQuery();
 		// std::string			setName(size_t i);
