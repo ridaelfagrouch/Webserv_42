@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/01 18:51:40 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/01 23:09:12 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void Response::fillClass()
     cgi.setCgiserverProtocol();
     cgi.setCgiPort(request.get_port());
     
-    _Resbody += executeCgi("/Users/sahafid/Desktop/webserv_42/srcs/Conf/php/file.php", cgi);
+    _Resbody += executeCgi(cgi.getCgiPath(), cgi);
     
     // std::cout << server.port[0] << std::endl; 
 }
