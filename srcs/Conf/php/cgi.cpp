@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 01:04:54 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 02:01:57 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
     return envirement;
 }
 
+
+void    checkCookie()
+{
+    
+}
+
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     
@@ -104,6 +110,8 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         std::cout << "no file found "  << fileName << std::endl;
         return "";
     }
+
+    checkCookie();
 
     std::string cmd = server.locations[_l].fatscgi_pass;
 
@@ -150,6 +158,16 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     if (alllines.size() > 2)
     {
+
+        for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
+        {
+            if (*it == "" && *(it +1) == "")
+            {
+                std::cout << "ana hna\n";
+                break ;
+            }
+        }
+        
         alllines.erase(alllines.begin());
         
         

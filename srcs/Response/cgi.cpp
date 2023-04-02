@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 01:43:12 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 02:02:35 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,14 @@ int Response::fillClass()
     cgi.setCgicontentType(request.get_header("Content-Type"));
     cgi.setCgiserverProtocol();
     cgi.setCgiPort(request.get_port());
-    cgi.setCockies(request.get_header("Cookie"));
-    
-    _Resbody += executeCgi(cgi.getCgiPath(), cgi);
-    
+    try {
+        _Resbody += executeCgi(cgi.getCgiPath(), cgi);
+    }
+    catch (std::exception &e)
+    {
+        return 0;
+    }
+    return 1;
     // std::cout << server.port[0] << std::endl; 
     return (1);
 }

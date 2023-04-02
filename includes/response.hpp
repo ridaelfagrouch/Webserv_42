@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 01:42:06 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 02:02:31 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ class Response {
 		//! FUNCTIONS FOR CGI
 		int					runcgi();
 		int					fillClass();
-	
+
 		// void				tokenizeQuery();
 		// std::string			setName(size_t i);
 		// std::string			setValue(size_t i);
