@@ -57,7 +57,7 @@ void    webServer::setupServer()
 	
 		fdsInfo.push_back(fdtmp);
 		fds.push_back(fdtmp.tmp);
-		// std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
+		std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
     }
     acceptConnection();
 }
@@ -214,7 +214,6 @@ void    webServer::acceptConnection(void)
 			}
 			if ((getTimeMs() - fdsInfo[i].lastTime) >= 5000 && !fdsInfo[i].isFirstTimeRead)
 			{
-				// std::cerr << "timeout error 504" << std::endl;
 				fds[i].revents = POLLOUT;
 				fdsInfo[i].isTimeOut = true;
 				fdsInfo[i].isRecvComplet = true;
@@ -383,6 +382,45 @@ void	webServer::checkFirstTime(fds_info &my_fd, std::string str)
 
 //--------------------------------------------------------------------------
 
+
+std::string clean_chunked_request(std::string request) {
+    std::string clean_request = "";
+    int body_start = request.find("\r\n\r\n") + 4;
+
+    if (body_start == 3) {
+        clean_request = request;
+        return clean_request;
+    }
+
+    std::string header = request.substr(0, body_start);
+    std::string body = request.substr(body_start);
+
+    size_t found = header.find("Transfer-Encoding: chunked\r\n");
+    if (found != std::string::npos) {
+        header.erase(found, 29);
+    }
+	else
+		return clean_request;
+
+    while (true) {
+        found = body.find("\r\n");
+        if (found == std::string::npos)
+            break;
+        int length = stoi(body.substr(0, found), nullptr, 16);
+        body.erase(0, found + 2);
+        if (length == 0)
+            break;
+        clean_request += body.substr(0, length);
+        body.erase(0, length + 2);
+    }
+
+    clean_request = header + "\r\n" + clean_request;
+
+    return clean_request;
+}
+
+//--------------------------------------------------------------------------
+
 int webServer::getHeaderLength(const std::string& requestHeader) {
     size_t endOfHeaderPos = requestHeader.find("\r\n\r\n");
     if (endOfHeaderPos == std::string::npos) {
@@ -395,12 +433,12 @@ int webServer::getHeaderLength(const std::string& requestHeader) {
 
 void webServer::readHeader(fds_info &my_fd)
 {
-    char buffer[10000] = {0};
+    char buffer[50000] = {0};
 
 	if (!my_fd.isRecvComplet)
 	{
 		my_fd.readLen = 0;
-    	my_fd.readLen = recv(my_fd.tmp.fd, buffer, 10000, 0);
+    	my_fd.readLen = recv(my_fd.tmp.fd, buffer, 50000, 0);
 		if (my_fd.readLen > 0)
 		{
     		std::string str(buffer, my_fd.readLen);
@@ -420,10 +458,17 @@ void webServer::readHeader(fds_info &my_fd)
 				std::cerr << "server 413 Request Entity Too Large" << std::endl;
 				return ;
 			}
-			if (my_fd.contentLength == 0 || (my_fd.totalRead == my_fd.contentLength))
+			if (my_fd.contentLength == 0 || (my_fd.totalRead >= my_fd.contentLength))
 			{
 				my_fd.isRecvComplet = true;
-				// std::cout << my_fd.strHeader << std::endl ;
+				std::string clean_request = clean_chunked_request(my_fd.strHeader);
+				if (clean_request.size() > 0)
+				{
+					my_fd.strHeader.clear();
+					my_fd.strHeader = clean_request;
+					clean_request.clear();
+				}
+				// std::cout << my_fd.strHeader << std::endl;
 				// std::cout << "----------------------------------------------------------" << std::endl;
 				// std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
 				// std::cout << "	- port : "<< my_fd.port <<  std::endl;
@@ -436,4 +481,5 @@ void webServer::readHeader(fds_info &my_fd)
 			}
 		}
 	}
+
 }
