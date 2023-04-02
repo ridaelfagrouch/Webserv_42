@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserver.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/03/31 20:47:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:03:18 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,15 +423,15 @@ void webServer::readHeader(fds_info &my_fd)
 			{
 				my_fd.isRecvComplet = true;
 				// std::cout << my_fd.strHeader << std::endl ;
-				std::cout << "----------------------------------------------------------" << std::endl;
-				std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
-				std::cout << "	- port : "<< my_fd.port <<  std::endl;
-				std::cout << "	- host : "<< my_fd.my_servers[0].host <<  std::endl;
-				std::cout << "	- connection : "<< my_fd.Connection <<  std::endl;
-				std::cout << "	- serverName : "<< my_fd.serverName <<  std::endl;
-				std::cout << "	- contentLength : "<< my_fd.contentLength <<  std::endl;
-				std::cout << "	- totalRead : " << my_fd.totalRead << std::endl;
-				std::cout << "----------------------------------------------------------" << std::endl;
+				// std::cout << "----------------------------------------------------------" << std::endl;
+				// std::cout << GRN << "-> Header request is complet : "<< END << std::endl;
+				// std::cout << "	- port : "<< my_fd.port <<  std::endl;
+				// std::cout << "	- host : "<< my_fd.my_servers[0].host <<  std::endl;
+				// std::cout << "	- connection : "<< my_fd.Connection <<  std::endl;
+				// std::cout << "	- serverName : "<< my_fd.serverName <<  std::endl;
+				// std::cout << "	- contentLength : "<< my_fd.contentLength <<  std::endl;
+				// std::cout << "	- totalRead : " << my_fd.totalRead << std::endl;
+				// std::cout << "----------------------------------------------------------" << std::endl;
 			}
 		}
 	}

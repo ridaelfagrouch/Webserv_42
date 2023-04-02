@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/01 23:16:27 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:04:54 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     }
 
     std::string cmd = server.locations[_l].fatscgi_pass;
+
+    std::cout << "the command is: " << cmd << std::endl;
+    std::cout << "the fileName is: " << fileName << std::endl;
     
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
@@ -163,7 +166,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 
     
     remove("./tmpFile");
-    // std::cout << lines << std::endl;
+    std::cout << lines << std::endl;
     return lines;
 }
 
