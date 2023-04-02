@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 21:50:10 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 22:07:31 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,21 @@ void    Servers::checkHost(std::string info)
 int    allcodes(int code)
 {
     std::vector<int> codes;
-    codes.push_back(401);
-    codes.push_back(400);
-    codes.push_back(403);
-    codes.push_back(404);
-    codes.push_back(500);
-    codes.push_back(502);
-    codes.push_back(503);
+    for (int i = 400; i < 420; i++)
+        codes.push_back(i);
+    for (int i = 421; i < 429; i++)
+        codes.push_back(i);
+
+
+
+
+    codes.push_back(431);
+    codes.push_back(449);
+    codes.push_back(450);
+    codes.push_back(451);
+    codes.push_back(456);
+
+    
     if (std::find(codes.begin(), codes.end(), code) != codes.end())
         return true;
     return false;

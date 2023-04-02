@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enterlocationdata.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:53:17 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/16 16:54:04 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 22:03:30 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,18 @@ void    Locations::enterAllowedMethodes(std::vector<std::string> info)
     }
 }
 
+int     redirectionCodes(std::string code)
+{
+    if (code == "300" || code == "301" || code == "302" || code == "303" || code == "304" ||code == "305" || code == "306" || code == "307" || code == "308" || code == "310")
+        return 0;
+    return 1;
+}
 
 void    Locations::enterReturn(std::vector<std::string> info)
 {
     if (info.size() == 3)
     {
-        if (info[1] != "302" && info[1] != "301")
+        if (redirectionCodes(info[1]))
             throw std::invalid_argument("Syntax Error: wrong status code number");
         this->returned.append(info[1] + " ");
         this->returned.append(info[2]);
