@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 01:14:44 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:43:17 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,16 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     if (alllines.size() > 2)
     {
+
+        for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
+        {
+            if (*it == "" && *(it +1) == "")
+            {
+                std::cout << "ana hna\n";
+                break ;
+            }
+        }
+        
         alllines.erase(alllines.begin());
         
         

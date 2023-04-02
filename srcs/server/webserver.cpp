@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/03/31 20:47:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:57:10 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void    webServer::setupServer()
 
 int    webServer::pollIn(int &i)
 {
-	if (fds[i].fd == _serv[i].socket_fd)
+	if (i < (int)_serv.size() && fds[i].fd == _serv[i].socket_fd)
 	{
 		struct sockaddr_in	clientAddress;
     	socklen_t 			addrlen = sizeof(clientAddress);
@@ -83,8 +83,9 @@ int    webServer::pollIn(int &i)
 			fdtmp.port = _serv[i]._port;
 			fds.push_back(fdtmp.tmp);
 			fdsInfo.push_back(fdtmp);
-			return (0);
 		}
+		std::cout << clientSockets << std::endl;
+		return (0);
 	}
 	else
 	{
