@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 02:02:35 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 17:09:25 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int Response::fillClass()
     cgi.setCgiredirectStatus(_ret);
     cgi.setCgicontentLength(request.get_header("Content-Length"));
     cgi.setCgicontentType(request.get_header("Content-Type"));
+    cgi.setCoockies(request.get_header("Cookie"));
     cgi.setCgiserverProtocol();
     cgi.setCgiPort(request.get_port());
     try {
@@ -77,9 +78,9 @@ void Response::Cgi::setCgicontentLength(std::string _lenght)
     contentLength = _lenght;
 }
 
-void Response::Cgi::setCockies(std::string cockie)
+void Response::Cgi::setCoockies(std::string coockie)
 {
-    this->Cockies = cockie;
+    this->Coockies = coockie;
 }
 
 void Response::Cgi::setCgicontentType (std::string _type)
@@ -156,4 +157,9 @@ std::string		Response::Cgi::getCgiserverProtocol()
 std::string		Response::Cgi::getCgiPort()
 {
     return port;
+}
+
+std::string		Response::Cgi::getCoockies()
+{
+    return Coockies;
 }

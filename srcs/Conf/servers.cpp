@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/10 15:31:34 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 22:07:31 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,21 @@ void    Servers::checkHost(std::string info)
 int    allcodes(int code)
 {
     std::vector<int> codes;
-    codes.push_back(401);
-    codes.push_back(400);
-    codes.push_back(403);
-    codes.push_back(404);
-    codes.push_back(500);
-    codes.push_back(502);
-    codes.push_back(503);
+    for (int i = 400; i < 420; i++)
+        codes.push_back(i);
+    for (int i = 421; i < 429; i++)
+        codes.push_back(i);
+
+
+
+
+    codes.push_back(431);
+    codes.push_back(449);
+    codes.push_back(450);
+    codes.push_back(451);
+    codes.push_back(456);
+
+    
     if (std::find(codes.begin(), codes.end(), code) != codes.end())
         return true;
     return false;
@@ -93,8 +101,7 @@ void    Servers::errorPage(std::vector<std::string> info)
     std::vector<int> saved_codes;
 
     int status = ft_stoi(info[1]);
-    // if (std::find(saved_codes.begin(), saved_codes.end(), status) != saved_codes.end())
-    //     throw std::invalid_argument("Syntax error: duplicate status code");
+
 
     if (allcodes(status))
     {
