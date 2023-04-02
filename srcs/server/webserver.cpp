@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/04/02 02:13:30 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 02:25:30 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void    webServer::setupServer()
 	
 		fdsInfo.push_back(fdtmp);
 		fds.push_back(fdtmp.tmp);
-		std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
+		// std::cout << "listening to server host " << _serv[i].host << " port " << _serv[i]._port << std::endl;
     }
     acceptConnection();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 01:32:20 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 02:02:35 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int Response::runcgi()
 {
-    fillClass();
-    return(200);
+    if (!fillClass())
+        return(_ret = 500, 0);
+    return (_ret = 200, 1);
+
 }
 
 int Response::fillClass()
@@ -40,6 +42,7 @@ int Response::fillClass()
     }
     return 1;
     // std::cout << server.port[0] << std::endl; 
+    return (1);
 }
 
 void Response::Cgi::setCgiMethode(std::string _methode)
@@ -72,6 +75,11 @@ void Response::Cgi::setCgiredirectStatus(int _ret)
 void Response::Cgi::setCgicontentLength(std::string _lenght)
 {
     contentLength = _lenght;
+}
+
+void Response::Cgi::setCockies(std::string cockie)
+{
+    this->Cockies = cockie;
 }
 
 void Response::Cgi::setCgicontentType (std::string _type)
