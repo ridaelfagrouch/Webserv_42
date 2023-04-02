@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 18:37:03 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 23:49:18 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void Response::postMethode()
 {
+	// std::cout << "posting " << std::endl;
 	_ret = 201;
 	if (_ret <= 300 || _ret >= 307){
 		if (!postObject())
@@ -82,13 +83,14 @@ void Response::get_Data()
 			regularFile();
 		}
 	}
+	else
+		regularFile();
 }
 
 std::string Response::get_Boundary()
 {
 	std::stringstream s(_Reqbody);
 	std::getline(s, _bounadry);
-	// _Reqbody.append("\n").append(_bounadry); //! ADDED TELL THE REDA FIX THE PROBLEME (IF CONTENT DATA IS BIGG IT GET SPLITTED)
 	_bounadry.erase(_bounadry.find("\r"));
 	return (_bounadry);
 }
@@ -173,7 +175,6 @@ void	Response::regularFile()
 		conType = "text/plain";
 	else
 		conType =  request.get_header("Content-Type");
-		
 	_postObject[file.append(".").append(getKey(conType))] = _Reqbody;
 }
 
@@ -185,8 +186,8 @@ int	Response::creat()
 	// for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++)
 	// 	std::cout << it->first << " " << it->second << std::endl; //! printing the file content
 	if (stat(server.root.c_str(), &st) || !valid_Type()){
-		std::cout << valid_Type()  << std::endl;
-		std::cout << server.root << std::endl;
+		// std::cout << valid_Type()  << std::endl;
+		// std::cout << server.root << std::endl;
 		return (0);
 	}
 	for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++){
@@ -201,8 +202,9 @@ int	Response::creat()
 
 int Response::valid_Type()
 {
+	std::cout << ":" << conType << ":" << std::endl;
 	for(std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++){
-		if (!conType.compare(it->second)){
+		if (!conType.compare(it->first)){
 			return (1);
 		}
 	}
@@ -214,8 +216,8 @@ int Response::valid_Type()
 std::string Response::getKey(std::string value)
 {
 	for (std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++){
-		if (!value.compare(it->second))
-			return (it->first);
+		if (!value.compare(it->first))
+			return (it->second);
 	}
 	return ("unkown");
 }

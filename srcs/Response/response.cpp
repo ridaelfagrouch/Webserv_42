@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 01:59:51 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/02 23:39:45 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,13 +239,13 @@ void	Response::setBody()
 	this->_Reqbody = request.get_body();
 }
 
-std::string Response::get_key(std::string line)
+std::string Response::get_value(std::string line)
 {
 	size_t i = line.find(":");
 	return (line.substr(i + 1));
 }
 
-std::string Response::get_value(std::string line)
+std::string Response::get_key(std::string line)
 {
 	size_t i = line.find(":");
 	return (line.substr(0, i));	
