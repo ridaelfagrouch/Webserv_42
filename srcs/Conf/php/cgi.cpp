@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 16:26:11 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 21:36:33 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
     envirement[1] = strdup(variable.c_str());
     
     variable = "QUERY_STRING=";
-    variable.append(cgi.getCgiQuery());
+    if (cgi.getCgiMethode() != "POST")
+        variable.append(cgi.getCgiQuery());
     envirement[2] = strdup(variable.c_str());  
 
     variable = "DOCUMENT_ROOT=";
@@ -110,13 +111,21 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_WRONLY | O_TRUNC);
-
     int pid = fork();
     if (pid == 0)
     {
+        int fds[2];
+        pipe(fds);
+        
         dup2(fd, 1);
         close(fd);
-        
+        if (cgi.getCgiMethode() == "POST")
+        {
+            write(fds[1], cgi.getCgiQuery().c_str(), cgi.getCgiQuery().length());
+            dup2(fds[0], 0);
+        }
+        // close(fds[0]);
+        // close(fds[1]);
         char *argv[3];
         argv[0] = strdup((char*)cmd.c_str());
         argv[1] = strdup((char *)fileName.c_str());
@@ -154,7 +163,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         
         while (iter != alllines.end())
         {
-            if ((*iter)[0] == 13 && (*(iter +1))[0] == 0)
+            if (((*iter)[0] == 13 && (*(iter +1))[0] == 0) || ((*(iter))[0] == 13))
             {
                 iter = alllines.erase(iter);
                 iter = alllines.erase(iter);
@@ -165,7 +174,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
                 cgi_header.push_back(*iter);
             }
             iter = alllines.erase(iter);
-        }        
+        }
         
         for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
         {
@@ -230,9 +239,9 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     while(getline(test, tmp))
     {
         alllines.push_back(tmp);
+        std::cout << tmp << std::endl;
     }
 
-    
     
     if (alllines.size() > 2)
     {
@@ -259,7 +268,11 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
         }
     }
     else
+    {
+        remove("./tmpFile");
+        
         throw std::invalid_argument("missing lines");
+    }
 
     
     remove("./tmpFile");
