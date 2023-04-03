@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 01:30:22 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:44:19 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ class Response {
 		void 				error();
 		void				defError();
 		void				spError(std::string path);
+		std::string			setErrorPage(std::string path, std::string status_code);
 		
 		// ^ HEADER GENERATING
 		std::string			get_Current_Time();

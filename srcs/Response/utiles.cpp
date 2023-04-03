@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 21:25:06 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:44:37 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,25 @@ std::string Response::getcgiheader()
 		}
 	}
     return line;
+}
+
+std::string Response::setErrorPage(std::string path, std::string status_code)
+{
+    std::ifstream file;
+    file.open(path.c_str());
+
+    std::string line;
+    std::string lines;
+
+    
+    while (getline(file, line))
+        lines.append(line + "\n");
+    if (path == "./srcs/Conf/error/error.html")
+    {
+        int pos = lines.find("404");
+        lines[pos] = status_code[0];
+        lines[pos+1] = status_code[1];
+        lines[pos+2] = status_code[2];
+    }
+    return lines;
 }

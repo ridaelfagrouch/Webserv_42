@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 19:15:48 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/27 01:14:24 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:49:27 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void Response::error()
 	for (size_t i = 0; i < server.error_page.size(); i++)
 	{
 		if (_ret == server.error_page[i].status_code)
-				spError(server.error_page[i].path);
+				spError(server.error_page[i].page);
 	}
 	defError(); //^ return the default error page 
 }
@@ -26,18 +26,10 @@ void Response::error()
 
 
 
-void Response::spError(std::string path)
+void Response::spError(std::string page)
 {
-	std::ifstream file;
-	std::stringstream buff;
-	
-	file.open(path.c_str(), std::ifstream::in);
-	if (file.is_open())
-	{
-		buff << file.rdbuf();
-		_Resbody = buff.str();
-	}
-	defError(); //^ return the default error page 
+	std::cout << " here " << std::endl;
+	_Resbody = page;
 }
 
 /* ************************************************************************** */
@@ -45,14 +37,5 @@ void Response::spError(std::string path)
 
 void Response::defError()
 {
-	std::ifstream file;
-	std::stringstream buff;
-	std::string path = "./srcs/Conf/error/error.html";
-	file.open(path.c_str(), std::ifstream::in);
-	if (file.is_open())
-	{	
-		buff << file.rdbuf();
-		_Resbody = buff.str();
-		file.close();
-	}
+	_Resbody = setErrorPage("./srcs/Conf/error/error.html", to_String(_ret));
 }
