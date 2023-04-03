@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 22:23:18 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 22:35:40 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,9 +244,7 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     while(getline(test, tmp))
     {
         alllines.push_back(tmp);
-        // std::cout << tmp << std::endl;
     }
-
     
     if (alllines.size() > 2)
     {
@@ -277,7 +275,6 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
         remove("./tmpFile");
         throw std::invalid_argument("missing lines");
     }
-
     
     remove("./tmpFile");
     
