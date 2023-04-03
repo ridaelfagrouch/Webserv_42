@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 01:59:19 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 02:43:43 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int Response::readObject()
 	else if (isFile())
 		return(readFile());
 	else if (_index)
+	{
+		// std::cout << << std::endl;
         return (_Resbody = getIndex(), 200);
+	}
 	else if (!server.index.empty())
 		return (readDefault());
 	return (_ret = 404, 0);

@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 01:31:53 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 02:38:02 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void Response::postMethode()
 	_ret = 201;
 	if (_ret <= 300 || _ret >= 307){
 		if (!postObject())
-		{
-			std::cout << "error " << std::endl;
 			error();
-		}
 	}
 }
 
