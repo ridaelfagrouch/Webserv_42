@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 21:36:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 22:23:18 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,10 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     std::string cmd = server.locations[_l].fatscgi_pass;
     
     remove("./tmpFile");
+    
     int fd = open("./tmpFile", O_CREAT | O_WRONLY | O_TRUNC);
     int pid = fork();
+    
     if (pid == 0)
     {
         int fds[2];
@@ -124,8 +126,8 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
             write(fds[1], cgi.getCgiQuery().c_str(), cgi.getCgiQuery().length());
             dup2(fds[0], 0);
         }
-        // close(fds[0]);
-        // close(fds[1]);
+        close(fds[0]);
+        close(fds[1]);
         char *argv[3];
         argv[0] = strdup((char*)cmd.c_str());
         argv[1] = strdup((char *)fileName.c_str());
@@ -207,7 +209,8 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
         std::cout << "no file found\n";
         return "";
     }
-    std::string cmd = "/usr/bin/python3";
+    
+    std::string cmd = server.locations[_l].fatscgi_pass;
     remove("./tmpFile");
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
     int pid = fork();
@@ -215,6 +218,7 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     {
         dup2(fd, 1);
         close(fd);
+
         char *argv[3];
         argv[0] = (char *)cmd.c_str();
         argv[1] = (char *)fileName.c_str();
@@ -223,6 +227,7 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
         execve(argv[0], argv, envp);
         exit(0);
     }
+    
     waitpid(-1, NULL, 0);
     close(fd);
     dup2(out_fd, 1);
@@ -239,7 +244,7 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     while(getline(test, tmp))
     {
         alllines.push_back(tmp);
-        std::cout << tmp << std::endl;
+        // std::cout << tmp << std::endl;
     }
 
     
@@ -249,7 +254,7 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
         
         while (iter != alllines.end())
         {
-            if ((*iter)[0] == 13 && (*(iter +1))[0] == 0)
+            if ((*(iter))[0] == 0)
             {
                 iter = alllines.erase(iter);
                 iter = alllines.erase(iter);
@@ -270,7 +275,6 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     else
     {
         remove("./tmpFile");
-        
         throw std::invalid_argument("missing lines");
     }
 
