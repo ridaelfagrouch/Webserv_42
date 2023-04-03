@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 23:49:18 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 02:38:02 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,14 @@ void Response::postMethode()
 int Response::postObject()
 {
 	_ret = 204; //^ status code for not found
-	if (!upload_On() || _Reqbody.empty() || !upload_Store()){
-		return (0);
+	if (_cgi && request.get_header("Content-Type").find("x-www-form-urlencoded") != std::string::npos)
+	{
+		_query = _Reqbody;
+		return(runcgi());
 	}
+	else if (!upload_On() || _Reqbody.empty() || !upload_Store())
+		return (0);
+		
 	tokenizing_Body();
 	return (creat());
 }
@@ -75,13 +80,6 @@ void Response::get_Data()
 	if (!_postType.compare("form_data")){
 		_bounadry = get_Boundary();
 		form_Data();
-	}
-	else if (!_postType.compare("x-www-form-urlencoded")){
-		if (_cgi)
-			runcgi();
-		else{
-			regularFile();
-		}
 	}
 	else
 		regularFile();
@@ -186,8 +184,8 @@ int	Response::creat()
 	// for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++)
 	// 	std::cout << it->first << " " << it->second << std::endl; //! printing the file content
 	if (stat(server.root.c_str(), &st) || !valid_Type()){
-		// std::cout << valid_Type()  << std::endl;
-		// std::cout << server.root << std::endl;
+		std::cout << valid_Type()  << std::endl;
+		std::cout << server.root << std::endl;
 		return (0);
 	}
 	for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++){

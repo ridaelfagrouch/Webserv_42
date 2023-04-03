@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 21:21:50 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 01:30:22 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ class Response {
 		std::map<std::string, std::string>_header;
 		std::map<std::string, std::string> _contentType;
 		std::map<std::string, std::string> _postObject;
-		std::map<std::string, std::string> _Query;
 		
 		std::vector<std::string> cgi_header;
 		// std::map<std::string, std::string (*)(const std::string&)>_methodes;

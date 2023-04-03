@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 13:45:25 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 23:16:10 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:53:31 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@
 #include <sstream>
 
 # include "webserver.hpp"
+
+
+
+class errorPages {
+    public:
+        int status_code;
+        std::string path;
+        std::string page;
+};
 
 class Locations {
     public:
@@ -46,14 +55,9 @@ class Locations {
         void    enterAllowedMethodes(std::vector<std::string> info);
         void    enterReturn(std::vector<std::string> info);
         void    enterIndex(std::vector<std::string> info);
+        void    checkFile(std::vector<errorPages> &error_pages);
 };
 
-class errorPages {
-    public:
-        int status_code;
-        std::string path;
-        std::string page;
-};
 
 
 
