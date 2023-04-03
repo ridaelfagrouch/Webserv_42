@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 15:15:46 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 23:28:05 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 }
 
 
-
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     
@@ -106,6 +105,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         std::cout << "no file found "  << fileName << std::endl;
         return "";
     }
+    
     std::string cmd = server.locations[_l].fatscgi_pass;
     
     remove("./tmpFile");
@@ -173,9 +173,11 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
         }
     }
     else
+    {
+        remove("./tmpFile");
         throw std::invalid_argument("missing lines");
+    }
 
-        
     remove("./tmpFile");
     return lines;
 }
@@ -258,6 +260,8 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     }
     else
         throw std::invalid_argument("missing lines");
+
+    
     remove("./tmpFile");
     
     return lines;

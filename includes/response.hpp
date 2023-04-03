@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 15:44:19 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 23:04:22 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ class Response {
 		int					deafIndex();
 		int					allowed();
 		int					checkPath();
-		int					is_CGI();
+		// int					is_CGI();
 
 		
 		std::string			call();
@@ -112,6 +112,7 @@ class Response {
 		//! FUNCTIONS FOR CGI
 		int					runcgi();
 		int					fillClass();
+		int					iscgi(std::string path);
 
 		// void				tokenizeQuery();
 		// std::string			setName(size_t i);

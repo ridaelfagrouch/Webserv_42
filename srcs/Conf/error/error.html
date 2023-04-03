@@ -7,15 +7,33 @@
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Default error page</title>
+    <style>
+        body {
+            background-color:white;
+        }
+
+        #container {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        #text {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 
 <body>
-    <h1>
-        Not Found
-    </h1>
     <div id="container">
+        <h1>
+            Not Found
+        </h1>
         <div id="text"> 404 Oops! error has been found.</div>
-        <image id="gif" src="404.gif" alt="404">
     </div>
 </body>
 

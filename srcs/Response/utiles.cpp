@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 16:28:31 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 23:07:52 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ std::string	Response::to_String(int n)
 	return tmp.str();
 }
 
+/* ************************************************************************** */
+
 
 std::string Response::getcgiheader()
 {
@@ -90,12 +92,17 @@ std::string Response::getcgiheader()
 			if (data[0] == "Content-type")
 				data[0] = "Content-Type";
             if (data[0] != "X-Powered-By")
-                line += data[0] + ": " + data[1] + "\r\n";
+            {
+                line += data[0] + ": " + trim(data[1], '\r') + "\r\n";
+            }
                 // std::cout << data[0] << std::endl;
 		}
 	}
     return line;
 }
+
+/* ************************************************************************** */
+
 
 std::string Response::setErrorPage(std::string path, std::string status_code)
 {
@@ -116,4 +123,14 @@ std::string Response::setErrorPage(std::string path, std::string status_code)
         lines[pos+2] = status_code[2];
     }
     return lines;
+}
+
+/* ************************************************************************** */
+
+
+int Response::iscgi(std::string path)
+{
+    if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos)
+        return(1);
+    return (0);
 }

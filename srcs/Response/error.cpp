@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 19:15:48 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 15:49:27 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:41:34 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void Response::error()
 
 void Response::spError(std::string page)
 {
-	std::cout << " here " << std::endl;
 	_Resbody = page;
 }
 

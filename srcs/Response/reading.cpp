@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 02:28:13 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/31 23:29:18 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 23:28:20 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int Response::readFile()
 		file.close();
 		return (_ret = 200, 1);
 	}
-	std::cout << "i'm here: " << std::endl;
 	return(_ret = 403, 0); // Forbidden 
 }
 
@@ -34,7 +33,11 @@ int Response::readDefault()
     std::ifstream file;
 	std::stringstream buff;
     std::string path;
+	std::cout << server.index << std::endl;
     path = server.root.append("/").append(server.index);
+	std::cout << path << std::endl;
+	if (iscgi(path))
+		return (runcgi());
     file.open(path.c_str(), std::ifstream::in);
 	if (file.is_open())
 	{	
