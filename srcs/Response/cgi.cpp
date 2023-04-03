@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 01:16:24 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:50:29 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int Response::fillClass()
     {
         return 0;
     }
-    // std::cout << server.port[0] << std::endl; 
     return 1;
 }
 

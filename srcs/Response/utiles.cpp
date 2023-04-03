@@ -6,7 +6,7 @@
 /*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 15:44:37 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:28:31 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,12 @@ std::string Response::getcgiheader()
 	{
 		std::vector<std::string> data = split(*it, ':');
     	if (data.size() == 2){
+            
 			if (data[0] == "Content-type")
 				data[0] = "Content-Type";
-            line += data[0] + ": " + data[1] + "\r\n";
+            if (data[0] != "X-Powered-By")
+                line += data[0] + ": " + data[1] + "\r\n";
+                // std::cout << data[0] << std::endl;
 		}
 	}
     return line;

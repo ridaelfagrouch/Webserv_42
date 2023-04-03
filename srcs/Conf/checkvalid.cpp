@@ -6,14 +6,14 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 21:59:49 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:54:06 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config.hpp"
 
 
-void    checkFile(std::vector<errorPages> &error_pages)
+void    Locations::checkFile(std::vector<errorPages> &error_pages)
 {
     for (std::vector<errorPages>::iterator it = error_pages.begin(); it != error_pages.end(); it++)
     {
@@ -21,7 +21,7 @@ void    checkFile(std::vector<errorPages> &error_pages)
         file.open((*it).path.c_str());
         if (!file)
         {
-            file.open((const char *)("/home/ouzhamza/Desktop/Webserv_42" + (*it).path).c_str());
+            file.open((const char *)(root + (*it).path).c_str());
             if (!file)
                 (*it).path = "./srcs/Conf/error/error.html";
         }
@@ -58,7 +58,6 @@ void    checkDataValidity(Servers &server)
     if (server.client_max_body_size == -1)
         server.client_max_body_size = 1;
 
-    checkFile(server.error_page);
     std::vector<std::string> directive;
     for (std::vector<Locations>::iterator it = server.locations.begin(); it != server.locations.end(); it++)
     {
@@ -66,6 +65,8 @@ void    checkDataValidity(Servers &server)
             throw std::invalid_argument("invalid input: duplicate directive");
         checkLocationValidity(*it, server.root);
     }
+    Locations x;
+    x.checkFile(server.error_page);
 }
 
 

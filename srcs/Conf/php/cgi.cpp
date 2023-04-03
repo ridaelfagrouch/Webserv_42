@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 20:39:40 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:15:46 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 
     int out_fd = dup(1);
     
-    std::cout << cgi.getCoockies() << std::endl;
     if (!check.is_open())
     {
         std::cout << "no file found "  << fileName << std::endl;
@@ -134,8 +133,6 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     dup2(out_fd, 1);
 
     
-
-
     std::string tmp;
     std::string lines;
     std::vector<std::string> alllines;
@@ -189,9 +186,11 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
 {
     
     std::ifstream check;
+    fileName = cgi.getCgiroot() + fileName;
 
     check.open(fileName);
     int out_fd = dup(1);
+    
     if (!check.is_open())
     {
         std::cout << "no file found\n";
@@ -223,12 +222,42 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     
     std::string tmp;
     std::string lines;
+    std::vector<std::string> alllines;
     
 
     while(getline(test, tmp))
     {
-        lines.append(tmp);
+        alllines.push_back(tmp);
     }
+
+    
+    
+    if (alllines.size() > 2)
+    {
+        std::vector<std::string>::iterator iter = alllines.begin();
+        
+        while (iter != alllines.end())
+        {
+            if ((*iter)[0] == 13 && (*(iter +1))[0] == 0)
+            {
+                iter = alllines.erase(iter);
+                iter = alllines.erase(iter);
+                break ;
+            }
+            std::vector<std::string> data = split(*iter, ':');
+            if (data.size() == 2){
+                cgi_header.push_back(*iter);
+            }
+            iter = alllines.erase(iter);
+        }        
+        
+        for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
+        {
+            lines.append(*it);
+        }
+    }
+    else
+        throw std::invalid_argument("missing lines");
     remove("./tmpFile");
     
     return lines;

@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 23:38:41 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 01:27:33 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ std::string setErrorPage(std::string path, std::string status_code)
 int    allcodes(int code)
 {
     std::vector<int> codes;
+
+    // 400's error codes 
+
     for (int i = 400; i < 420; i++)
         codes.push_back(i);
     for (int i = 421; i < 429; i++)
@@ -114,6 +117,9 @@ int    allcodes(int code)
     codes.push_back(497);
     codes.push_back(498);
     codes.push_back(499);
+
+    // 500's error codes 
+
 
     for (int i = 500; i < 512; i++)
         codes.push_back(i);
