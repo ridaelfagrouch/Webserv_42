@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:34:43 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 23:58:24 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 22:15:19 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    Servers::split_locations(std::vector<std::string> &server_info)
         std::vector<std::string> info = split(*it, ' ');
         if (info[0] == "location")
         {
-            if (info.size() != 3 || (info[1][0] != '/' && info[1] != "*.php") || info[2] != "{")
+            if (info.size() != 3 || (info[1][0] != '/' && info[1] != "*.php" && info[1] != "*.py") || info[2] != "{")
                 throw std::invalid_argument("Syntax Error: invalid location");
             braket++;
             std::vector<std::string> rawlocation;
