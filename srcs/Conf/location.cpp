@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:34:43 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 21:51:44 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/02 23:58:24 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,11 @@ void    Locations::enterLocationData(std::vector<std::string> info)
         else if (info[0] == "index")
         {
             if (info.size() == 2)
+            {
+                if (!this->index.empty())
+                    throw std::invalid_argument("Syntax Error: invalid"); 
                 this->index = info[1];
+            }
             else
                 throw std::invalid_argument("Syntax Error: wrong number of arguments"); 
         }
