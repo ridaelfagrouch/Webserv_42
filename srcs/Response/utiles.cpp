@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 02:48:15 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 16:21:35 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ std::string Response::getcgiheader()
 			if (data[0] == "Content-type")
 				data[0] = "Content-Type";
             if (data[0] != "X-Powered-By")
-                line += data[0] + ": " + data[1] + "\r\n";
+            {
+                line += data[0] + ": " + trim(data[1], '\r') + "\r\n";
+            }
                 // std::cout << data[0] << std::endl;
 		}
 	}
