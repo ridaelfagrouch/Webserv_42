@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 17:09:25 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 01:16:24 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ int Response::fillClass()
     {
         return 0;
     }
-    return 1;
     // std::cout << server.port[0] << std::endl; 
-    return (1);
+    return 1;
 }
 
 void Response::Cgi::setCgiMethode(std::string _methode)
