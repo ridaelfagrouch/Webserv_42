@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/04 21:15:46 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/04 23:01:03 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,8 +206,8 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     
     if (!check.is_open())
     {
-        std::cout << "no file found\n";
-        return "";
+        remove("./tmpFile");
+        throw std::invalid_argument("missing lines");
     }
     
     std::string cmd = server.locations[_l].fatscgi_pass;
