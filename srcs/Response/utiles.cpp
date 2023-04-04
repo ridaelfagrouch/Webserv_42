@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 16:21:35 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 23:07:52 by ouzhamza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ std::string	Response::to_String(int n)
 	return tmp.str();
 }
 
+/* ************************************************************************** */
+
 
 std::string Response::getcgiheader()
 {
@@ -97,4 +99,38 @@ std::string Response::getcgiheader()
 		}
 	}
     return line;
+}
+
+/* ************************************************************************** */
+
+
+std::string Response::setErrorPage(std::string path, std::string status_code)
+{
+    std::ifstream file;
+    file.open(path.c_str());
+
+    std::string line;
+    std::string lines;
+
+    
+    while (getline(file, line))
+        lines.append(line + "\n");
+    if (path == "./srcs/Conf/error/error.html")
+    {
+        int pos = lines.find("404");
+        lines[pos] = status_code[0];
+        lines[pos+1] = status_code[1];
+        lines[pos+2] = status_code[2];
+    }
+    return lines;
+}
+
+/* ************************************************************************** */
+
+
+int Response::iscgi(std::string path)
+{
+    if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos)
+        return(1);
+    return (0);
 }
