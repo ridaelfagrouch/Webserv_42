@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 23:07:52 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/04 01:14:50 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ std::string Response::get_Connection()
 std::string Response::get_Content_Type()
 {
     size_t i = _path.find(".");
-    if (i == std::string::npos || _ret != 200 || _index)
+    if (i == std::string::npos || _ret != 200 || _autoindex)
         return ("text/html \r\n");
     else
         return(_contentType[_path.substr(i + 1)] + "\r\n");
@@ -130,7 +130,7 @@ std::string Response::setErrorPage(std::string path, std::string status_code)
 
 int Response::iscgi(std::string path)
 {
-    if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos)
+    if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos) 
         return(1);
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 23:16:45 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/04 01:14:50 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int Response::readObject()
 		return(readFile());	
 	else if (!server.index.empty())
 		return (readDefault());
-	else if (_index)
+	else if (_autoindex)
         return (_Resbody = getIndex(), 200);
 	return (_ret = 404, 0);
 }

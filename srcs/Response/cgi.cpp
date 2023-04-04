@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 23:31:20 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/04 21:15:04 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int Response::fillClass()
     cgi.setCgiPath(request.get_path());
     cgi.setCgiQuery(_query);
     cgi.setCgiroot(server.root);
-    cgi.setCgiServerName(server.server_name[0]); //! NOT SUR OF THIS
+    cgi.setCgiServerName(server.server_name[0]);
     cgi.setCgiredirectStatus(_ret);
     cgi.setCgicontentLength(request.get_header("Content-Length"));
     cgi.setCgicontentType(request.get_header("Content-Type"));
@@ -51,6 +51,9 @@ void Response::Cgi::setCgiMethode(std::string _methode)
 
 void Response::Cgi::setCgiPath(std::string _path)
 {
+    this->checkIndex();
+    if (!this->_cgiIndex)
+        std::cout <<  "here" << _path << std::endl;
     Path = _path;
 }
 
