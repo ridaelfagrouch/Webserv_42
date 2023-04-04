@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 23:04:22 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/04 02:48:15 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Response {
 		int 		_ret;
 		int			_redret;
 		int			_port;
-		bool        _index;
+		bool        _autoindex;
 		bool		_cgi;
 		size_t		_l; // ^ stands for location
 		
@@ -83,7 +83,6 @@ class Response {
 		void				setMethode();
 		int					isAbsoluteURI();
 		void				changeHost();
-		// void				setserver();
 		void				setHost();
 		void				setPort();
 		void				setBody();
@@ -104,7 +103,6 @@ class Response {
 		int					deafIndex();
 		int					allowed();
 		int					checkPath();
-		// int					is_CGI();
 
 		
 		std::string			call();
@@ -114,13 +112,11 @@ class Response {
 		int					fillClass();
 		int					iscgi(std::string path);
 
-		// void				tokenizeQuery();
-		// std::string			setName(size_t i);
-		// std::string			setValue(size_t i);
 
 		//! FUNCTONS FOR GET METHODE
 		void				getMethode();
 		void 				isAutoindex(size_t i);
+		void				isDefaultindex();
 		int 				isFile();
 		int					readObject();
 		int					readFile();
@@ -192,6 +188,7 @@ class Response {
     		    std::string serverProtocol;
 				std::string port;
 				std::string Coockies;
+				bool		_cgiIndex;
     		public:
 				// void		setCgiserverProtocol(std::string protocol);
 				void		setCgicontentType(std::string port);
@@ -205,6 +202,12 @@ class Response {
 				void		setCgiserverProtocol();
 				void		setCgiPort(int port);
 				void		setCoockies(std::string coockies);
+				void		checkIndex(Response& resp) {
+					if (!resp.server.index.empty())
+						_cgiIndex = true;
+					else
+						_cgiIndex = false;
+				}
 
 
 				std::string		getCgicontentType();

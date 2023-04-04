@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   autoindex.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 00:45:05 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/01 01:52:31 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/04 02:40:51 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,17 @@ int Response::deafIndex()
 void Response::isAutoindex(size_t i)
 {
 	if (i == SIZE_MAX)
-		_index = false;
+		_autoindex = false;
 	else if (server.locations[i].autoindex == "true")
-		_index = true;
+		_autoindex = true;
+	// isDefaultindex();
 }
+
+
+// void Response::isDefaultindex()
+// {
+// 	// if(!server.index.empty())
+// 	// 	_index = true;
+// 	// else 
+// 	// 	_index = false;
+// }
