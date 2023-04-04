@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 22:35:40 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/03 22:43:04 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,8 +263,8 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
                 cgi_header.push_back(*iter);
             }
             iter = alllines.erase(iter);
-        }        
-        
+        }
+
         for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
         {
             lines.append(*it);
