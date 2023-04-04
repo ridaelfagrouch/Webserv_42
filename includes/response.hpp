@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 02:48:15 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/04 20:33:18 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ class Response {
 		int					readObject();
 		int					readFile();
 		int					readDefault();
+		size_t				getIndexLocation(std::string path);
 		std::string			getIndex();
 		std::string			dirLink(struct dirent *dirname);
 		std::string			getLastReadTime(struct dirent *dirName);
@@ -193,7 +194,7 @@ class Response {
 				// void		setCgiserverProtocol(std::string protocol);
 				void		setCgicontentType(std::string port);
 				void		setCgicontentLength(std::string length);
-				void		setCgiPath(std::string path);
+				void		setCgiPath(std::string path, Servers &server, Response &response);
 				void		setCgiQuery(std::string query);
 				void		setCgiredirectStatus(int redirect);
 				void		setCgiroot(std::string root);
@@ -202,11 +203,20 @@ class Response {
 				void		setCgiserverProtocol();
 				void		setCgiPort(int port);
 				void		setCoockies(std::string coockies);
-				void		checkIndex(Response& resp) {
-					if (!resp.server.index.empty())
+				void		checkIndex(Response &response) {
+
+					// Response *response = &(this->response);
+					if (response.iscgi(response.server.index))
+					{
+						// std::cout << "hello: " << response._path << std::endl;
 						_cgiIndex = true;
+					}
 					else
 						_cgiIndex = false;
+				}
+
+				std::string	getIndex(Servers &server) {
+					return (server.index);
 				}
 
 

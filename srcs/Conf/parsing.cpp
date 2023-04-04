@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/03/29 01:13:39 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:59:32 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void    Config::parse(std::string filename)
     std::string line;
     if (!fd.is_open())
     {
-        std::cout << filename << std::endl;
+        // std::cout << filename << std::endl;
 		throw std::invalid_argument("can't open file");
     }
     while (getline(fd, line))
