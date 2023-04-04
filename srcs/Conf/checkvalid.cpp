@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:43:04 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 15:54:06 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/04 23:28:53 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ void    checkDataValidity(Servers &server)
         
     if (server.host.empty())
         throw std::invalid_argument("invalid input: no host");
+
+    if (server.index.empty())
+        throw std::invalid_argument("invalid input: no index");
 
     if (server.port.size() < 1)
         throw std::invalid_argument("invalid input: no port number");
