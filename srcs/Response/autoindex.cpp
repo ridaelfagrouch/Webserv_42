@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 00:45:05 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 02:40:51 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:19:35 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,3 @@ void Response::isAutoindex(size_t i)
 	// isDefaultindex();
 }
 
-
-// void Response::isDefaultindex()
-// {
-// 	// if(!server.index.empty())
-// 	// 	_index = true;
-// 	// else 
-// 	// 	_index = false;
-// }

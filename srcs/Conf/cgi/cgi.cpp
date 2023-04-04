@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/04 21:10:48 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/04 21:15:46 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
-    
     fileName = cgi.getCgiroot() + fileName;
     std::ifstream check;
     check.open(fileName);
@@ -109,6 +108,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     std::string cmd = server.locations[_l].fatscgi_pass;
     
+    std::cout << "after " << fileName  << " " << cmd << std::endl;
     remove("./tmpFile");
     
     int fd = open("./tmpFile", O_CREAT | O_WRONLY | O_TRUNC);
@@ -284,7 +284,6 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
 
 std::string    Response::executeCgi(std::string filename, Cgi cgi)
 {
-    std::cout << filename << std::endl;
     int position = filename.find_last_of(".");
     if(filename.substr(position+1) == "py")
         return executeCgiPy(filename, cgi);

@@ -6,7 +6,11 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/04 21:15:04 by sahafid          ###   ########.fr       */
+=======
+/*   Updated: 2023/04/04 20:15:26 by houazzan         ###   ########.fr       */
+>>>>>>> e180422bed8e0d3d0d6a54d246a2b589aef6e857
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +28,7 @@ int Response::fillClass()
 {
     Cgi cgi;
     cgi.setCgiMethode(request.get_methode());
-    cgi.setCgiPath(request.get_path());
+    cgi.setCgiPath(request.get_path(), server, *this);
     cgi.setCgiQuery(_query);
     cgi.setCgiroot(server.root);
     cgi.setCgiServerName(server.server_name[0]);
@@ -49,12 +53,17 @@ void Response::Cgi::setCgiMethode(std::string _methode)
     Methode = _methode;
 }
 
-void Response::Cgi::setCgiPath(std::string _path)
+void Response::Cgi::setCgiPath(std::string _path, Servers &server, Response &response)
 {
-    this->checkIndex();
-    if (!this->_cgiIndex)
-        std::cout <<  "here" << _path << std::endl;
-    Path = _path;
+    _cgiIndex = false;
+    if (!response.iscgi(_path))
+    {
+        this->checkIndex(response);
+        if (_cgiIndex == true)
+            Path = getIndex(server);
+    }
+   else
+        Path = _path;
 }
 
 void Response::Cgi::setCgiQuery(std::string _query)

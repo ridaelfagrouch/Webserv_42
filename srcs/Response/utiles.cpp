@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 01:14:50 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/04 20:56:55 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,28 @@ std::string Response::setErrorPage(std::string path, std::string status_code)
 
 int Response::iscgi(std::string path)
 {
-    if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos) 
+    if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos)
+    {
+        _l = getIndexLocation(path);
+        std::cout << _l << std::endl;
         return(1);
+    }
     return (0);
+}
+
+
+
+size_t Response::getIndexLocation(std::string path)
+{
+    std::string ending;
+	size_t i = path.find(".");
+	if (i != std::string::npos){
+		ending = "*" + path.substr(i);
+	}
+	for (size_t i = 0; i != server.locations.size(); i++){
+		if (!ending.compare(server.locations[i].directive)){
+			return (i);
+		}
+	}
+	return (SIZE_MAX);
 }
