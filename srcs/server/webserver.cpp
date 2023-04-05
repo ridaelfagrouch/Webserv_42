@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserver.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/04/02 02:26:49 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 02:43:37 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void     webServer::pollOut(int &i, fds_info &my_fd)
 
 void webServer::sendData(fds_info &my_fd, int &i)
 {
+	printf("hellohello\n");
 	int	sendLen = 0;
     if (my_fd.totalSend < my_fd.responseLength && sendLen >= 0)
     {
@@ -196,7 +197,7 @@ void    webServer::acceptConnection(void)
 		}
 		for (int i = 0; i < (int)fds.size(); i++)
 		{
-			if (fds[i].revents & POLLIN)
+			if (fds[i].revents & POLLIN )
 			{
 				if (pollIn(i) == -1)
 					continue;

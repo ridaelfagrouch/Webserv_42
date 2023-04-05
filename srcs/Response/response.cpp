@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 01:28:45 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 02:33:51 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_f
 	setBool();
 	if (isAbsoluteURI())
 		changeHost();
-	_fd.isTimeOut = true;
 	if (_fd.isTimeOut == true)
+	{
+		std::cout << "here" << std::endl;
 		_ret = 504;
+	}
 }
 
 
@@ -111,6 +113,7 @@ void Response::setBool()
 {
 	_autoindex = false;
 	_cgi   = false;
+	_l = std::string::npos;
 }
 /* ************************************************************************** */
 void	Response::initRespMaps()
