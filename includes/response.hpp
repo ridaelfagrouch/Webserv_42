@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 20:33:18 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:02:12 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class Response {
 		std::string _postType;
 		std::string  conType;
 		std::string _root;
+		std::string _index;
 		int 		_ret;
 		int			_redret;
 		int			_port;
@@ -101,6 +102,7 @@ class Response {
 		int 				redirection();
 		void				changeRoot();
 		int					deafIndex();
+		std::string 		get_index();
 		int					allowed();
 		int					checkPath();
 
@@ -120,6 +122,7 @@ class Response {
 		int 				isFile();
 		int					readObject();
 		int					readFile();
+		int					isIndex();
 		int					readDefault();
 		size_t				getIndexLocation(std::string path);
 		std::string			getIndex();
@@ -194,7 +197,7 @@ class Response {
 				// void		setCgiserverProtocol(std::string protocol);
 				void		setCgicontentType(std::string port);
 				void		setCgicontentLength(std::string length);
-				void		setCgiPath(std::string path, Servers &server, Response &response);
+				void		setCgiPath(Response &response);
 				void		setCgiQuery(std::string query);
 				void		setCgiredirectStatus(int redirect);
 				void		setCgiroot(std::string root);
@@ -206,7 +209,7 @@ class Response {
 				void		checkIndex(Response &response) {
 
 					// Response *response = &(this->response);
-					if (response.iscgi(response.server.index))
+					if (response.iscgi(response.get_index()))
 					{
 						// std::cout << "hello: " << response._path << std::endl;
 						_cgiIndex = true;
@@ -215,8 +218,8 @@ class Response {
 						_cgiIndex = false;
 				}
 
-				std::string	getIndex(Servers &server) {
-					return (server.index);
+				std::string	getIndex(Response &response) {
+					return (response.get_index());
 				}
 
 

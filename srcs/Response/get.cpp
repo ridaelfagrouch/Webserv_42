@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 21:10:42 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:01:24 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@ void Response::getMethode()
 {
 	if (_ret <= 300 || _ret >= 307)
     	if (_ret != 200 || !readObject())
-		{
-			std::cout << _ret << std::endl;
 			error();
-		}
 }
 
 
@@ -31,7 +28,7 @@ int Response::readObject()
 		return (runcgi());
 	else if (isFile())
 		return(readFile());	
-	else if (!server.index.empty())
+	else if (isIndex())
 		return (readDefault());
 	else if (_autoindex)
         return (_Resbody = getIndex(), 200);

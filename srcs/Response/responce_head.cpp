@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   responce_head.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 16:06:32 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/02 21:40:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 01:37:31 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void Response::headMap()
 			_response.append(_header["Date"]).append(_header["Connection"]).append(_header["cgi"]).append(_header["Content-Length"]).append(_Resbody);
 		}
 		else if (_ret == 405) {
-			// std::cout << "hello" << std::endl;
+			
 		_response.append(_header["Date"]).append(_header["Connection"]).append(_header["Content-Type"]).append
 		(_header["Content-Length"]).append(_header["Allow"].append(_Resbody));
 		}
