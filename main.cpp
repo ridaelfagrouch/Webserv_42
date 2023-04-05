@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-fagr <rel-fagr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:11:58 by sahafid           #+#    #+#             */
-/*   Updated: 2023/02/21 17:06:53 by rel-fagr         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:30:38 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,24 @@
 
 int main(int ac, char **av)
 {
-    (void)ac;
     try {
         Config conf;
-        if (!av[1])
+        if (ac == 1)
+            conf.parse("./srcs/Conf/default.conf");
+        else
         {
-            std::cerr << "file not found\n";
-            return 0;
+            if (ac != 2)
+            {
+                std::cerr << "to many arguments\n";
+                return 0;
+            }
+            if (!av[1])
+            {
+                std::cerr << "file not found\n";
+                return 0;
+            }
+	        conf.parse(av[1]);
         }
-	    conf.parse(av[1]);
         webServer Server(conf.servers);
         Server.fileExemple = av[2];
         Server.setupServer();

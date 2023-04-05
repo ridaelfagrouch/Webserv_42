@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 16:07:29 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 20:11:48 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    Servers::enterPorts(std::vector<std::string> info)
     for (std::vector<std::string>::iterator it = info.begin() + 1; it != info.end(); it++)
     {
         int port = ft_stoi(*it);
-        if (port < 0)
+        if (port < 0 || port == 0)
             throw std::invalid_argument("Syntax Error: invalid port number");
         else
         {
