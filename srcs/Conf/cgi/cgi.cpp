@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 00:35:52 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:44:43 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,8 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     
     if (!check.is_open())
     {
-        std::cout << "no file found\n";
-        return "";
+        remove("./tmpFile");
+        throw std::invalid_argument("missing lines");
     }
     
     std::string cmd = server.locations[_l].fatscgi_pass;
@@ -264,8 +264,8 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
                 cgi_header.push_back(*iter);
             }
             iter = alllines.erase(iter);
-        }        
-        
+        }
+
         for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
         {
             lines.append(*it);
