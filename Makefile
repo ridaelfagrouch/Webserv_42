@@ -6,7 +6,7 @@
 #    By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/04/03 22:38:16 by sahafid          ###   ########.fr        #
+#    Updated: 2023/04/05 17:26:12 by sahafid          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ export TITLE
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/Conf/cgi/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Request/*.cpp) $(wildcard ./srcs/Response/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror -fsanitize=address -g
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror 
+# -fsanitize=address -g
 CXX = c++ 
 NAME = webserver
 

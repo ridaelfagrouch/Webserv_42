@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/04 23:01:03 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 01:57:17 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     {
         alllines.push_back(tmp);
     }
-    
     
     if (alllines.size() > 2)
     {

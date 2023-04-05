@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 23:57:58 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 16:07:29 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void    Servers::enterBodySize(std::vector<std::string> info)
         {
             trim(sizeBody, 'b');
             client_max_body_size = ft_stoi(sizeBody);
+            std::cout << client_max_body_size << std::endl;
             if (client_max_body_size < 0)
                 throw std::invalid_argument("invalid max body size");
         }
