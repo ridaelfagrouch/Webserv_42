@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 17:17:32 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 01:28:45 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_fd), server(fd.my_servers[0])
 {
-	// if (_fd.isTimeOut == true)
-	// 	std::cout << _version << std::endl;
 	initErrorMap();
 	initRespMaps();
 	initContentMap();
@@ -24,6 +22,9 @@ Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_f
 	setBool();
 	if (isAbsoluteURI())
 		changeHost();
+	_fd.isTimeOut = true;
+	if (_fd.isTimeOut == true)
+		_ret = 504;
 }
 
 
@@ -52,7 +53,6 @@ void Response::changeHost()
 	size_t i;
 	size_t j;
 	std::string newHost;
-	// std::string port;
 	if ((i = _path.find("http://")) != std::string::npos) {
 		
 		j = _path.find("/", i + 7);
@@ -103,6 +103,7 @@ void	Response::initErrorMap()
 	_status_code[405] = "Method Not Allowed";
 	_status_code[413] = "Payload Too Large";
 	_status_code[500] = "Internal Server Error";
+	_status_code[504] = "Gateway Timeout";
 }
 
 
@@ -120,8 +121,6 @@ void	Response::initRespMaps()
 	_header["Content-Length"] = "Content-Length: ";
 	_header["Location"] = "Location: ";
 	_header["Allow"] = "Allow: ";
-	// _header["Cache-Control"] = "";
-	// _header["Transfer-Encoding"] = "";
 }
 
 /* ************************************************************************** */
@@ -249,5 +248,10 @@ std::string Response::get_key(std::string line)
 {
 	size_t i = line.find(":");
 	return (line.substr(0, i));	
+}
+
+std::string	Response::get_index()
+{
+	return (_index);
 }
 
