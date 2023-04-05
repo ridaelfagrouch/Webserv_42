@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 01:02:12 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:38:31 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ class Response {
 		void				regularFile();
 		int					valid_Type();
 		int					creat();
-		std::string			postAnswer(std::string path);
+		std::string			postAnswer();
 		
 
 		//! FUNCTIONS FOR DELETE METHODE

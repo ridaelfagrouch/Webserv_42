@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ouzhamza <ouzhamza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:33:04 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/03/28 01:38:28 by ouzhamza         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:29:12 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ std::string Response::deleteAnswer()
     <body style=\"text-align:center;\">\n\
    <h1> File Removed Successfully! </h1>\n\
    <pre style=\"text-align:center;\">\n\
-    <p>Your file has been removed from "+ _root +" </p> \n\
+    <p>The file has been removed from </p> \n\
 	</pre>\n\
     </body>\n\
     </html>\n";

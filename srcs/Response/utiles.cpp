@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 02:19:40 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:24:25 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ std::string Response::get_Content_Type()
 
 std::string  Response::get_Content_Length()
 {
-    if(_ret == 504)
+    if(_ret == 405)
         return (to_String(_Resbody.length()) + "\r\n");
     return (to_String(_Resbody.length()) + "\r\n\r\n");
 }
