@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/06 01:57:16 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 02:19:48 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,6 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     {
         alllines.push_back(tmp);
     }
-    
     
     if (alllines.size() > 2)
     {

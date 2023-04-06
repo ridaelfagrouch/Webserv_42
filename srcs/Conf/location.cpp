@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:34:43 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 22:15:19 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 20:09:05 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void    Locations::enterLocationData(std::vector<std::string> info)
 
 void    check_syntax(std::vector<Locations> &locations)
 {
+    if (locations.size() == 0)
+        throw std::invalid_argument("Syntax Error: no location block");
     for (std::vector<Locations>::iterator it = locations.begin(); it != locations.end(); it++)
     {
         Locations &currentDirective = *it;

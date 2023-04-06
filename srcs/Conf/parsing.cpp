@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/04 16:59:32 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:13:47 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void    Config::parse(std::string filename)
     std::string line;
     if (!fd.is_open())
     {
-        // std::cout << filename << std::endl;
 		throw std::invalid_argument("can't open file");
     }
     while (getline(fd, line))
@@ -108,10 +107,15 @@ void    Config::parse(std::string filename)
 		    lines.push_back(line.append(" \n"));
     check_brackets(lines);
     split_servers(lines, servers);
+
+    if (servers.size() == 0)
+		throw std::invalid_argument("no server blocks");
+        
     for (std::vector<Servers>::iterator it = servers.begin(); it != servers.end(); it++)
     {
         parse_servers(*it);
         checkDataValidity(*it);
     }
+
     checkSpecialCase(servers);
 }
