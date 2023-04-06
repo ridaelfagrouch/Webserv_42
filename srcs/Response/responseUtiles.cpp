@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 21:27:38 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 21:45:12 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int Response::isFile()
 
 int Response::isIndex()
 {
-	std::cout << server.locations[_l].directive << std::endl;
 	if(!server.locations[_l].index.empty()) {
 		return(_index = server.locations[_l].index, 1);
 	}
@@ -69,7 +68,6 @@ int Response::isIndex()
 		return (0);
 	}
 	else if(!server.index.empty()) {
-		std::cout << "FROM HERE 2" << server.index << std::endl;
 		return(_index = server.index, 1);
 	}
 	else
@@ -81,7 +79,7 @@ int Response::isIndex()
 int Response::checkPath()
 {
 	struct stat st;
-	// std::string root = realpath(server.root.c_str(), )
+	
 	server.root.append(_pathExtra);
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);

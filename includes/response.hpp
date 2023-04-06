@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 15:38:31 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 01:56:17 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class Response {
 		int			_port;
 		bool        _autoindex;
 		bool		_cgi;
+		bool		_indexcgi;
 		size_t		_l; // ^ stands for location
 		
 		Request &request;

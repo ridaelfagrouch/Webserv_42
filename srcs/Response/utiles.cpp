@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 18:24:25 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 02:01:32 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int Response::iscgi(std::string path)
     if (path.find(".php") != std::string::npos || path.find(".py") != std::string::npos)
     {
         _l = getIndexLocation(path);
+        _indexcgi = true;
         return(1);
     }
     return (0);

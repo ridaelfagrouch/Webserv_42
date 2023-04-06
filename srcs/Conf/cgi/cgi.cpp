@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 01:44:43 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 01:57:16 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     fileName = cgi.getCgiroot() + fileName;
+    // std::cout << fileName << std::endl;
     std::ifstream check;
     check.open(fileName);
 

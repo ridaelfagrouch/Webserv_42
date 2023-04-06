@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 02:28:13 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 01:01:30 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 01:48:07 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int Response::readDefault()
     std::ifstream file;
 	std::stringstream buff;
     std::string path;
-	// std::cout << server.index << std::endl;
-	// std::cout << "rout" << _root << std::endl;
+
     path = _root.append("/") + _index;
 	if (iscgi(_index))
 		return (runcgi());
