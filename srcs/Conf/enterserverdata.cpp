@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 20:11:48 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 22:35:37 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,19 @@ void    Servers::enterBodySize(std::vector<std::string> info)
     if (info.size() != 3)
     {
         std::string sizeBody = info[1];
-        //  A value of '0' which means no limit and this is not recommended in production environment
-        if (sizeBody.size() == 2 && sizeBody[0] != 0)
+
+        if (sizeBody.size() == 1)
             throw std::invalid_argument("invalid max body size");
+
         char unit = tolower(sizeBody[sizeBody.size() - 1]);
+        
         if (sizeBody.size() > 2 &&  (unit != 'm' && unit != 'k' && unit != 'b'))
             throw std::invalid_argument("invalid max body size");
         if (unit == 'k')
         {
             trim(sizeBody, 'k');
             client_max_body_size = ft_stoi(sizeBody);
-            if (client_max_body_size < 0)
+            if (client_max_body_size <= 0)
                 throw std::invalid_argument("invalid max body size");
             client_max_body_size = client_max_body_size * 1024;                
         }
@@ -53,18 +55,19 @@ void    Servers::enterBodySize(std::vector<std::string> info)
         {
             trim(sizeBody, 'm');
             client_max_body_size = ft_stoi(sizeBody);
-            if (client_max_body_size < 0)
+            if (client_max_body_size <= 0 )
                 throw std::invalid_argument("invalid max body size");
             client_max_body_size = (client_max_body_size * 1024) * 1024;               
         }
-        else
+        else if (unit == 'b')
         {
             trim(sizeBody, 'b');
             client_max_body_size = ft_stoi(sizeBody);
-            std::cout << client_max_body_size << std::endl;
-            if (client_max_body_size < 0)
+            if (client_max_body_size <= 0)
                 throw std::invalid_argument("invalid max body size");
         }
+        else
+            throw std::invalid_argument("invalid max body size");
     }
     else
         throw std::invalid_argument("Syntax Error: wrong number of arguments");
@@ -79,7 +82,7 @@ void    Servers::enterData(std::vector<std::string> info)
         info.erase(info.end()-1);
     if (info.size() > 1 && info[0] == "listen")
         enterPorts(info);
-    else if (info.size() > 2 && info[0] == "server_name")
+    else if (info.size() >= 2 && info[0] == "server_name")
     {
         for (std::vector<std::string>::iterator iter = info.begin() + 1; iter != info.end(); iter++)
         {
