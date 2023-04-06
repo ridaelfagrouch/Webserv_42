@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/03 21:01:14 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/05 16:02:01 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,13 +193,12 @@ int	Response::creat()
 		if (file.is_open())
 			file << it->second << std::endl;
 	}
-	_Resbody = postAnswer(file_path);
+	_Resbody = postAnswer();
 	return (_ret = 201, 1);
 }
 
 int Response::valid_Type()
 {
-	std::cout << ":" << conType << ":" << std::endl;
 	for(std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++){
 		if (!conType.compare(it->first)){
 			return (1);
@@ -220,7 +219,7 @@ std::string Response::getKey(std::string value)
 }
 
 
-std::string Response::postAnswer(std::string path)
+std::string Response::postAnswer()
 {
 	std::string unsewer =\
 	 "<!DOCTYPE html>\n\
@@ -232,7 +231,13 @@ std::string Response::postAnswer(std::string path)
     <body style=\"text-align:center;\">\n\
    <h1> File Created Successfully! </h1>\n\
    <pre style=\"text-align:center;\">\n\
-    <p>Your file has been created in "+ path +" </p> \n\
+    <p><u> files created in :\n\n</u> "; 
+
+	for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++) {
+		unsewer += server.root + "/" + it->first + "\n";
+	}
+	unsewer += " \
+	</p> \n\
 	</pre>\n\
     </body>\n\
     </html>\n";

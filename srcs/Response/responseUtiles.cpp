@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 01:00:59 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/05 21:45:12 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int Response::isFile()
 
 int Response::isIndex()
 {
-	std::cout << server.locations[_l].directive << std::endl;
 	if(!server.locations[_l].index.empty()) {
 		return(_index = server.locations[_l].index, 1);
 	}
@@ -69,7 +68,6 @@ int Response::isIndex()
 		return (0);
 	}
 	else if(!server.index.empty()) {
-		std::cout << "FROM HERE 2" << server.index << std::endl;
 		return(_index = server.index, 1);
 	}
 	else

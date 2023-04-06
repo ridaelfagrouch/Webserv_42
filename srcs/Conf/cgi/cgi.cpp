@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 20:10:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/06 02:19:48 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     fileName = cgi.getCgiroot() + fileName;
+    // std::cout << fileName << std::endl;
     std::ifstream check;
     check.open(fileName);
 
