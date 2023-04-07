@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserver.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/04/05 15:18:01 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 18:41:17 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -453,6 +453,7 @@ void webServer::readHeader(fds_info &my_fd)
 			}
 			if (my_fd.totalRead > (size_t)my_fd.my_servers[0].client_max_body_size && my_fd.my_servers[0].client_max_body_size != 0)
 			{
+				close(my_fd.tmp.fd);
 				resetMyFdInfo(my_fd);
 				std::cerr << "server 413 Request Entity Too Large" << std::endl;
 				return ;
