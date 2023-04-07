@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:41:11 by houazzan          #+#    #+#             */
-/*   Updated: 2023/04/06 21:40:24 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 20:09:30 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Request::Request(const std::string& str) :
 {
 	// size_t i = 0;
 	// while (i != 1000)
-	// std::cout << str << std::endl;
+	std::cout << str << std::endl;
 	// std::cout << "########" << std::endl;
 	tokenizingAndParsing(str);
 }
