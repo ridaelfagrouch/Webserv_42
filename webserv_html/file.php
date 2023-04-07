@@ -1,12 +1,12 @@
+#!/usr/bin/php
 <?php
+// Set the cookie
+$test = getenv("HTTP_COOKIE");
 
-// Set the content type to HTML
-header("Content-Type: text/html");
-setcookie('mycookie', 'Hello, Cookie!', time() + (86400 * 30), '/');
-// session_start();
 
-$_SESSION['myvar'] = 'Hello, Session!';
-// Generate some HTML
+
+setcookie("mycookie", "Hello, world!", time()+10, '/');
+
 $html = "
 <!DOCTYPE html>
 <html>
@@ -16,10 +16,15 @@ $html = "
 <body>
 	<h1>Welcome to my HTML page!</h1>
 	<p>This is some example text.</p>
+    echo $test;
 </body>
 </html>
 ";
 
-// Return the HTML content
-echo $html;
+// Send the cookie header
+// header('Location: http://www.example.com/');
+
+// Echo a message to confirm the cookie
+// echo "Cookie set!";
+// echo $html
 ?>

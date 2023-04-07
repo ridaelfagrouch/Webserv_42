@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/06 20:11:25 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:11:36 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,20 +95,31 @@ std::string	Response::to_String(int n)
 std::string Response::getcgiheader()
 {
     std::string line = "";
-    for (std::vector<std::string>::iterator it = cgi_header.begin(); it != cgi_header.end(); it++)
-	{
-		std::vector<std::string> data = split(*it, ':');
-    	if (data.size() == 2){
+    // line += "X-Powered-By:  PHP/8.1.12\r\nContent-Type:  text/html;charset=UTF-8\r\nSet-Cookie:  sami=Hello%2C%20world%21; expires=Fri, 08-Apr-2023 16:15:12\r\n";
+    
+    line = cgi_line;
+
+    
+    int pos = line.find("Content-type");
+    int length = strlen("Content-type");
+    std::string sub = line.substr(0, pos);
+    sub += "Content-Type";
+    pos += length;
+    sub += line.substr(pos, line.length());
+    line = sub;
+    std::cout << line << std::endl;
+    // for (std::vector<std::string>::iterator it = cgi_header.begin(); it != cgi_header.end(); it++)
+	// {
+	// 	std::vector<std::string> data = split(*it, ':');
+    // 	// if (data.size() == 2){
             
-			if (data[0] == "Content-type")
-				data[0] = "Content-Type";
-            if (data[0] != "X-Powered-By")
-            {
-                line += data[0] + ": " + trim(data[1], '\r') + "\r\n";
-            }
-                // std::cout << data[0] << std::endl;
-		}
-	}
+	// 		if (data[0] == "Content-type")
+	// 			data[0] = "Content-Type";
+    //         // if (data[0] == "set-"
+            
+    //         line += data[0] + ": " + trim(data[1], '\r') + "\r\n";
+    //         std::cout << line;
+	// }
     return line;
 }
 
@@ -132,6 +143,17 @@ std::string Response::setErrorPage(std::string path, std::string status_code)
         lines[pos] = status_code[0];
         lines[pos+1] = status_code[1];
         lines[pos+2] = status_code[2];
+
+        if (_status_code.find(atoi(status_code.c_str())) != _status_code.end())
+        {
+            pos = lines.find("Not Found");
+            int length = strlen("Not Found");
+            std::string sub = lines.substr(0, pos);
+            sub += _status_code.find(atoi(status_code.c_str()))->second;
+            pos += length;
+            sub += lines.substr(pos, lines.length());
+            lines = sub;
+        }
     }
     return lines;
 }

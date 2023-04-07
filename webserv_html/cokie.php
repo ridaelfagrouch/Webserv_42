@@ -1,11 +1,10 @@
 <?php
 
-header("Content-Type: text/html");
 // Set the content type to HTML
+header("Content-Type: text/html");
 
 $name = "sami";
-$value = "sami";
-
+// $test = ;
 
 setcookie($name, "Hello, world!", time()+3600);
 

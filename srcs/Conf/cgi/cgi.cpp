@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/07 01:37:07 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:15:33 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     fileName = cgi.getCgiroot() + fileName;
-    // std::cout << fileName << std::endl;
     std::ifstream check;
     check.open(fileName);
 
@@ -157,28 +156,27 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     while(getline(test, tmp))
     {
-        alllines.push_back(tmp);
+        alllines.push_back(tmp + "\n");
     }
-    
+    cgi_line = "";
     if (alllines.size() > 2)
     {
         std::vector<std::string>::iterator iter = alllines.begin();
         
         while (iter != alllines.end())
         {
-            if (((*iter)[0] == 13 && (*(iter +1))[0] == 0) || ((*(iter))[0] == 13))
+            if ( (*iter)[0] == 13 || (*(iter +1))[0] == 0)
             {
-                iter = alllines.erase(iter);
-                iter = alllines.erase(iter);
+                if (alllines.size() > 1)
+                    iter = alllines.erase(iter);
+                if (alllines.size() > 1)
+                    iter = alllines.erase(iter);
                 break ;
             }
-            std::vector<std::string> data = split(*iter, ':');
-            if (data.size() == 2){
-                cgi_header.push_back(*iter);
-            }
+            cgi_line += *iter;
+
             iter = alllines.erase(iter);
         }
-        
         for (std::vector<std::string>::iterator it = alllines.begin(); it != alllines.end(); it++)
         {
             lines.append(*it);
@@ -212,8 +210,12 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     }
     
     std::string cmd = server.locations[_l].fatscgi_pass;
+    
     remove("./tmpFile");
+    
     int fd = open("./tmpFile", O_CREAT | O_RDWR | O_TRUNC);
+    
+    
     int pid = fork();
     if (pid == 0)
     {
@@ -241,11 +243,11 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
     std::string lines;
     std::vector<std::string> alllines;
     
-
     while(getline(test, tmp))
     {
-        alllines.push_back(tmp);
+        alllines.push_back(tmp + "\n");
     }
+    cgi_line = "";
     
     if (alllines.size() > 2)
     {
@@ -253,16 +255,15 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
         
         while (iter != alllines.end())
         {
-            if ((*(iter))[0] == 0)
+            if ( (*iter)[0] == 13 || (*(iter +1))[0] == 0)
             {
-                iter = alllines.erase(iter);
-                iter = alllines.erase(iter);
+                if (alllines.size() > 1)
+                    iter = alllines.erase(iter);
+                if (alllines.size() > 1)
+                    iter = alllines.erase(iter);
                 break ;
             }
-            std::vector<std::string> data = split(*iter, ':');
-            if (data.size() == 2){
-                cgi_header.push_back(*iter);
-            }
+            cgi_line += *iter;
             iter = alllines.erase(iter);
         }
 
