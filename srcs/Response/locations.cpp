@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:37:20 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 17:14:52 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 21:48:59 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void Response::nextpath(std::string &path)
 
 size_t Response::getLocation()
 {
-	if ((_l = regularExpretion()) != SIZE_MAX)
+	if ((_l = regularExpretion()) != std::string::npos)
 		return (_l);
-	else if ((_l = exactLocation()) != SIZE_MAX)
+	else if ((_l = exactLocation()) != std::string::npos)
 		return (_l);
-	else if ((_l = prefixLocation()) != SIZE_MAX)
+	else if ((_l = prefixLocation()) != std::string::npos)
 		return (_l);
 	return(_l = rootLocation());
 	return(0);
@@ -55,7 +55,7 @@ size_t Response::regularExpretion()
 			return (i);
 		}
 	}
-	return (SIZE_MAX);
+	return (std::string::npos);
 }
 
 size_t Response::exactLocation()
@@ -68,7 +68,7 @@ size_t Response::exactLocation()
 			return (i);
 		}
 	}
-	return (SIZE_MAX);
+	return (std::string::npos);
 }
 
 
@@ -88,7 +88,7 @@ size_t Response::prefixLocation()
 		}
 		nextpath(path);
 	}
-	return (SIZE_MAX);
+	return (std::string::npos);
 }
 
 size_t Response::rootLocation()
@@ -99,5 +99,5 @@ size_t Response::rootLocation()
 			return (i);
 		}
 	}
-	return (SIZE_MAX);
+	return (std::string::npos);
 }

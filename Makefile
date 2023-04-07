@@ -6,7 +6,7 @@
 #    By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/04/07 20:55:31 by houazzan         ###   ########.fr        #
+#    Updated: 2023/04/07 21:50:29 by houazzan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ HEADERS = config.hpp request.hpp response.hpp webserver.hpp
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/Conf/cgi/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Request/*.cpp) $(wildcard ./srcs/Response/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror -fsanitize=address -g
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror 
+#-fsanitize=address -g
 
 CXX = c++ 
 NAME = webserver
