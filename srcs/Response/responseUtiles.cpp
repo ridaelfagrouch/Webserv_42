@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 02:45:05 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:55:55 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int Response::isIndex()
 int Response::checkPath()
 {
 	struct stat st;
-	
 	char root[PATH_MAX];
 	char child[PATH_MAX];
 	std::string sroot;
@@ -95,7 +94,6 @@ int Response::checkPath()
 	if(schild.find(sroot) != 0)
 		return (0);
 	server.root.append(_pathExtra);
-	
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);
 	return (1);

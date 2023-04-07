@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/06 21:11:02 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 18:40:08 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ std::string Response::call()
 		deleteMethode();
 	}
 	headerGen();
-	// std::cout << _response << std::endl;
+	std::cout << _response << std::endl;
 	return (_response);
 }
 

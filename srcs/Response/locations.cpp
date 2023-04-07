@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:37:20 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/04 20:20:39 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:14:52 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ size_t Response::regularExpretion()
 {
 	std::string ending;
 	size_t i = _path.find(".");
+	size_t j;
 	if (i != std::string::npos){
 		ending = "*" + _path.substr(i);
 	}
 	for (size_t i = 0; i != server.locations.size(); i++){
 		if (!ending.compare(server.locations[i].directive)){
 			_cgi = true;
+			j = prefixLocation();
 			return (i);
 		}
 	}
@@ -62,7 +64,7 @@ size_t Response::exactLocation()
 	for (size_t i = 0; i != server.locations.size(); i++){
 		if (!_path.compare(server.locations[i].directive))
 		{
-			_pathMAtch = server.locations[i].directive; 
+			_pathMAtch = server.locations[i].directive;
 			return (i);
 		}
 	}
