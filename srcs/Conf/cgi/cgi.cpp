@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/06 02:19:48 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:48:10 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ char    **setEnv(Response::Cgi cgi, std::string fileName)
 std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
 {
     fileName = cgi.getCgiroot() + fileName;
-    // std::cout << fileName << std::endl;
     std::ifstream check;
     check.open(fileName);
 
@@ -175,6 +174,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
             std::vector<std::string> data = split(*iter, ':');
             if (data.size() == 2){
                 cgi_header.push_back(*iter);
+                // std::cout << *iter << std::endl;
             }
             iter = alllines.erase(iter);
         }

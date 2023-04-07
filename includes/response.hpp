@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/06 01:56:17 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:43:37 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ class Response {
 		Servers &server;
 
 		
-		std::map<int, std::string> _status_code;
 		std::map<std::string, std::string>_header;
 		std::map<std::string, std::string> _contentType;
 		std::map<std::string, std::string> _postObject;
+		std::map<int, std::string> _status_code;
 		
 		std::vector<std::string> cgi_header;
 		// std::map<std::string, std::string (*)(const std::string&)>_methodes;

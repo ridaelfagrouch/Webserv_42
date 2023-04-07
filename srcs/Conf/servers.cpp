@@ -6,11 +6,15 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/03 01:27:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 02:49:08 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/config.hpp"
+#include "../../includes/response.hpp"
+
+// class Response;
+
 
 void    checkSemicolone(std::vector<std::string> &info)
 {
@@ -73,6 +77,33 @@ void    Servers::checkHost(std::string info)
     this->host = host;
 }
 
+std::map<int, std::string>	initErrorMap()
+{
+
+    std::map<int, std::string> status_code;
+    
+	status_code[100] = "Continue";
+	status_code[200] = "OK";
+	status_code[201] = "Created";
+	status_code[202] = "Accepted";
+	status_code[204] = "No Content";
+	status_code[300] = "Multiple Choices";
+	status_code[301] = "Moved Permanently";
+	status_code[302] = "Found";
+	status_code[303] = "See Other";
+	status_code[304] = "Not Modified";
+	status_code[305] = "Use Proxy";
+	status_code[307] = "Temporary Redirect";
+	status_code[400] = "Bad Request";
+	status_code[403] = "Forbidden";
+	status_code[404] = "Not Found";
+	status_code[405] = "Method Not Allowed";
+	status_code[413] = "Payload Too Large";
+	status_code[500] = "Internal Server Error";
+	status_code[504] = "Gateway Timeout";
+    
+    return status_code;
+}
 
 std::string setErrorPage(std::string path, std::string status_code)
 {
@@ -87,10 +118,24 @@ std::string setErrorPage(std::string path, std::string status_code)
         lines.append(line + "\n");
     if (path == "./srcs/Conf/error/error.html")
     {
+
         int pos = lines.find("404");
         lines[pos] = status_code[0];
         lines[pos+1] = status_code[1];
         lines[pos+2] = status_code[2];
+
+        // std::map<int, std::string> status_codes_map = initErrorMap();
+        // if (status_codes_map.find(atoi(status_code.c_str())) != status_codes_map.end())
+        // {
+        //     pos = lines.find("Not Found");
+
+        //     int length = strlen("Not Found");
+        //     std::string sub = lines.substr(0, pos);
+        //     sub += status_codes_map.find(atoi(status_code.c_str()))->second;
+        //     pos += length;
+        //     sub += lines.substr(pos, lines.length());
+        //     lines = sub;
+        // }
     }
     return lines;
 }
@@ -166,7 +211,7 @@ void    Servers::errorPage(std::vector<std::string> info)
                 current.path = "./srcs/Conf/error/error.html";
                 current.page = setErrorPage(current.path, to_String(status));
             }
-        }
+        } 
         else
         {
             current.path = "./srcs/Conf/error/error.html";
