@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 02:47:54 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 02:52:40 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	Response::initRespMaps()
 	_header["Content-Length"] = "Content-Length: ";
 	_header["Location"] = "Location: ";
 	_header["Allow"] = "Allow: ";
+	_header["Cache-Control"] = "Cache-Control: ";
 }
 
 /* ************************************************************************** */
@@ -163,6 +164,7 @@ std::string Response::call()
 		deleteMethode();
 	}
 	headerGen();
+	// std::cout << _response << std::endl;
 	return (_response);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 12:19:21 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/07 02:49:08 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 02:55:05 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,17 @@ std::string setErrorPage(std::string path, std::string status_code)
         lines[pos+1] = status_code[1];
         lines[pos+2] = status_code[2];
 
-        // std::map<int, std::string> status_codes_map = initErrorMap();
-        // if (status_codes_map.find(atoi(status_code.c_str())) != status_codes_map.end())
-        // {
-        //     pos = lines.find("Not Found");
-
-        //     int length = strlen("Not Found");
-        //     std::string sub = lines.substr(0, pos);
-        //     sub += status_codes_map.find(atoi(status_code.c_str()))->second;
-        //     pos += length;
-        //     sub += lines.substr(pos, lines.length());
-        //     lines = sub;
-        // }
+        std::map<int, std::string> status_codes_map = initErrorMap();
+        if (status_codes_map.find(atoi(status_code.c_str())) != status_codes_map.end())
+        {
+            pos = lines.find("Not Found");
+            int length = strlen("Not Found");
+            std::string sub = lines.substr(0, pos);
+            sub += status_codes_map.find(atoi(status_code.c_str()))->second;
+            pos += length;
+            sub += lines.substr(pos, lines.length());
+            lines = sub;
+        }
     }
     return lines;
 }

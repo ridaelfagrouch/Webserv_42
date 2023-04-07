@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 02:43:37 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 17:07:15 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ class Response {
 		std::map<int, std::string> _status_code;
 		
 		std::vector<std::string> cgi_header;
+		std::string cgi_line;
+
 		// std::map<std::string, std::string (*)(const std::string&)>_methodes;
 	public:
 		Response(Request &_request, fds_info &_fd);
@@ -175,6 +177,7 @@ class Response {
 		std::string			get_Rederiction();
 		std::string			get_Allow_Methodes();
 		std::string			getcgiheader();
+		std::string			get_cash_control();
 
 		
 		std::string			to_String(int n);
