@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 16:02:01 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:27:30 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void Response::postMethode()
 {
-	// std::cout << "posting " << std::endl;
 	_ret = 201;
 	if (_ret <= 300 || _ret >= 307){
 		if (!postObject())
@@ -56,6 +55,7 @@ int Response::upload_Store()
 	server.root.append(server.locations[_l].upload_store);
 	return(1);
 }
+
 /* ************************************************************************** */
 
 void Response::tokenizing_Body()

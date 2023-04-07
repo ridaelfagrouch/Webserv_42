@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/06 02:01:32 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/06 20:11:25 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ std::string Response::get_Rederiction()
 {
     size_t i;
     i = server.locations[_l].returned.find(" ");
-    return (server.locations[_l].returned.substr(i));
+    return (server.locations[_l].returned.substr(i).append("\r\n"));
 }
 
 /* ************************************************************************** */
@@ -70,6 +70,13 @@ std::string Response::get_Allow_Methodes()
     return("");
 }
 
+
+/* ************************************************************************** */
+
+std::string Response::get_cash_control()
+{
+    return("no-cache\r\n");
+}
 
 /* ************************************************************************** */
 

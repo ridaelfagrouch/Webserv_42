@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/05 21:45:12 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:45:05 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	Response::ParsingResponse()
  		if (redirection())
 			return (_ret); // ^ Redirection
 		if (!checkPath())
-			return (403); //^ Forbidden
+			return (404); //^ Not found
 		if (!allowed())
 			return(405); //^ METHODE NOT ALLOWED AND THE REPONCE SHOULD HAVE A HEADER OF ALLOWED METHODES FOR A REQUEST.
 	}
@@ -72,7 +72,6 @@ int Response::isIndex()
 	}
 	else
 		return(0);
-	
 }
 /* ************************************************************************** */
 
@@ -80,7 +79,23 @@ int Response::checkPath()
 {
 	struct stat st;
 	
+	char root[PATH_MAX];
+	char child[PATH_MAX];
+	std::string sroot;
+	std::string schild;
+	std::string str = server.root + _path;
+	realpath(server.root.c_str(), root);
+	realpath(str.c_str(), child);
+	
+	// std::cout << "the absolute root is: " << root << std::endl;
+	// std::cout << "the child is: " << child << std::endl;
+	
+	sroot = root;
+	schild = child;
+	if(schild.find(sroot) != 0)
+		return (0);
 	server.root.append(_pathExtra);
+	
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);
 	return (1);

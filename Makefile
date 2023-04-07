@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+         #
+#    By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/30 13:27:48 by garra             #+#    #+#              #
-#    Updated: 2023/04/05 17:26:12 by sahafid          ###   ########.fr        #
+#    Updated: 2023/04/06 21:40:02 by houazzan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,12 +36,12 @@ define TITLE
 endef
 export TITLE
 
-
+HEADERS = config.hpp request.hpp response.hpp webserver.hpp
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/Conf/cgi/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Request/*.cpp) $(wildcard ./srcs/Response/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror 
-# -fsanitize=address -g
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror -fsanitize=address -g
+
 CXX = c++ 
 NAME = webserver
 
@@ -49,12 +49,12 @@ NAME = webserver
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) 
 	@$(CXX) $(CXXFLAGS) $^ -o $(NAME) 
 title:
 	echo "${DARKVIOLET}$$TITLE${NC}"
 
-%.o: %.cpp 
+%.o: %.cpp $(HEADERS)
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 # @echo "${GRN}=> $@${NC}"
 

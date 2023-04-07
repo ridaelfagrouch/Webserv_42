@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/06 01:56:17 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:27:11 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ class Response {
 		std::string			get_Rederiction();
 		std::string			get_Allow_Methodes();
 		std::string			getcgiheader();
+		std::string			get_cash_control();
 
 		
 		std::string			to_String(int n);

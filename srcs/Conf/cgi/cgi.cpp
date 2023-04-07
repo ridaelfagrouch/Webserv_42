@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/06 02:19:48 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 01:37:07 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ std::string  Response::executeCgiPhp(std::string fileName, Response::Cgi cgi)
     
     std::string cmd = server.locations[_l].fatscgi_pass;
     
-    std::cout << "after " << fileName  << " " << cmd << std::endl;
+    // std::cout << "after " << fileName  << " " << cmd << std::endl;
     remove("./tmpFile");
     
     int fd = open("./tmpFile", O_CREAT | O_WRONLY | O_TRUNC);
