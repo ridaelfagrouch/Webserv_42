@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 21:56:36 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 02:47:26 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,17 @@ int	Response::ParsingResponse()
 {
 	_l = getLocation();
 	if (_l == std::string::npos)
+	{
 		return (404);
+	}
 	else
 	{
 		changeRoot(); // ^ Root changing
  		if (redirection())
+		{
+			std::cout << "here" << std::endl;
 			return (_ret); // ^ Redirection
+		}
 		if (!checkPath())
 			return (404); //^ Not found
 		if (!allowed())
@@ -86,8 +91,7 @@ int Response::checkPath()
 	realpath(server.root.c_str(), root);
 	realpath(str.c_str(), child);
 	
-	// std::cout << "the absolute root is: " << root << std::endl;
-	// std::cout << "the child is: " << child << std::endl;
+	
 	
 	sroot = root;
 	schild = child;

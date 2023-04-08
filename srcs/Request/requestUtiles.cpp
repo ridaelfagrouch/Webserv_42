@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:32:14 by houazzan          #+#    #+#             */
-/*   Updated: 2023/04/05 01:44:36 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 23:39:06 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ std::string Request::set_key(const std::string &str)
 {
     std::string ret;
     size_t i = str.find_first_of(':');
-    ret.assign(str, 0, i);
+    if (i != std::string::npos)
+        ret.assign(str, 0, i);
     return (ret);
 }
 

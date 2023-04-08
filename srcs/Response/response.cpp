@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 22:19:20 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 02:44:52 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_fd), server(fd.my_servers[0])
 {
-	std::cout << server.port[0] << std::endl;
 	initErrorMap();
 	initRespMaps();
 	initContentMap();
@@ -45,9 +44,12 @@ Response::Cgi::~Cgi(){}
 int Response::isAbsoluteURI()
 {
 	size_t i;
-	if ((i = _path.find("http://"))!= std::string::npos ||(i = _path.find("https://")) != std::string::npos)
+	std::string referer = request.get_header("Referer");
+	if ((i = _path.find("http://"))!= std::string::npos || (i = _path.find("https://")) != std::string::npos || !referer.empty())
+	{
+		std::cout << "hello" << std::endl;
 		return (1);
-	// std::cout << 
+	}
 	return (0);
 }
 
@@ -58,6 +60,7 @@ void Response::changeHost()
 	size_t i;
 	size_t j;
 	std::string newHost;
+	std::string referer = request.get_header("Referer");
 	if ((i = _path.find("http://")) != std::string::npos) {
 		
 		j = _path.find("/", i + 7);
@@ -75,15 +78,18 @@ void Response::changeHost()
 		newHost.erase(i, 9);
 		newHost = "127.0.0.1" + newHost;
 	}
-	std::cout << "the new host is : " << newHost << std::endl;
+	
 	for (std::vector<Servers>::iterator it = fd.all_servers.begin(); it != fd.all_servers.end(); it++) {
 		
 		for(std::vector<int>::iterator i = it->port.begin(); i != it->port.end(); i++) {
 		
- 			if (!newHost.compare(it->host + ":" + to_String(*i)))				
+ 			if (!newHost.compare(it->host + ":" + to_String(*i)))	
+			{		
 				server = *it;
+			}
 		}
 	}
+
 }
 
 /* ************************************************************************** */

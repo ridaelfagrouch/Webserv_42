@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:37:20 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 21:48:59 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 01:25:41 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void Response::nextpath(std::string &path)
 
 size_t Response::getLocation()
 {
+	// std::cout << server.root << std::endl;
+	// std::cout << _path << std::endl;
 	if ((_l = regularExpretion()) != std::string::npos)
 		return (_l);
 	else if ((_l = exactLocation()) != std::string::npos)
