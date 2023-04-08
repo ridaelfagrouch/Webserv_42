@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     	<title>My HTML Page</title>
     </head>
     <body>
+        <h1>this is POST request!</h1>
     	<h1>Welcome to my HTML page $name!</h1>
     	<p>This is some example text. $email</p>
     </body>
@@ -28,9 +29,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $html;
 
 } else {
-    // Send an error response if the request method is not POST
-    http_response_code(405); // Method Not Allowed
-    echo "Error: Only POST requests are allowed";
+
+
+    $html = "
+    <!DOCTYPE html>
+    <html>
+    <head>
+    	<title>My HTML Page</title>
+    </head>
+    <body>
+    	<h1>this is GET request!</h1>
+    </body>
+    </html>
+    ";
+
+    // Return the HTML content
+    echo $html;
 }
 
 ?>

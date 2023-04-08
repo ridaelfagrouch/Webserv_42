@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 17:07:15 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 20:37:34 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,9 +243,9 @@ class Response {
     		    ~Cgi();
 		};
 
-		std::string     executeCgi(std::string filename, Cgi cgi);
-		std::string		executeCgiPy(std::string fileName, Response::Cgi cgi);
-		std::string		executeCgiPhp(std::string fileName, Response::Cgi cgi);
+		std::string     executeCgi(std::string fileName, Cgi cgi);
+		// std::string		executeCgiPy(std::string fileName, Response::Cgi cgi);
+		// std::string		executeCgiPhp(std::string fileName, Response::Cgi cgi);
 
 
 };

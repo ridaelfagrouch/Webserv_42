@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 18:42:34 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 21:14:10 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void	Response::initContentMap()
 
 std::string Response::call()
 {
+    remove("./tmpFile");
 	if (_ret != 200)
 		error();
 	else {

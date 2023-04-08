@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 20:14:46 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 21:11:04 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ int Response::fillClass()
     }
     catch (std::exception &e)
     {
+        remove("./tmpFile");
         return 0;
     }
+    remove("./tmpFile");
     return 1;
 }
 
