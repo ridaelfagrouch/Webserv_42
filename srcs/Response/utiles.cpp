@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 20:05:52 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 20:17:20 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,8 @@ std::string	Response::to_String(int n)
 std::string Response::getcgiheader()
 {
     std::string line = "";
-    // line += "X-Powered-By:  PHP/8.1.12\r\nContent-Type:  text/html;charset=UTF-8\r\nSet-Cookie:  sami=Hello%2C%20world%21; expires=Fri, 08-Apr-2023 16:15:12\r\n";
     
     line = cgi_line;
-
     
     size_t pos = 0;
     if ((pos = line.find("Content-type")) && pos != std::string::npos)
@@ -110,20 +108,6 @@ std::string Response::getcgiheader()
         sub += line.substr(pos, line.length());
         line = sub;
     }
-
-    
-    // for (std::vector<std::string>::iterator it = cgi_header.begin(); it != cgi_header.end(); it++)
-	// {
-	// 	std::vector<std::string> data = split(*it, ':');
-    // 	// if (data.size() == 2){
-            
-	// 		if (data[0] == "Content-type")
-	// 			data[0] = "Content-Type";
-    //         // if (data[0] == "set-"
-            
-    //         line += data[0] + ": " + trim(data[1], '\r') + "\r\n";
-    //         std::cout << line;
-	// }
     return line;
 }
 
