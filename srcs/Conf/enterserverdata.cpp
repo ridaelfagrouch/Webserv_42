@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:55:13 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 22:35:37 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 23:39:08 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    Servers::enterPorts(std::vector<std::string> info)
     for (std::vector<std::string>::iterator it = info.begin() + 1; it != info.end(); it++)
     {
         int port = ft_stoi(*it);
-        if (port < 0 || port == 0)
+        if (port <= 0 || port > 65535)
             throw std::invalid_argument("Syntax Error: invalid port number");
         else
         {
@@ -101,6 +101,8 @@ void    Servers::enterData(std::vector<std::string> info)
         enterBodySize(info);
     else if (info.size() > 1 && info[0] == "host")
     {
+        if (!this->host.empty())
+            throw std::invalid_argument("Syntax Error: duplicate host"); 
         if (info.size() == 2)
             checkHost(info[1]);
         else

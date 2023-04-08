@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 15:12:23 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/05 18:13:47 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 00:31:14 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 void    check_brackets(std::vector<std::string> &lines)
 {
     int braket = 0;
+    
+    std::vector<std::string>::iterator iter = lines.begin();
+    
+    while (iter != lines.end())
+    {
+        trim(*iter, ' ');
+        if ((*iter).size() > 0 &&  (*iter)[0] == '#')
+            iter = lines.erase(iter);
+        else
+            iter++;
+    }
+    
     for (std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); it++)
     {
         std::vector<std::string> line = split(*it, ' ');
@@ -31,8 +43,6 @@ void    check_brackets(std::vector<std::string> &lines)
                 if (*iter == "{")
                 {
                     if (*(iter - 2) == "location")
-                        braket++;
-                    else if (braket == 2 && *(iter - 2) == "limit_except")
                         braket++;
                 }
                 else if (*iter == "}")

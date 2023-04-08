@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/07 17:15:33 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 22:10:00 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 #include <iostream>
 #include <fcntl.h>
 #include <sys/wait.h>
-
-// "REDIRECT_STATUS","DOCUMENT_ROOT", "SERVER_SOFTWARE"
-//     ,"SERVER_PORT","GATEWAY_INTERFACE"
-//     ,"SERVER_NAME","SCRIPT_FILENAME"
-//     ,"REQUEST_METHOD", "SERVER_PROTOCOL"
-//     , "CONTENT_TYPE", "CONTENT_LENGTH"
-//     , "PATH_INFO", "QUERY_STRING"
-//     , "HTTP_COOKIE" 
 
 
 
