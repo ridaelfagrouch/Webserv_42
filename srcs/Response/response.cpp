@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 21:14:10 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:42:35 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	Response::initErrorMap()
 	_status_code[201] = "Created";
 	_status_code[202] = "Accepted";
 	_status_code[204] = "No Content";
-	_status_code[300] = "Multiple Choices";
 	_status_code[301] = "Moved Permanently";
 	_status_code[302] = "Found";
 	_status_code[303] = "See Other";
@@ -128,6 +127,7 @@ void	Response::initRespMaps()
 	_header["Location"] = "Location: ";
 	_header["Allow"] = "Allow: ";
 	_header["Cache-Control"] = "Cache-Control: ";
+	_header["Content-Disposition"] = "Content-Disposition: ";
 }
 
 /* ************************************************************************** */
@@ -201,6 +201,7 @@ std::string Response::decodePath()
          else 
             output << *it;
 	}
+	std::cout << "here: " << output.str() << std::endl;
 	return (output.str());
 }
 
