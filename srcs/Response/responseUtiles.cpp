@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 18:54:15 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 20:19:12 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int Response::checkPath()
 
 	if(schild.find(sroot) != 0)
 		return (0);
+	if (_cgi)
+		server.root.append(_pathMAtch);
 	server.root.append(_pathExtra);
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);
