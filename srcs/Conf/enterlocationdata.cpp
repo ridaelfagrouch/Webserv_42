@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:53:17 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/02 22:03:30 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 02:19:34 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void    Locations::enterAllowedMethodes(std::vector<std::string> info)
 
 int     redirectionCodes(std::string code)
 {
-    if (code == "300" || code == "301" || code == "302" || code == "303" || code == "304" ||code == "305" || code == "306" || code == "307" || code == "308" || code == "310")
+    if (code == "301" || code == "302" || code == "303" || code == "304" ||code == "305" || code == "306" || code == "307" || code == "308")
         return 0;
     return 1;
 }

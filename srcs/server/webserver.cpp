@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 04:00:17 by garra             #+#    #+#             */
-/*   Updated: 2023/04/06 18:41:17 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 01:06:43 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,22 @@ void webServer::fdData(fds_info &fdtmp, int fd)
 
 void    webServer::setupServer()
 {
+	int countNoBind = 0; 
     for (size_t i = 0; i < _serv.size(); i++)
     {
 	    int optval = 1;
-
+		
 		if ((_serv[i].socket_fd = guard(socket(AF_INET, SOCK_STREAM, 0), "socket error")) < 0)
 			continue;
 		if (guard(setsockopt(_serv[i].socket_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)), "setsockopt error") < 0)
 			continue;
-	   	if(guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error") < 0)
+		if(guard(bind(_serv[i].socket_fd, (struct sockaddr *) &_serv[i]._address, sizeof(_serv[i]._address)), "bind error") < 0)
+		{
+			countNoBind++;
+			if (countNoBind == (int)_serv.size())
+				exit(1);
 			continue;
+		}
         if(guard(listen(_serv[i].socket_fd, SOMAXCONN), "listen error") < 0)
 			continue;
         if(guard(fcntl(_serv[i].socket_fd, F_SETFL, O_NONBLOCK), "fcntl error") < 0)

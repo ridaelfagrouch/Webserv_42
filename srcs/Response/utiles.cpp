@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 17:11:36 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/07 21:15:46 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,18 @@ std::string Response::getcgiheader()
     line = cgi_line;
 
     
-    int pos = line.find("Content-type");
-    int length = strlen("Content-type");
-    std::string sub = line.substr(0, pos);
-    sub += "Content-Type";
-    pos += length;
-    sub += line.substr(pos, line.length());
-    line = sub;
-    std::cout << line << std::endl;
+    size_t pos = 0;
+    if ((pos = line.find("Content-type")) && pos != std::string::npos)
+    {
+        int length = strlen("Content-type");
+        std::string sub = line.substr(0, pos);
+        sub += "Content-Type";
+        pos += length;
+        sub += line.substr(pos, line.length());
+        line = sub;
+    }
+
+    
     // for (std::vector<std::string>::iterator it = cgi_header.begin(); it != cgi_header.end(); it++)
 	// {
 	// 	std::vector<std::string> data = split(*it, ':');
