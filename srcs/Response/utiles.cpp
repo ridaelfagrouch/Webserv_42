@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 20:05:52 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:19:31 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,23 @@ std::string Response::get_Connection()
     return (request.get_header("Connection") + "\r\n");
 }
 
+/* ************************************************************************** */
+
 std::string Response::get_Content_Type()
 {
+    std::string _type;
     size_t i = _path.find(".");
     if (i == std::string::npos || _ret != 200 || _autoindex)
         return ("text/html \r\n");
-    else
-        return(_contentType[_path.substr(i + 1)] + "\r\n");
+    else {
+        for (std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++) {
+            if ((it->second).compare(_path.substr(i + 1)) == 0) 
+                _type = it->first;
+        }
+        if (_type.empty())
+            _type = "application/octet-stream";
+        return(_type + "\r\n");
+    }
 }
 
 /* ************************************************************************** */
@@ -53,6 +63,7 @@ std::string Response::get_Rederiction()
     i = server.locations[_l].returned.find(" ");
     return (server.locations[_l].returned.substr(i).append("\r\n"));
 }
+
 
 /* ************************************************************************** */
 

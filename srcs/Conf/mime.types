@@ -28,7 +28,7 @@ image/x-icon:ico
 image/x-jng:jng
 image/x-ms-bmp:bmp
 font/woff:woff
-font/woff2:woff:
+font/woff2:woff
 application/java-archive:jar
 application/java-archive:war
 application/java-archive:ear
