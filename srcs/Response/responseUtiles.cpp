@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   responseUtiles.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 21:56:36 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:18:24 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ int Response::isIndex()
 {
 	if(!server.locations[_l].index.empty()) {
 		return(_index = server.locations[_l].index, 1);
-	}
-	else if (server.locations[_l].directive.compare("/") != 0) {
-		return (0);
 	}
 	else if(!server.index.empty()) {
 		return(_index = server.index, 1);
