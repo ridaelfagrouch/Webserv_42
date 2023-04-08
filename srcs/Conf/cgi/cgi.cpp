@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/07 22:10:00 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 19:48:07 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ std::string   Response::executeCgiPy(std::string fileName, Response::Cgi cgi)
 std::string    Response::executeCgi(std::string filename, Cgi cgi)
 {
     int position = filename.find_last_of(".");
+    std::cout << server.root << std::endl;
     if(filename.substr(position+1) == "py")
         return executeCgiPy(filename, cgi);
     else
