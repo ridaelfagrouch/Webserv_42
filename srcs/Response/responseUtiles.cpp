@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 18:18:24 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 20:04:06 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int	Response::ParsingResponse()
 {
 	_l = getLocation();
 	if (_l == std::string::npos)
+	{
 		return (404);
+	}
 	else
 	{
 		changeRoot(); // ^ Root changing
@@ -61,7 +63,7 @@ int Response::isFile()
 
 int Response::isIndex()
 {
-	if(!server.locations[_l].index.empty()) {
+	if (!server.locations[_l].index.empty()) {
 		return(_index = server.locations[_l].index, 1);
 	}
 	else if(!server.index.empty()) {
@@ -82,12 +84,10 @@ int Response::checkPath()
 	std::string str = server.root + _path;
 	realpath(server.root.c_str(), root);
 	realpath(str.c_str(), child);
-	
-	// std::cout << "the absolute root is: " << root << std::endl;
-	// std::cout << "the child is: " << child << std::endl;
-	
+		
 	sroot = root;
 	schild = child;
+
 	if(schild.find(sroot) != 0)
 		return (0);
 	server.root.append(_pathExtra);

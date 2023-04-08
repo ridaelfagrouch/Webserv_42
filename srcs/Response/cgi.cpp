@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 18:00:53 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:54:43 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,9 @@ void Response::Cgi::setCgiMethode(std::string _methode)
 
 void Response::Cgi::setCgiPath(Response &response)
 {
-    std::cout << "hello" << std::endl;
     if (!response._cgi && response._indexcgi)
         Path  = "/" + response._index;
-    // else
-    //     Path = response.server.root;
-    std::cout << Path << std::endl;
+    std::cout << "here" << Path << std::endl;
 }
 
 void Response::Cgi::setCgiQuery(std::string _query)
