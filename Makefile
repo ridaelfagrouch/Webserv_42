@@ -40,10 +40,10 @@ HEADERS = config.hpp request.hpp response.hpp webserver.hpp
 SRCS = main.cpp $(wildcard ./srcs/Conf/*.cpp) $(wildcard ./srcs/Conf/cgi/*.cpp) $(wildcard ./srcs/server/*.cpp) $(wildcard ./srcs/Request/*.cpp) $(wildcard ./srcs/Response/*.cpp)
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS = -I includes/ -Wall -Wextra -Werror -fsanitize=address -g
+CXXFLAGS = -I includes/ -Wall -Wextra -Werror
 
 CXX = c++ 
-NAME = webserver
+NAME = webserv
 
 
 
@@ -62,7 +62,7 @@ clean:
 	@rm -rf $(OBJS)
 
 fclean: clean
-	@rm $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
 

@@ -92,10 +92,6 @@ void    Locations::enterLocationData(std::vector<std::string> info)
 
 void    check_syntax(std::vector<Locations> &locations)
 {
-<<<<<<< HEAD
-
-=======
->>>>>>> 6f551cbea93ea7f2758b9d611f2baf8e6906de1c
     for (std::vector<Locations>::iterator it = locations.begin(); it != locations.end(); it++)
     {
         Locations &currentDirective = *it;

@@ -46,14 +46,13 @@ size_t Response::regularExpretion()
 {
 	std::string ending;
 	size_t i = _path.find(".");
-	size_t j;
 	if (i != std::string::npos){
 		ending = "*" + _path.substr(i);
 	}
 	for (size_t i = 0; i != server.locations.size(); i++){
 		if (!ending.compare(server.locations[i].directive)){
 			_cgi = true;
-			j = prefixLocation();
+			prefixLocation();
 			return (i);
 		}
 	}
