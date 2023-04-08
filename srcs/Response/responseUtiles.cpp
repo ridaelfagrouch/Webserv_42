@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 16:55:55 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/07 21:56:36 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 int	Response::ParsingResponse()
 {
 	_l = getLocation();
-	if (_l == SIZE_MAX)
-		return (deafIndex());
+	if (_l == std::string::npos)
+		return (404);
 	else
 	{
 		changeRoot(); // ^ Root changing
