@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 02:28:13 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/06 01:48:07 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:02:30 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int Response::readDefault()
     std::ifstream file;
 	std::stringstream buff;
     std::string path;
-
-    path = _root.append("/") + _index;
+	_index = "/" + _index;
+    path = _root + _pathExtra +  _index;
 	if (iscgi(_index))
 		return (runcgi());
     file.open(path.c_str(), std::ifstream::in);
@@ -45,6 +45,10 @@ int Response::readDefault()
 		file.close();
 		return (_ret = 200, 1);
     }
+	if (_autoindex)
+	{
+		return (_Resbody = getIndex(), 200);
+	}
     return (_ret = 404, 0);
 }
 

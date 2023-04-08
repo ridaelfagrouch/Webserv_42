@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 02:44:52 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:42:34 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_f
 	if (isAbsoluteURI())
 		changeHost();
 	if (_fd.isTimeOut == true)
-	{
-		std::cout << "here" << std::endl;
 		_ret = 504;
-	}
 }
 
 
@@ -44,12 +41,8 @@ Response::Cgi::~Cgi(){}
 int Response::isAbsoluteURI()
 {
 	size_t i;
-	std::string referer = request.get_header("Referer");
-	if ((i = _path.find("http://"))!= std::string::npos || (i = _path.find("https://")) != std::string::npos || !referer.empty())
-	{
-		std::cout << "hello" << std::endl;
+	if ((i = _path.find("http://"))!= std::string::npos || (i = _path.find("https://")) != std::string::npos)
 		return (1);
-	}
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
+/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 16:34:43 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/08 02:22:25 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 17:41:46 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,6 @@ void    Locations::enterLocationData(std::vector<std::string> info)
 
 void    check_syntax(std::vector<Locations> &locations)
 {
-<<<<<<< HEAD
-
-=======
->>>>>>> 6f551cbea93ea7f2758b9d611f2baf8e6906de1c
     for (std::vector<Locations>::iterator it = locations.begin(); it != locations.end(); it++)
     {
         Locations &currentDirective = *it;

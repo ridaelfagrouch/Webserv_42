@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 02:43:52 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 18:28:19 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ int Response::readObject()
 		return (runcgi());
 	else if (isFile())
 		return(readFile());	
-	else if (isIndex()) 
+	else if (isIndex())
 		return(readDefault());
-	if (_autoindex)
-		return (_Resbody = getIndex(), 200);
 	return (_ret = 404, 0);
 }
