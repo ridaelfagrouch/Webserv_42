@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 23:42:35 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:44:54 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ std::string Response::decodePath()
          else 
             output << *it;
 	}
-	std::cout << "here: " << output.str() << std::endl;
 	return (output.str());
 }
 

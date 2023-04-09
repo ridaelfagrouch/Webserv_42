@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:47 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 20:37:34 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:45:31 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,6 @@ class Response {
 					// Response *response = &(this->response);
 					if (response.iscgi(response.get_index()))
 					{
-						// std::cout << "hello: " << response._path << std::endl;
 						_cgiIndex = true;
 					}
 					else

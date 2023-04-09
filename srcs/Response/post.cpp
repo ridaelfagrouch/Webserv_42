@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/07 02:27:30 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:45:17 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,14 @@ void Response::form_Data()
 	size_t pos;
 	std::string token;
 	std::string fileName;
-	// int i = 0;
-	// while (i < 2000)
-	// {
-	// 	std::cout << _Reqbody[i];
-	// 	i++;
-	// }
+
 	
-	// std::cout << _Reqbody << std::endl;
 	while ((pos = _Reqbody.find(_bounadry)) != std::string::npos){
 		if (pos == 0){
 			_Reqbody.erase(0, _bounadry.length() + 2);
-			// int i = 0;
-			// while (i < 2000)
-			// {
-			// 	std::cout << _Reqbody[i];
-			// 	i++;
-			// }
 		}
 		else{
 			token = _Reqbody.substr(0, pos);
-			// std::cout << token << std::endl;
 			if (token.find("Content-Type: ") != std::string::npos)
 			{
 				conType = token.substr(token.find("Content-Type: ") + 14);
@@ -147,7 +134,6 @@ std::string	Response::form_Name()
 	std::string _postName;
 	std::stringstream body(_Reqbody);
 	getline(body, _postName);
-	// std::cout << _postName << std::endl;
 	if ((pos = _postName.find("filename=")) != std::string::npos){
 		_postName = _postName.substr(pos + sizeof("filename="));
 		if ((pos = _postName.find(";")) != std::string::npos)
@@ -180,11 +166,8 @@ int	Response::creat()
 	struct stat st;
 	std::string file_path;
 	std::string file;
-	// for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++)
-	// 	std::cout << it->first << " " << it->second << std::endl; //! printing the file content
+
 	if (stat(server.root.c_str(), &st) || !valid_Type()){
-		std::cout << valid_Type()  << std::endl;
-		std::cout << server.root << std::endl;
 		return (0);
 	}
 	for (std::map<std::string, std::string>::iterator it = _postObject.begin(); it != _postObject.end(); it++){
@@ -204,7 +187,6 @@ int Response::valid_Type()
 			return (1);
 		}
 	}
-	// std::cout << "the content type: " << conType << std::endl; //! printing the type of file uploaded
 	return (0);
 }
 

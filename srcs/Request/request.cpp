@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:41:11 by houazzan          #+#    #+#             */
-/*   Updated: 2023/04/08 23:29:03 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:45:28 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 Request::Request(const std::string& str) :
  _methode(""), _version(""), _body(""), _path(""), _port(80), _ret(200)
 {
-	// size_t i = 0;
-	// while (i != 1000)
-	// std::cout << str << std::endl;
-	// std::cout << "########" << std::endl;
 	tokenizingAndParsing(str);
 }
 

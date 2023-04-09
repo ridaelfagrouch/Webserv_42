@@ -16,11 +16,7 @@ $html = "
 </html>
 ";
 
-// Send the cookie header
-// header('Location: http://www.example.com/');
 
-// Echo a message to confirm the cookie
-// echo "Cookie set!";
 echo $html;
 
 

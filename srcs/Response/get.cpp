@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:31:18 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 20:05:00 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:45:21 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void Response::getMethode()
 {
 	if (_ret <= 301 || _ret >= 307)
 	{
-		std::cout << _ret << std::endl;
     	if (_ret != 200 || !readObject())
 			error();
 	}

@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 21:11:04 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:44:42 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void Response::Cgi::setCgiPath(Response &response)
 {
     if (!response._cgi && response._indexcgi)
         Path  = "/" + response._index;
-    else
-        std::cout << response.server.root << std::endl;
 }
 
 void Response::Cgi::setCgiQuery(std::string _query)

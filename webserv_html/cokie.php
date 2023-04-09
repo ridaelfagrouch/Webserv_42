@@ -4,7 +4,6 @@
 header("Content-Type: text/html");
 
 $name = "sami";
-// $test = ;
 
 setcookie($name, "Hello, world!", time()+360);
 

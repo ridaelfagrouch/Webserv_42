@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 11:19:03 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 17:44:54 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:44:59 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,5 @@ int Response::redirection()
         nb >> _ret;
         return(1);
     }
-    // std::cout << "here " << server.locations[_l].directive << std::endl;
     return(0);
 }
