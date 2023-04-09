@@ -44,7 +44,7 @@ CXXFLAGS = -I includes/ -Wall -Wextra -Werror
 # -fsanitize=address -g
 
 CXX = c++ 
-NAME = webserver
+NAME = webserv
 
 
 
@@ -63,7 +63,7 @@ clean:
 	@rm -rf $(OBJS)
 
 fclean: clean
-	@rm $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
 
