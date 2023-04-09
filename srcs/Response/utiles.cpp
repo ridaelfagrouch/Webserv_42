@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 02:22:22 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/08 23:42:31 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,23 @@ std::string Response::get_Connection()
     return (request.get_header("Connection") + "\r\n");
 }
 
+/* ************************************************************************** */
+
 std::string Response::get_Content_Type()
 {
+    std::string _type;
     size_t i = _path.find(".");
     if (i == std::string::npos || _ret != 200 || _autoindex)
         return ("text/html \r\n");
-    else
-        return(_contentType[_path.substr(i + 1)] + "\r\n");
+    else {
+        for (std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++) {
+            if ((it->second).compare(_path.substr(i + 1)) == 0) 
+                _type = it->first;
+        }
+        if (_type.empty())
+            _type = "application/octet-stream";
+        return(_type + "\r\n");
+    }
 }
 
 /* ************************************************************************** */
@@ -53,6 +63,7 @@ std::string Response::get_Rederiction()
     i = server.locations[_l].returned.find(" ");
     return (server.locations[_l].returned.substr(i).append("\r\n"));
 }
+
 
 /* ************************************************************************** */
 
@@ -95,31 +106,19 @@ std::string	Response::to_String(int n)
 std::string Response::getcgiheader()
 {
     std::string line = "";
-    // line += "X-Powered-By:  PHP/8.1.12\r\nContent-Type:  text/html;charset=UTF-8\r\nSet-Cookie:  sami=Hello%2C%20world%21; expires=Fri, 08-Apr-2023 16:15:12\r\n";
     
     line = cgi_line;
-
     
-    // int pos = line.find("Content-type");
-    // int length = strlen("Content-type");
-    // std::string sub = line.substr(0, pos);
-    // sub += "Content-Type";
-    // pos += length;
-    // sub += line.substr(pos, line.length());
-    // line = sub;
-    // std::cout << line << std::endl;
-    // for (std::vector<std::string>::iterator it = cgi_header.begin(); it != cgi_header.end(); it++)
-	// {
-	// 	std::vector<std::string> data = split(*it, ':');
-    // 	// if (data.size() == 2){
-            
-	// 		if (data[0] == "Content-type")
-	// 			data[0] = "Content-Type";
-    //         // if (data[0] == "set-"
-            
-    //         line += data[0] + ": " + trim(data[1], '\r') + "\r\n";
-    //         std::cout << line;
-	// }
+    size_t pos = 0;
+    if ((pos = line.find("Content-type")) && pos != std::string::npos)
+    {
+        int length = strlen("Content-type");
+        std::string sub = line.substr(0, pos);
+        sub += "Content-Type";
+        pos += length;
+        sub += line.substr(pos, line.length());
+        line = sub;
+    }
     return line;
 }
 

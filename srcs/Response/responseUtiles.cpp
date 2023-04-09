@@ -6,7 +6,7 @@
 /*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 02:47:26 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 20:20:25 by houazzan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	Response::ParsingResponse()
 	{
 		changeRoot(); // ^ Root changing
  		if (redirection())
-		{
-			std::cout << "here" << std::endl;
 			return (_ret); // ^ Redirection
-		}
 		if (!checkPath())
 			return (404); //^ Not found
 		if (!allowed())
@@ -66,11 +63,8 @@ int Response::isFile()
 
 int Response::isIndex()
 {
-	if(!server.locations[_l].index.empty()) {
+	if (!server.locations[_l].index.empty()) {
 		return(_index = server.locations[_l].index, 1);
-	}
-	else if (server.locations[_l].directive.compare("/") != 0) {
-		return (0);
 	}
 	else if(!server.index.empty()) {
 		return(_index = server.index, 1);
@@ -90,13 +84,14 @@ int Response::checkPath()
 	std::string str = server.root + _path;
 	realpath(server.root.c_str(), root);
 	realpath(str.c_str(), child);
-	
-	
-	
+		
 	sroot = root;
 	schild = child;
+
 	if(schild.find(sroot) != 0)
 		return (0);
+	if (_cgi)
+		server.root.append(_pathMAtch);
 	server.root.append(_pathExtra);
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);

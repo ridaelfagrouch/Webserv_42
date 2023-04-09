@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 02:44:52 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 23:42:35 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ Response::Response(Request &_request,  fds_info &_fd) : request(_request), fd(_f
 	if (isAbsoluteURI())
 		changeHost();
 	if (_fd.isTimeOut == true)
-	{
-		std::cout << "here" << std::endl;
 		_ret = 504;
-	}
 }
 
 
@@ -44,12 +41,8 @@ Response::Cgi::~Cgi(){}
 int Response::isAbsoluteURI()
 {
 	size_t i;
-	std::string referer = request.get_header("Referer");
-	if ((i = _path.find("http://"))!= std::string::npos || (i = _path.find("https://")) != std::string::npos || !referer.empty())
-	{
-		std::cout << "hello" << std::endl;
+	if ((i = _path.find("http://"))!= std::string::npos || (i = _path.find("https://")) != std::string::npos)
 		return (1);
-	}
 	return (0);
 }
 
@@ -101,7 +94,6 @@ void	Response::initErrorMap()
 	_status_code[201] = "Created";
 	_status_code[202] = "Accepted";
 	_status_code[204] = "No Content";
-	_status_code[300] = "Multiple Choices";
 	_status_code[301] = "Moved Permanently";
 	_status_code[302] = "Found";
 	_status_code[303] = "See Other";
@@ -135,6 +127,7 @@ void	Response::initRespMaps()
 	_header["Location"] = "Location: ";
 	_header["Allow"] = "Allow: ";
 	_header["Cache-Control"] = "Cache-Control: ";
+	_header["Content-Disposition"] = "Content-Disposition: ";
 }
 
 /* ************************************************************************** */
@@ -159,6 +152,7 @@ void	Response::initContentMap()
 
 std::string Response::call()
 {
+    remove("./tmpFile");
 	if (_ret != 200)
 		error();
 	else {
@@ -207,6 +201,7 @@ std::string Response::decodePath()
          else 
             output << *it;
 	}
+	std::cout << "here: " << output.str() << std::endl;
 	return (output.str());
 }
 

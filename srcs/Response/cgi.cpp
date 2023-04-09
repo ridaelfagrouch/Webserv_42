@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 13:36:29 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 02:39:36 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/08 21:11:04 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ int Response::fillClass()
     }
     catch (std::exception &e)
     {
+        remove("./tmpFile");
         return 0;
     }
+    remove("./tmpFile");
     return 1;
 }
 
@@ -53,9 +55,8 @@ void Response::Cgi::setCgiPath(Response &response)
 {
     if (!response._cgi && response._indexcgi)
         Path  = "/" + response._index;
-    // else
-    //     Path = response.server.root;
-    std::cout << Path << std::endl;
+    else
+        std::cout << response.server.root << std::endl;
 }
 
 void Response::Cgi::setCgiQuery(std::string _query)
