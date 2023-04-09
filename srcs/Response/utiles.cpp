@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:58:00 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 23:42:31 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/09 00:44:29 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@ std::string Response::get_Connection()
 std::string Response::get_Content_Type()
 {
     std::string _type;
-    size_t i = _path.find(".");
+    size_t i = _path.find_last_of(".");
     if (i == std::string::npos || _ret != 200 || _autoindex)
         return ("text/html \r\n");
     else {
         for (std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++) {
-            if ((it->second).compare(_path.substr(i + 1)) == 0) 
-                _type = it->first;
+            if ((it->first).compare(_path.substr(i + 1)) == 0) {
+                _type = it->second;
+            }
         }
         if (_type.empty())
             _type = "application/octet-stream";

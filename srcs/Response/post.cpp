@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 09:32:36 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 23:45:17 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/09 00:37:16 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int	Response::creat()
 int Response::valid_Type()
 {
 	for(std::map<std::string, std::string>::iterator it = _contentType.begin(); it != _contentType.end(); it++){
-		if (!conType.compare(it->first)){
+		if (!conType.compare(it->second)){
 			return (1);
 		}
 	}

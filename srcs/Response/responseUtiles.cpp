@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   responseUtiles.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houazzan <houazzan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 21:34:49 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 20:20:25 by houazzan         ###   ########.fr       */
+/*   Updated: 2023/04/09 00:54:27 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int Response::checkPath()
 
 	if(schild.find(sroot) != 0)
 		return (0);
-	if (_cgi)
-		server.root.append(_pathMAtch);
 	server.root.append(_pathExtra);
 	if (stat(server.root.c_str(), &st) != 0)
 		return (0);

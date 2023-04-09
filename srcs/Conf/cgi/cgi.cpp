@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 16:57:09 by sahafid           #+#    #+#             */
-/*   Updated: 2023/04/08 21:27:37 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/09 00:57:07 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ std::string    Response::executeCgi(std::string fileName, Cgi cgi)
 
     if (!check.is_open())
     {
-        std::cout << "no file found "  << fileName << std::endl;
         remove("./tmpFile");
         throw std::invalid_argument("missing lines");
     }

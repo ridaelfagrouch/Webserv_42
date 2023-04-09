@@ -6,7 +6,7 @@
 /*   By: sahafid <sahafid@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 00:52:50 by ouzhamza          #+#    #+#             */
-/*   Updated: 2023/04/08 23:44:54 by sahafid          ###   ########.fr       */
+/*   Updated: 2023/04/09 00:44:08 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,13 +249,13 @@ void	Response::setBody()
 std::string Response::get_value(std::string line)
 {
 	size_t i = line.find(":");
-	return (line.substr(i + 1));
+	return (line.substr(0, i));
 }
 
 std::string Response::get_key(std::string line)
 {
 	size_t i = line.find(":");
-	return (line.substr(0, i));	
+	return (line.substr(i + 1));	
 }
 
 std::string	Response::get_index()
